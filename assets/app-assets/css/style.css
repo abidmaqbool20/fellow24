@@ -112,13 +112,13 @@ html body .content.app-content .page-overlay.show{
     transform: translateX(110%);
     transition: all .3s ease;
     z-index: 1033;
-    right: 2rem;
+    right: 3rem;
     left: auto;
     bottom: 0;
     top: 7vh;
     opacity: 0;
-    overflow: auto; 
-    margin-right: 4rem;
+    overflow: auto; /* 
+   / margin-right: 4rem; */
 }
 
 .page-body-modal-window.show{
