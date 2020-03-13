@@ -36,6 +36,11 @@
 <script src="<?= APP_ASSETS ?>/js/scripts/components.min.js"></script>
 <script src="<?= APP_ASSETS ?>/js/scripts/footer.min.js"></script>
 <script src="<?= APP_ASSETS ?>/js/scripts/customizer.min.js"></script>
+<script src="<?= APP_ASSETS ?>vendors/js/toast/jquery.toast.min.js"></script>
+<!-- <script src="<?= APP_ASSETS ?>/js/scripts/pages/bootstrap-toast.min.js"></script> -->
+
+<script src="<?= APP_ASSETS ?>vendors/js/sweet-alerts/sweetalert.min.js"></script> 
+<script src="<?= APP_ASSETS ?>dist/js/sweetalert-data.js"></script>
 
 
 <!-- END: Theme JS-->
@@ -44,6 +49,10 @@
 <script src="http://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 <script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 <script src="<?= APP_ASSETS ?>/js/actions.js"></script>
+
+
+
+
  
  
 </body>

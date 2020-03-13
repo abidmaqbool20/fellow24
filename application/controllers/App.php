@@ -10,6 +10,16 @@ class App extends My_Controller {
 
  	public function __construct(){
  		parent::__construct();
+        date_default_timezone_set("Asia/Karachi");
+        $this->date = date('Y-m-d H:i:s'); 
+        $this->just_date = date('Y-m-d'); 
+        $this->time = date('H:i:s');     
+
+        ini_set('post_max_size','750M');
+        ini_set('upload_max_filesize','750M');
+        ini_set('max_execution_time','5000');
+        ini_set('max_input_time','5000');
+        ini_set('memory_limit','1000M'); 
  	}
 
 	public function index(){ 
@@ -826,6 +836,32 @@ class App extends My_Controller {
             redirect($_SERVER['HTTP_REFERER']);
         }   
 	}
+
+
+
+    public function change_status()
+    {
+        $data = $this->input->post();
+        if($data['id'] > 0)
+        {
+            $table = $data['table'];
+            $table_rec = $this->db->get_where($table,array("id"=>$data['id']))->result_array();
+            $current_status = $table_rec[0]['status'];
+
+            if($current_status == 0)
+            {
+                $status = 1;
+            }
+            else
+            {
+                $status = 0;
+            }
+
+            $this->db->update($table,array("status"=>$status),array("id"=>$data['id']));
+        }
+
+        echo true;
+    }
 	
 
 }

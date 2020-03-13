@@ -1,3 +1,6 @@
+
+<?php $records = $this->App_Model->get_campaigns(); ?>
+
 <section class="actions-wrapper">
 	<div class="row">
 	    <div class="col-md-6">
@@ -69,269 +72,50 @@
 			  <div class="table-responsive">
 			  	<table class="table table-hover mb-0">
 				    <thead>
-				      <tr>
-				        <th>NAME </th>
-				        <th>RATE </th>
-				        <th>SKILL </th>
-				        <th>TYPE </th>
-				        <th>LOCATION </th>
+				      <tr> 
+				        <th>Title </th>
+				        <th>Description </th>
+				        <th>Date Added</th>
+				        <th>Status</th>
 				        <th>ACTION</th>
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">UI/UX</td>
-				        <td>Remote</td>
-				        <td>Austin,Taxes</td>
-				        <td>
-				        	 
-
-							<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-                      	</td>
-				        <td>$13/hr</td>
-				        <td class="text-bold-500">Graphic concepts</td>
-				        <td>Remote</td>
-				        <td>Shangai,China</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
-				      <tr>
-				        <td class="text-bold-500">
-				        	<div class="avatar m-0 mr-50 user-img">
-                                <img src="<?= APP_ASSETS ?>/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
-                            </div>
-                          	<div class="user-name">Morgan Vanblum</div>
-                          	<div class="user-id">#0005</div>
-				        </td>
-				        <td>$15/hr</td>
-				        <td class="text-bold-500">Animation</td>
-				        <td>Remote</td>
-				        <td>Austin,Texas</td>
-				        <td>
-				        	<div class="dropdown">
-			                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                   <i class="bx bx-dots-vertical-rounded"></i>
-			                  </button>
-			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Option 1</a>
-			                    <a class="dropdown-item" href="#">Option 2</a>
-			                    <a class="dropdown-item" href="#">Option 3</a>
-			                  </div>
-			                </div>
-				        </td>
-				      </tr>
+				        
+					      	<?php 
+					      	if($records->num_rows() > 0){
+					      		foreach ($records->result() as $key => $value) { 
+					      			$checked ="";
+					      			if($value->status == 1){
+					      				$checked = 'checked';
+					      			}
+					      	?>
+					      			<tr class="rec-<?=$value->id ;?>">
+								      	<td class="text-bold-500"><?php echo $value->title;?></td>
+								        <td><?php echo $value->description;?></td>
+								        <td class="text-bold-500"><?php echo $value->date_added;?></td>
+								        <td> 
+								        	<div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+								                <input type="checkbox" <?= $checked ;?> class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor<?=$key ?>" table-id="<?= $value->id;?>">
+								                <label class="custom-control-label" for="customSwitchcolor<?=$key ?>"></label>
+							                </div>
+          								</td>
+								        <td>
+											<div class="dropdown">
+							                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							                   <i class="bx bx-dots-vertical-rounded"></i>
+							                  </button>
+							                  <div class="dropdown-menu dropdown-menu-right">
+							                    <a class="dropdown-item open-model" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/form-campaign')); ?>" href="javascript:;">Edit</a>
+							                    <a class="dropdown-item" href="">View</a>
+							                    <a class="dropdown-item delete" data="<?php echo get_json(array('id'=>$value->id,'table'=>'campaigns')); ?>" href="javascript:;">Delete</a>
+							                  </div>
+							                </div>
+				                        </td>
+							        </tr>
+					      			
+					      	<?php }};?>
+				        
 
 				    </tbody>
 			  	</table>

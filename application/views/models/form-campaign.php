@@ -1,3 +1,13 @@
+<?php
+if (isset($id) && $id > 0) {
+  $record = $this->App_Model->get_campaign_rec($id);
+  if ($record->num_rows() > 0) {
+    $record_data = $record->row();
+  }
+  
+}
+?>
+
 <div class="page-body-modal-window cus-model-window model-first show small-model"> 
   <div class="model-content">
     <div class="card shadow-none quill-wrapper">
@@ -8,21 +18,24 @@
         </button>
       </div>
       <!-- form start -->
-      <form class="edit-kanban-item">
+      <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_form'); ?>" enctype="multipart/form-data">
+        <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+        <input type="hidden" name="table_name" id="table_name" value="campaigns">
+        <input type="hidden" name="edit_record_id" id="edit_record_id" value="<?php if (isset($record_data)) {echo $record_data->id;} ?>">
         <div class="card-content">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
                   <label class="form-label"><span class="required-label">*</span>Campaign Title</label>
-                  <input type="text" name="name" class="form-control required" required="required" value="">
+                  <input type="text" name="title" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->title;} ?>">
                 </div>
               </div>
 
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
                   <label class="form-label">Description</label>
-                 <textarea name="description" class="form-control" id="description" cols="5" rows="6"></textarea>
+                 <textarea name="description" class="form-control" id="description" cols="5" rows="6"><?php if (isset($record_data)) {echo $record_data->description;} ?></textarea>
                 </div>
               </div>
 
@@ -32,11 +45,11 @@
         </div>
         <div class="card-footer d-flex justify-content-end">
           <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1 close-model ">
-            <i class='bx bx-trash mr-50'></i>
+            <i class='bx bx-x mr-50'></i>
             <span>Cancel</span>
           </button>
           <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
-            <i class='bx bx-send mr-50'></i>
+            <i class='bx bx-check mr-50'></i>
             <span>Save</span>
           </button>
         </div>

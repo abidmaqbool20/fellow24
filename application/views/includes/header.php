@@ -43,9 +43,11 @@
       <!-- BEGIN: Page CSS-->
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/css/core/menu/menu-types/vertical-menu.min.css">
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/css/pages/dashboard-analytics.min.css">
+      <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>vendors/css/toast/jquery.toast.min.css">
+      <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>vendors/css/sweet-alert/sweetalert.css">
       <!-- END: Page CSS-->
       <!-- BEGIN: Custom CSS-->
-      <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/css/style.css">
+      <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/css/style.css">  
       <!-- END: Custom CSS-->
    </head>
    <!-- END: Head-->

@@ -360,28 +360,29 @@ function remove_loader()
 	});
 }
 
+$(document).on('click','.change-status',function(){
+
+	$table = $(this).attr('table');
+	$id = $(this).attr('table-id');
+	change_status($table,$id);
+
+
+})
 function change_status($table,$id)
 {
 	add_loader();
 
 	$.ajax({
         type: "POST",
-        url: $base_url+"/admin/change-status",
-        data: {table:$table,id:$id},
+        url: $base_url+"/app/change_status",
+        data: {table:$table,id:$id,csrf_token:$csrf_token},
         success: function(result) {
-            swal(
-			      'Successful!',
-			       "Status is changed successfully",
-			      'success'
-				);
+           
+		    toast_success_message('Success!','Status has been changed Successfully');
 
         },
         error:function(){
-        	swal(
-			      'Error!',
-			       "Sorry! status is not changed.",
-			      'error'
-				);
+        	 toast_error_message('Error!',"Sorry Status Didn't change");
 
         },
         complete: function(){
@@ -412,7 +413,7 @@ $(document).on("click",".delete",function(){
 			        data: {table:$data.table,id:$data.id,csrf_token:$csrf_token},
 			        async:false,
 			        success: function(result) {
-			           $($record).closest("#rec_"+$data.id).remove();
+			           $($record).closest(".rec-"+$data.id).remove();
 			        },
 			        error:function(){
 			        	swal(
@@ -486,7 +487,7 @@ function toast_success_message($heading='',$message='',$position='',$duration=''
 	if($duration == '')
 		$duration = 3500;
 
-	$.toast({
+	        $.toast({
 				heading: $heading,
 				text: $message,
 				position: $position,
@@ -495,6 +496,14 @@ function toast_success_message($heading='',$message='',$position='',$duration=''
 				hideAfter: $duration,
 				stack: 6
 			});
+
+	// toastr.success("I do not think that word means what you think it means.", "Slide Down / Slide Up!", {
+ //            showMethod: "fadeIn",
+ //            hideMethod: "fadeOut",
+ //            timeOut: 2e3,
+ //            positionClass: "toast-top-right",
+ //            containerId: "toast-top-right"
+ //        })
 }
 
 function toast_error_message($heading='',$message='',$position='',$duration=''){
@@ -557,13 +566,10 @@ $(document).on('submit','.general-form',function(e){
 		    	 $message = $.parseJSON(response);
 		    	 if($message['success'])
 		    	 {
-	    	 		swal(
-					      'Successful!',
-					       $message['message'],
-					      'success'
-						);
-
+	    			toast_success_message('Success!',$message['message']);
 	    	 		$form.trigger('reset');
+	    	 		for ( instance in CKEDITOR.instances ){  CKEDITOR.instances[instance].setData(''); }
+	    	 			//CKEDITOR.instances.editor1.('');
 
 	    	 		$(".select2").select2();
 
@@ -571,20 +577,13 @@ $(document).on('submit','.general-form',function(e){
 		    	 else
 		    	 {
 
-		    	 	swal(
-					      'Error!',
-					       $message['message'],
-					      'error'
-					    );
+		    	 	toast_error_message('Error!',$message['message']);
 
 		    	 }
 		    },
 		    error:function(msg){
 		    	console.log(msg);
-		    	 swal(
-					      'Error!',
-					      'error'
-					 );
+		    	 toast_error_message('Error!','Form not saved');
 		    },
 		    complete:function(){
 		    	 remove_loader();
