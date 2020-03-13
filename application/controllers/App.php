@@ -100,7 +100,732 @@ class App extends My_Controller {
         return $is_conn;
     }
 
-    
+    public function save_multiple_hrms_files($path,$files=array(),$table) 
+	{ 
+		$filedata = array(); 
+		$uploaded_files = array();
+		if (!file_exists($path)) {  mkdir($path, 0777, true); } 
+		$filesCount = count($files);
 
+		for($i = 0; $i < $filesCount; $i++) 
+		{ 
+			$_FILES['userFile']['name'] = $files[$i]['name']; 
+			$_FILES['userFile']['type'] = $files[$i]['type']; 
+			$_FILES['userFile']['tmp_name'] = $files[$i]['tmp_name']; 
+			$_FILES['userFile']['error'] = $files[$i]['error']; 
+			$_FILES['userFile']['size'] = $files[$i]['size']; 
+
+			$config = array(); 
+			$config['upload_path']          = $path; 
+			$config['allowed_types']        = '*'; 
+			$config['max_size']             = 1024*1024*1024*1024*1024*1024; 
+			$config['encrypt_name']         = true; 
+
+			$this->load->library('upload', $config); 
+			$this->upload->initialize($config); 
+			if($this->upload->do_upload('userFile'))
+			{ 
+				$fileData = $this->upload->data(); 
+				$filedata = array();
+
+				//$filedata['table_id']   =    $id;  
+				$filedata['table_name'] =    $table; 
+				$filedata["original_name"] = $fileData['file_name']; 
+				$filedata['file_name'] =     $_FILES['userFile']['name'];  
+				$filedata['file_type'] =     $_FILES['userFile']['type']; 
+				$filedata['file_size'] =     $_FILES['userFile']['size']; 
+				$filedata['file_type_id'] =  $this->input->post('file_type_id'); 
+				$filedata['date_added']=     $this->date; 
+				$filedata['added_by']  =     $this->user_data['id']; 
+				$filedata['modified_by'] =   $this->user_data['id']; 
+
+				$this->db->insert("files",$filedata);   
+
+				$uploaded_files[] = $fileData['file_name']; 
+			}
+
+		}
+
+		return $uploaded_files; 
+	}
+
+	public function upload_file()
+	{
+
+			$save = true;   $message = $file_names = array(); 
+			$path = "assets/admin/adminassets/"; 
+			$file_type_id=$this->input->post('file_type_id');
+			$table = 'files';
+			if(isset($_FILES) && sizeof($_FILES) > 0) 
+			{ 
+				
+				foreach ($_FILES as $key => $value)  
+				{ 
+
+					if(is_array($_FILES[$key]['name'])) 
+					{ 
+
+						if($_FILES[$key]['error'][0] == 0) 
+						{ 
+							$files =  $this->reArrayFiles($_FILES[$key]); 
+							$file_names=$this->save_multiple_hrms_files($path,$files,$table); 
+						} 
+
+					} 
+					else 
+					{ 
+						if($_FILES[$key]['error'] == 0) 
+						{ 
+						// $filedata['table_id'] = $id;  
+							$filedata['table_name'] = $table; 
+							$filedata['file_type_id']=$file_type_id;
+							$filedata["original_name"] = $this->save_file($path,$key); 
+							$filedata['file_name'] = $_FILES[$key]['name']; 
+							$filedata['file_type'] = $_FILES[$key]['type']; 
+							$filedata['file_size'] = $_FILES[$key]['size']; 
+							$filedata['date_added'] = $this->date; 
+							$filedata['added_by'] = $this->user_data['id']; 
+							$filedata['modified_by'] = $this->user_data['id']; 
+
+							$this->db->insert("files",$filedata); 
+						// $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id));
+
+
+
+						} 
+					}  
+
+					if($this->input->is_ajax_request()){
+							$message['success'] = $save ;
+							$message['message'] = 'Record is saved successfully!' ;
+							echo json_encode($message);
+							}
+							else{ 
+								$this->session->set_flashdata("message",$alert); 
+								redirect($_SERVER['HTTP_REFERER']);
+							}
+				} 
+			}
+
+	
+	}
+
+	
+    public function generate_excel_file($filename,$file_title,$function,$ids)
+    { 
+        $response = '';
+        if(!empty($ids))
+        {
+            $records = $this->HRM_Model->$function($ids);
+            if($records->num_rows() > 0){
+                $records_array = $records->result_array(); 
+            
+                $file_columns = array_keys($records_array[0]);
+                $xls = generate_excel($filename,$file_title,$file_columns,$records_array);
+                $response = base_url($xls);
+            }
+        }
+        
+        return $response;
+        
+    }
+
+
+    public function generate_pdf($html,$report_name) 
+    {  
+
+        if($html != ""){
+
+            $report_name = $report_name."-".strtotime(date("Y-m-d H:i:s"));
+            $this->load->library('pdf'); 
+
+            $this->pdf->loadHtml($html);
+
+            $this->pdf->render();
+            $path = "assets/system/reports/".$report_name.".pdf";
+            $this->pdf->stream($path, array("Attachment"=>0));
+            return base_url($path);
+        } 
+
+	}
+	
+	public function delete_record(){ 
+        $data = $this->input->post();
+        if($data['id'] != "" && $data['id'] > 0 && $data['table'] != "" && $data['table'] != ''){
+            return $deleted = $this->db->update($data['table'],array("deleted"=>1,"deleted_by"=>$this->master_id,"date_deleted"=>$this->date),array("id"=>$data['id']));
+        }
+    } 
+
+    public function get_module_permissions(){
+        $data = $this->input->post();
+        $perm_list = "";
+        if($data['id'] > 0){
+           $permissions = $this->HRM_Model->get_module_permissions($data['id']);
+           if($permissions->num_rows() > 0){ 
+              foreach($permissions->result() as $key => $permission){
+                $perm_list .= '<li id="row_'.$permission->id.'" class="list-group-item d-flex justify-content-between listitem-content">
+                                 '.$permission->name.'  
+                                <a href="javascript:;" class="delete pull-right" data="'.get_json(array('id'=>$permission->id,'table'=>'permissions')).'">
+                                  <span class="badge badge-danger"><i class="fa fa-times"></i></span>
+                                </a>
+                              </li>';
+              }                          
+           }
+        }
+
+        echo $perm_list;
+    }
+
+    public function get_childs(){
+         
+        $data = $this->input->post();
+
+        if(count($data['data']) > 0){ 
+            $data = $data['data'];
+            $records = $this->HRM_Model->get_childs($data); 
+            if($records->num_rows() > 0){
+                echo json_encode($records->result());
+            }
+            else{
+                echo 'false';
+            } 
+        } 
+    } 
+
+
+    public function load_file_data(){
+        $employees = array();
+        $ok = true;
+        $file_name = $this->input->post('file_name');
+        $file = $_FILES[$file_name]['tmp_name'];
+        $handle = fopen($file, "r");
+        if ($file == NULL) {
+          error(_('Please select a file to import')); 
+        }
+        else{
+              $i = 0;
+            while(($filesop = fgetcsv($handle, 20000, ",")) !== false){ 
+                if($i > 0){
+
+                    $employee_data = array(); 
+                    $employee_data['hr_file_id'] = $filesop[0];
+                    $employee_data['first_name'] = $filesop[1];
+                    $employee_data['last_name'] = $filesop[2];
+                    $employee_data['father_name'] = $filesop[3];
+                    $employee_data['husband_name'] = $filesop[4];
+                    $employee_data['salutation'] = $filesop[5];
+                    $employee_data['cnic'] = str_replace("-", "", $filesop[6]);
+                    $employee_data['cnic_exp_date'] = date("Y-m-d",strtotime($filesop[7]));
+                    $employee_data['gender'] = $filesop[8];
+                    $employee_data['martial_status'] = $filesop[9];
+                    $employee_data['joining_date'] = date("Y-m-d",strtotime($filesop[10]));
+                    $employee_data['religion'] = $filesop[11];
+                    $employee_data['nationality'] = $filesop[12]; 
+                    $employee_data['dob'] = date("Y-m-d",strtotime($filesop[13]));
+                    $employee_data['birth_country'] = $filesop[14]; 
+                    $employee_data['perm_country'] = $filesop[15];
+                    $employee_data['perm_state'] = $filesop[16];
+                    $employee_data['perm_city'] = $filesop[17]; 
+                    $employee_data['perm_address'] = $filesop[18];
+                    $employee_data['temp_country'] = $filesop[19];
+                    $employee_data['temp_state'] = $filesop[20];
+                    $employee_data['temp_city'] = $filesop[21]; 
+                    $employee_data['temp_address'] = $filesop[22]; 
+                    $employee_data['rank'] = $filesop[23];
+                    $employee_data['emp_cat_id'] = $filesop[24];
+                    $employee_data['emp_type_id'] = $filesop[25];
+                    $employee_data['dep_id'] = $filesop[26];
+                    $employee_data['fac_category'] = $filesop[27];
+                    $employee_data['job_nature_id'] = $filesop[28];
+                    $employee_data['fac_regist_type'] = $filesop[29];
+                    $employee_data['pmdc_number'] = $filesop[30]; 
+                    $employee_data['pmdc_certificate_expiry'] = $filesop[31];
+                    $employee_data['pmdc_card_expiry'] = $filesop[32];
+                    $employee_data['designation_id'] = $filesop[33];
+                    $employee_data['qualification'] = $filesop[34];
+                    $employee_data['police_verification'] = $filesop[35];
+                    $employee_data['phone1'] = $filesop[36];
+                    $employee_data['mobile1'] = $filesop[37];
+                    $employee_data['mobile2'] = $filesop[38];
+                    $employee_data['email'] = $filesop[39]; 
+                    $employee_data['work_placement'] = $filesop[40]; 
+                    $employee_data['pay_scale_id'] = $filesop[41];
+                    $employee_data['hod'] = $filesop[42];
+
+
+                    if(isset($employee_data['salutation']) && $employee_data['salutation'] != ''){
+                        $this->db->select('id');
+                        $salutation_rec = $this->db->get_where("salutations",array("name"=>$employee_data['salutation']));
+                        if($salutation_rec->num_rows() > 0){
+                           $employee_data['salutation'] = $salutation_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['martial_status']) && $employee_data['martial_status'] != ''){
+                        $this->db->select('id');
+                        $martial_status_rec = $this->db->get_where("martial_status",array("name"=>$employee_data['martial_status']));
+                        if($martial_status_rec->num_rows() > 0){
+                           $employee_data['martial_status'] = $martial_status_rec->row()->id;
+                        }
+                    } 
+
+                    if(isset($employee_data['religion']) && $employee_data['religion'] != ''){
+                        $this->db->select('id');
+                        $religion_rec = $this->db->get_where("religions",array("name"=>$employee_data['religion']));
+                        if($religion_rec->num_rows() > 0){
+                           $employee_data['religion'] = $religion_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['nationality']) && $employee_data['nationality'] != ''){
+                        $this->db->select('id');
+                        $nationality_rec = $this->db->get_where("countries",array("name"=>$employee_data['nationality']));
+                        if($nationality_rec->num_rows() > 0){
+                           $employee_data['nationality'] = $nationality_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['birth_country']) && $employee_data['birth_country'] != ''){
+                        $this->db->select('id');
+                        $country_rec = $this->db->get_where("countries",array("name"=>$employee_data['birth_country']));
+                        if($country_rec->num_rows() > 0){
+                           $employee_data['birth_country'] = $country_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['birth_city']) && $employee_data['birth_city'] != ''){
+                        $this->db->select('id');
+                        $birth_city_rec = $this->db->get_where("cities",array("name"=>$employee_data['birth_city']));
+                        if($birth_city_rec->num_rows() > 0){
+                           $employee_data['birth_city'] = $birth_city_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['perm_country']) && $employee_data['perm_country'] != ''){
+                        $this->db->select('id');
+                        $perm_country_rec = $this->db->get_where("countries",array("name"=>$employee_data['perm_country']));
+                        if($perm_country_rec->num_rows() > 0){
+                           $employee_data['perm_country'] = $perm_country_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['perm_state']) && $employee_data['perm_state'] != ''){
+                        $this->db->select('id');
+                        $perm_state_rec = $this->db->get_where("states",array("name"=>$employee_data['perm_state']));
+                        if($perm_state_rec->num_rows() > 0){
+                           $employee_data['perm_state'] = $perm_state_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['perm_city']) && $employee_data['perm_city'] != ''){
+                        $this->db->select('id');
+                        $perm_city_rec = $this->db->get_where("cities",array("name"=>$employee_data['perm_city']));
+                        if($perm_city_rec->num_rows() > 0){
+                           $employee_data['perm_city'] = $perm_city_rec->row()->id;
+                        }
+                    }  
+
+                    if(isset($employee_data['temp_country']) && $employee_data['temp_country'] != ''){
+                        $this->db->select('id');
+                        $temp_country_rec = $this->db->get_where("countries",array("name"=>$employee_data['temp_country']));
+                        if($temp_country_rec->num_rows() > 0){
+                           $employee_data['temp_country'] = $temp_country_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['temp_state']) && $employee_data['temp_state'] != ''){
+                        $this->db->select('id');
+                        $temp_state_rec = $this->db->get_where("states",array("name"=>$employee_data['temp_state']));
+                        if($temp_state_rec->num_rows() > 0){
+                           $employee_data['temp_state'] = $temp_state_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['temp_city']) && $employee_data['temp_city'] != ''){
+                        $this->db->select('id');
+                        $temp_city_rec = $this->db->get_where("cities",array("name"=>$employee_data['temp_city']));
+                        if($temp_city_rec->num_rows() > 0){
+                           $employee_data['temp_city'] = $temp_city_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['emp_cat_id']) && $employee_data['emp_cat_id'] != ''){
+                        $this->db->select('id');
+                        $emp_cat_id_rec = $this->db->get_where("emp_categories",array("name"=>$employee_data['emp_cat_id']));
+                        if($emp_cat_id_rec->num_rows() > 0){
+                           $employee_data['emp_cat_id'] = $emp_cat_id_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['emp_type_id']) && $employee_data['emp_type_id'] != ''){
+                        $this->db->select('id');
+                        $emp_type_id_rec = $this->db->get_where("emp_types",array("name"=>$employee_data['emp_type_id']));
+                        if($emp_type_id_rec->num_rows() > 0){
+                           $employee_data['emp_type_id'] = $emp_type_id_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['dep_id']) && $employee_data['dep_id'] != ''){
+                         
+                        $dep_id_rec = $this->db->get_where("departments",array("name"=>$employee_data['dep_id']));
+                        if($dep_id_rec->num_rows() > 0){
+                           $employee_data['campus_id'] = $dep_id_rec->row()->campus;
+                           $employee_data['inst_id'] = $dep_id_rec->row()->branch;
+                           $employee_data['brnh_id'] = $dep_id_rec->row()->institute;
+                           $employee_data['dep_id'] = $dep_id_rec->row()->id;
+                       
+                        }
+                    }
+
+                    if(isset($employee_data['fac_category']) && $employee_data['fac_category'] != ''){
+                        $this->db->select('id');
+                        $fac_category_rec = $this->db->get_where("faculty_categories",array("name"=>$employee_data['fac_category']));
+                        if($fac_category_rec->num_rows() > 0){
+                           $employee_data['fac_category'] = $fac_category_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['job_nature_id']) && $employee_data['job_nature_id'] != ''){
+                        $this->db->select('id');
+                        $job_nature_id_rec = $this->db->get_where("nature_of_jobs",array("name"=>$employee_data['job_nature_id']));
+                        if($job_nature_id_rec->num_rows() > 0){
+                           $employee_data['job_nature_id'] = $job_nature_id_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['designation_id']) && $employee_data['designation_id'] != ''){
+                        $this->db->select('id');
+                        $designation_id_rec = $this->db->get_where("designations",array("name"=>$employee_data['designation_id']));
+                        if($designation_id_rec->num_rows() > 0){
+                           $employee_data['designation_id'] = $designation_id_rec->row()->id;
+                        }
+                    }
+
+                    if(isset($employee_data['pay_scale_id']) && $employee_data['pay_scale_id'] != ''){
+                        $this->db->select('id');
+                        $pay_scale_id_rec = $this->db->get_where("pay_scales",array("name"=>$employee_data['pay_scale_id']));
+                        if($pay_scale_id_rec->num_rows() > 0){
+                           $employee_data['pay_scale_id'] = $pay_scale_id_rec->row()->id;
+                        }
+                    }
+ 
+                    $employees[] = $employee_data;
+
+                    $this->db->insert('employees',$employee_data);
+                }
+
+
+                
+
+                $i = $i + 1;
+            }
+        }
+
+
+       // $this->db->insert_batch('employees',$employees);
+
+        // echo "<pre>";
+        // print_r($employees);
+
+        $message['success'] = true; ;
+        $message['data'] = $employees ;
+        $message['message'] = 'Record is saved successfully!' ;
+        echo json_encode($message); 
+         
+	} 
+	
+	public function save_hrm_file($file,$table,$id,$path){
+        if(isset($_FILES[$file]['error']) && $_FILES[$file]['error'] == 0) 
+        { 
+            $filedata['table_id'] = $id;  
+            $filedata['table_name'] = $table; 
+            $filedata["original_name"] = $this->save_file($path,$file); 
+            $filedata['file_name'] = $_FILES[$file]['name']; 
+            $filedata['file_type'] = $_FILES[$file]['type']; 
+            $filedata['file_size'] = $_FILES[$file]['size']; 
+            $filedata['date_added'] = $this->date; 
+            $filedata['added_by'] = $this->user_data['id']; 
+            $filedata['modified_by'] = $this->user_data['id'];  
+            $this->db->insert("files",$filedata); 
+            $this->db->update($table,array($file => $filedata["original_name"]),array("id"=>$id)); 
+        }
+    }
+
+    public function save_multiple_files($path,$files=array(),$table,$id) 
+    { 
+        $filedata = array(); 
+        if (!file_exists($path)) {  mkdir($path, 0777, true); } 
+        $filesCount = count($files); 
+
+        for($i = 0; $i < $filesCount; $i++) 
+        { 
+            $_FILES['userFile']['name'] = $files[$i]['name']; 
+            $_FILES['userFile']['type'] = $files[$i]['type']; 
+            $_FILES['userFile']['tmp_name'] = $files[$i]['tmp_name']; 
+            $_FILES['userFile']['error'] = $files[$i]['error']; 
+            $_FILES['userFile']['size'] = $files[$i]['size']; 
+
+            $config = array(); 
+            $config['upload_path']          = $path; 
+            $config['allowed_types']        = '*'; 
+            $config['max_size']             = 1024*1024*1024*1024*1024*1024; 
+            $config['encrypt_name']         = true; 
+
+            $this->load->library('upload', $config); 
+            $this->upload->initialize($config); 
+            if($this->upload->do_upload('userFile'))
+            { 
+                $fileData = $this->upload->data(); 
+                $filedata = array();
+
+                $filedata['table_id']   =    $id;  
+                $filedata['table_name'] =    $table; 
+                $filedata["original_name"] = $fileData['file_name']; 
+                $filedata['file_name'] =     $_FILES['userFile']['name'];  
+                $filedata['file_type'] =     $_FILES['userFile']['type']; 
+                $filedata['file_size'] =     $_FILES['userFile']['size']; 
+                $filedata['date_added']=     $this->date; 
+                $filedata['added_by']  =     $this->user_data['id']; 
+                $filedata['modified_by'] =   $this->user_data['id']; 
+
+                $this->db->insert("files",$filedata);   
+            }
+
+        }
+ 
+        return true; 
+    } 
+
+    public function save_multiple_files_return_names($path,$files=array(),$table,$id) 
+    { 
+        $filedata = array(); 
+        $uploaded_files = array();
+        if (!file_exists($path)) {  mkdir($path, 0777, true); } 
+        $filesCount = count($files); 
+
+        for($i = 0; $i < $filesCount; $i++) 
+        { 
+            $_FILES['userFile']['name'] = $files[$i]['name']; 
+            $_FILES['userFile']['type'] = $files[$i]['type']; 
+            $_FILES['userFile']['tmp_name'] = $files[$i]['tmp_name']; 
+            $_FILES['userFile']['error'] = $files[$i]['error']; 
+            $_FILES['userFile']['size'] = $files[$i]['size']; 
+
+            $config = array(); 
+            $config['upload_path']          = $path; 
+            $config['allowed_types']        = '*'; 
+            $config['max_size']             = 1024*1024*1024*1024*1024*1024; 
+            $config['encrypt_name']         = true; 
+
+            $this->load->library('upload', $config); 
+            $this->upload->initialize($config); 
+            if($this->upload->do_upload('userFile'))
+            { 
+                $fileData = $this->upload->data(); 
+                $filedata = array();
+
+                $filedata['table_id']   =    $id;  
+                $filedata['table_name'] =    $table; 
+                $filedata["original_name"] = $fileData['file_name']; 
+                $filedata['file_name'] =     $_FILES['userFile']['name'];  
+                $filedata['file_type'] =     $_FILES['userFile']['type']; 
+                $filedata['file_size'] =     $_FILES['userFile']['size']; 
+                $filedata['date_added']=     $this->date; 
+                $filedata['added_by']  =     $this->user_data['id']; 
+                $filedata['modified_by'] =   $this->user_data['id']; 
+
+                $this->db->insert("files",$filedata);   
+
+                $uploaded_files[] = $fileData['file_name']; 
+            }
+
+        }
+ 
+        return $uploaded_files; 
+    }
+
+    public function save_file($pathh,$name) 
+    { 
+
+        if (!file_exists($pathh)) {  mkdir($pathh, 0777, true); } 
+
+        $config = array(); 
+        $config['upload_path']          = $pathh; 
+        $config['allowed_types']        = '*'; 
+        $config['max_size']             = 1024*1024*1024*1024; 
+        $config['encrypt_name']         = true; 
+
+        $this->load->library('upload', $config); 
+
+        if ( ! $this->upload->do_upload($name)) 
+        { 
+             $error = array('error' => $this->upload->display_errors());
+        } 
+        else 
+        {  
+            $data =  $this->upload->data(); 
+            $files_name = $data['file_name']; 
+            return $files_name; 
+        } 
+    } 
+
+    public function reArrayFiles($file_post)  
+    { 
+        $file_ary = array(); 
+        $file_count = count($file_post['name']); 
+        $file_keys = array_keys($file_post); 
+
+        for ($i=0; $i<$file_count; $i++) 
+        { 
+            foreach ($file_keys as $key) 
+            { 
+                $file_ary[$i][$key] = $file_post[$key][$i]; 
+            } 
+        } 
+
+        return $file_ary; 
+    } 
+
+    public function JsonEncode($data='') 
+    { 
+        foreach ($data as $key => $val)  
+        { 
+           if(is_array($val))  
+           { 
+               $data[$key] = json_encode($val); 
+           } 
+        }  
+        return $data; 
+    } 
+
+    
+    public function save_form() 
+    { 
+        $save = false;   $message = array(); $id = "";   
+        $data = $this->input->post();
+     
+      
+        if(isset($data['edit_record_id']))  
+            $id = $data['edit_record_id'];  
+
+        $table = $data['table_name'];  
+        unset($data['csrf_token'],$data['edit_record_id'],$data['table_name']);
+
+        if($id == "") 
+        {  
+            $data['date_added'] = $this->date; 
+            $data['added_by'] = $this->user_data['id'];   
+            $data = $this->JsonEncode($data); 
+            $this->db->insert($table,$data); 
+            $id = $this->db->insert_id(); 
+               
+            $filedata = array(); 
+            $path = "assets/admin/adminassets/".$table."/".$id."/"; 
+            
+            if(isset($_FILES) && sizeof($_FILES) > 0) 
+            { 
+                foreach ($_FILES as $key => $value)  
+                { 
+                    if(is_array($_FILES[$key]['name'])) 
+                    { 
+                        if($_FILES[$key]['error'][0] == 0) 
+                        { 
+                            $files =  $this->reArrayFiles($_FILES[$key]); 
+                            $this->save_multiple_files($path,$files,$table,$id); 
+                        } 
+                    } 
+                    else 
+                    { 
+                        if($_FILES[$key]['error'] == 0) 
+                        { 
+                            $filedata['table_id'] = $id;  
+                            $filedata['table_name'] = $table; 
+                            $filedata["original_name"] = $this->save_file($path,$key); 
+                            $filedata['file_name'] = $_FILES[$key]['name']; 
+                            $filedata['file_type'] = $_FILES[$key]['type']; 
+                            $filedata['file_size'] = $_FILES[$key]['size']; 
+                            $filedata['date_added'] = $this->date; 
+                            $filedata['added_by'] = $this->user_data['id']; 
+                            $filedata['modified_by'] = $this->user_data['id']; 
+
+                            $this->db->insert("files",$filedata); 
+                            $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id));
+                        } 
+                    }  
+                } 
+            } 
+            
+            $alert  =  '<div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Successful!</h4>
+                             Record is saved successfully...
+                        </div>';  
+            $save = true;   
+        } 
+        else 
+        { 
+            $data['Date_Modification'] = $this->date; 
+            $data['modified_by'] = $this->user_data['id'];  
+            $data = $this->JsonEncode($data);  
+ 
+            $files_allowed = true;
+            $path = "assets/admin/adminassets/".$table."/".$id."/"; 
+            if(isset($_FILES) && sizeof($_FILES) > 0) 
+            { 
+                $filedata = array(); 
+                foreach ($_FILES as $key => $value)  
+                { 
+                    if(is_array($_FILES[$key]['name'])) 
+                    { 
+                        if($_FILES[$key]['error'][0] == 0) 
+                        { 
+                            $files =  $this->reArrayFiles($_FILES[$key]); 
+                            $this->save_multiple_files($path,$files,$table,$id); 
+                        } 
+                    } 
+                    else 
+                    {  
+                        if($_FILES[$key]['error'] == 0) 
+                        { 
+                            $filedata['table_id'] = $id;  
+                            $filedata['table_name'] = $table; 
+                            $filedata["original_name"] = $this->save_file($path,$key); 
+                            $filedata['file_name'] = $_FILES[$key]['name']; 
+                            $filedata['file_type'] = $_FILES[$key]['type']; 
+                            $filedata['file_size'] = $_FILES[$key]['size']; 
+                            $filedata['date_added'] = $this->date; 
+                            $filedata['added_by'] = $this->user_data['id']; 
+                            $filedata['modified_by'] = $this->user_data['id'];  
+                            
+                            $this->db->insert("files",$filedata); 
+                            $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id)); 
+                        } 
+                    }  
+                }  
+            }  
+
+                            
+            $this->db->update($table,$data,array("id"=>$id));  
+            // echo $this->db->last_query();
+     //        die();
+            $alert  =  '<div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Successful!</h4>
+                             Record is updated successfully...
+                        </div>'; 
+            $save = true;   
+        }  
+
+        if($this->input->is_ajax_request()){
+            $message['success'] = $save ;
+            $message['message'] = 'Record is saved successfully!' ;
+            echo json_encode($message);
+        }
+        else{ 
+            $this->session->set_flashdata("message",$alert); 
+            redirect($_SERVER['HTTP_REFERER']);
+        }   
+	}
+	
 
 }
