@@ -129,7 +129,9 @@ html body .content.app-content .page-overlay.show{
 	margin-bottom: 0px;
 }
 .page-body-modal-window .card-body{
-	height: 70vh;
+	 
+    height: 73vh;
+    overflow: auto;
 }
 .page-body-modal-window .card-footer{
 	border-top: 1px solid #DFE3E7;
