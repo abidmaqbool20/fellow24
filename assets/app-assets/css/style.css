@@ -121,9 +121,14 @@ html body .content.app-content .page-overlay.show{
    / margin-right: 4rem; */
 }
 
-.page-body-modal-window.show{
+/* .page-body-modal-window.show{
 	opacity: 1;
     transform: translateX(9%) translateY(1px);
+} */
+
+.page-body-modal-window.show {
+    opacity: 1;
+    transform: translateX(4%) translateY(1px);
 }
 .page-body-modal-window .card{
 	margin-bottom: 0px;
@@ -190,4 +195,15 @@ html body.navbar-sticky .app-content .content-wrapper{
 }
 .ex-large-model{
     width: 85rem;
+}
+.badge, .btn, .btn-link, .custom-select, .dropdown-item, .form-control, .input-group-text, .select2 {
+    font-weight: 100 !important;
+    font-size: small !important;
+    height:38px !important;
+}
+
+
+.h4, h4 {
+    font-size: 1.47rem;
+    color: #3e75dd;
 }

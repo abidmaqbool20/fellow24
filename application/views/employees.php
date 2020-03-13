@@ -17,7 +17,7 @@
 	    <div class="col-md-6">
 	    	<ul class="action-btns pull-right">
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
+	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-employee')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
 	    		 
 	    		<li>
