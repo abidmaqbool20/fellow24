@@ -14,15 +14,15 @@
             <div class="row">
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
-                  <label class="form-label"><span class="required-label">*</span>Title</label>
+                  <label class="form-label"><span class="required-label">*</span>Campaign Title</label>
                   <input type="text" name="name" class="form-control required" required="required" value="">
                 </div>
               </div>
 
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
-                  <label class="form-label"><span class="required-label">*</span>Description</label>
-                 <textarea name="description" class="form-control" id="description" cols="5" rows="5"></textarea>
+                  <label class="form-label">Description</label>
+                 <textarea name="description" class="form-control" id="description" cols="5" rows="6"></textarea>
                 </div>
               </div>
 
@@ -31,9 +31,9 @@
           </div>
         </div>
         <div class="card-footer d-flex justify-content-end">
-          <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
+          <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1 close-model ">
             <i class='bx bx-trash mr-50'></i>
-            <span>Delete</span>
+            <span>Cancel</span>
           </button>
           <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
             <i class='bx bx-send mr-50'></i>
