@@ -42,6 +42,7 @@
 <!-- BEGIN: Page JS-->
 <script src="<?= APP_ASSETS ?>/js/scripts/pages/dashboard-analytics.min.js"></script>
 <script src="http://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 <script src="<?= APP_ASSETS ?>/js/actions.js"></script>
  
  

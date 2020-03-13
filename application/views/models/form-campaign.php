@@ -1,4 +1,4 @@
-<div class="page-body-modal-window cus-model-window model-first show ex-large-model"> 
+<div class="page-body-modal-window cus-model-window model-first show small-model"> 
   <div class="model-content">
     <div class="card shadow-none quill-wrapper">
       <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
@@ -12,10 +12,20 @@
         <div class="card-content">
           <div class="card-body">
             <div class="row">
-             <div class="form-group">
+              <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="form-group">
                   <label class="form-label"><span class="required-label">*</span>Title</label>
                   <input type="text" name="name" class="form-control required" required="required" value="">
                 </div>
+              </div>
+
+              <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="form-group">
+                  <label class="form-label"><span class="required-label">*</span>Description</label>
+                 <textarea name="description" class="form-control" id="description" cols="5" rows="5"></textarea>
+                </div>
+              </div>
+
             </div>
             <!--  <button type="button" class="btn btn-icon btn-info open-model" data="<?php echo get_json(array('id'=>'0','view'=>'models/form-user')); ?>" title="Import Records"><i class="bx bx-upload"></i></button> -->
           </div>
@@ -34,3 +44,20 @@
     </div>
   </div>
 </div>
+
+<script>
+  loadEditor('description');
+  function loadEditor(id){
+  CKEDITOR.replace( id, {
+  toolbar: [
+  { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [  'Undo', 'Redo' ] },
+  { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-' ] },
+  { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList',   'Blockquote',  'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+  { name: 'links', items: [ 'Link'  ] } ,
+  { name: 'tools', items: [ 'Maximize' ] }
+  ]
+  });
+  }
+
+  
+</script>
