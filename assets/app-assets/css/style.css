@@ -1,0 +1,191 @@
+/*================================================================================
+	Item Name: Frest HTML Admin Template
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+html body.navbar-sticky .app-content .content-wrapper{
+	padding: 1.8rem 0rem 0 !important;
+}
+.actions-wrapper{
+	padding: 0rem 2.2rem; 
+}
+
+.table td{
+	padding: 4px 5px 4px 20px;
+}
+.table thead th{
+	padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    background: white;
+}
+.page-body{
+	background: #fff;
+	height: 82.5vh;
+	 
+}
+.table-responsive{ 
+	height: 66vh;
+}
+footer.footer {
+    padding: 1rem 2.2rem;
+    /*box-shadow: -6px 5px 3px 5px #000;*/
+    border-top: 1px solid #DFE3E7;
+    margin-left: 0px !important;
+}
+.action-dropdown{
+	border: 0px;
+    background: transparent;
+
+}
+.dropdown .dropdown-toggle::after, .dropleft .dropdown-toggle::after, .dropright .dropdown-toggle::after, .dropup .dropdown-toggle::after{
+	display: none;
+}
+ 
+.action-btns{
+	list-style: none;
+	float: right;
+	margin-bottom: 5px;
+}
+.action-btns li{
+	text-align: center;
+	padding: 2px;
+	float: right;
+	margin: 2px;
+}
+.breadcrumb-wrapper{
+	clear: both;
+    width: 100%;
+    margin: 0;
+    padding: 0px;
+}
+
+html body .content .content-wrapper .content-header-title{
+	border-right: 0px;
+}
+.breadcrumb .breadcrumb-item+.breadcrumb-item:before{
+	display: none;
+}
+.breadcrumb .breadcrumb-item+.breadcrumb-item i{
+	line-height: 23px;
+}
+.pull-right{
+	float: right;
+}
+.pagination-wrapper{
+
+}
+html body .content.app-content .page-overlay{
+	position: fixed;
+    opacity: 0.4;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e4e4e4; 
+    /*rgba(0,0,0,.5);*/
+    cursor: pointer;
+    -webkit-transition: all .7s;
+    transition: all .7s;
+    z-index: 1;
+    display: none;
+}
+html body .content.app-content .page-overlay.show{
+	display: block;
+}
+.page-body-modal-window{
+	/*box-shadow: -8px 0 18px 0 rgba(25, 42, 70, 0.13);*/
+    height: 93vh;
+   
+    background-color: #FFFFFF;
+    position: fixed;
+    transform: translateX(110%);
+    transition: all .3s ease;
+    z-index: 1033;
+    right: 2rem;
+    left: auto;
+    bottom: 0;
+    top: 7vh;
+    opacity: 0;
+    overflow: auto; 
+    margin-right: 4rem;
+}
+
+.page-body-modal-window.show{
+	opacity: 1;
+    transform: translateX(9%) translateY(1px);
+}
+.page-body-modal-window .card{
+	margin-bottom: 0px;
+}
+.page-body-modal-window .card-body{
+	height: 70vh;
+}
+.page-body-modal-window .card-footer{
+	border-top: 1px solid #DFE3E7;
+}
+.page-sidebar{
+    border-left: 1px solid #DFE3E7;
+    height: 70vh;
+    padding:0px; 
+}
+
+.page-sidebar .card-header{
+    padding: 7px 20px !important;
+} 
+ 
+.page-sidebar.show{
+    display: block;
+}
+
+.page-sidebar.hide{
+    display: none;
+}
+
+.user-name{ 
+    width: 82%;
+    float: left;
+    font-size: 12px;
+}
+.user-id{
+   width: 82%;
+   float: left;
+   font-size: 11px;
+   color: #ccc;
+}
+.user-img{
+    float: left;
+    width: 12%;
+}
+.header-navbar{
+    min-height: 3rem;
+    height: 3rem;
+}
+html body.navbar-sticky .app-content .content-wrapper{
+        padding: 0.8rem 0rem 0 !important;
+}
+.pagination{
+    margin: 7px 0px;
+}
+.small-model{
+    width: 40rem;
+}
+.medium-model{
+    width: 55rem;
+}
+.large-model{
+    width: 70rem;
+}
+.ex-large-model{
+    width: 85rem;
+}
