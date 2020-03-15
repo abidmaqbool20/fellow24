@@ -1,6 +1,6 @@
 <?php
 if (isset($id) && $id > 0) {
-  $record = $this->App_Model->get_campaign_rec($id);
+  $record = $this->App_Model->get_departments_rec($id);
   if ($record->num_rows() > 0) {
     $record_data = $record->row();
   }
@@ -20,7 +20,7 @@ if (isset($id) && $id > 0) {
       <!-- form start -->
       <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_form'); ?>" enctype="multipart/form-data">
         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-        <input type="hidden" name="table_name" id="table_name" value="campaigns">
+        <input type="hidden" name="table_name" id="table_name" value="departments">
         <input type="hidden" name="edit_record_id" id="edit_record_id" value="<?php if (isset($record_data)) {echo $record_data->id;} ?>">
         <div class="card-content">
           <div class="card-body">

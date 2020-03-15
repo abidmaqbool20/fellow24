@@ -89,3 +89,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
  
 
 define('APP_ASSETS', "http://127.0.0.1/fellow24/assets/app-assets/");
+define('FILE_ASSETS', "http://127.0.0.1/fellow24/assets/admin/adminassets/");

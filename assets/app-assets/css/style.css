@@ -211,3 +211,10 @@ html body.navbar-sticky .app-content .content-wrapper{
 .dropdown-item {
     padding: .4rem 1.6rem;
 }
+.required-label{
+    color:red;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 34px !important;
+}

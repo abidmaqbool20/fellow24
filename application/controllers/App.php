@@ -713,7 +713,8 @@ class App extends My_Controller {
     { 
         $save = false;   $message = array(); $id = "";   
         $data = $this->input->post();
-     
+        // print_r($data);
+        // die();
       
         if(isset($data['edit_record_id']))  
             $id = $data['edit_record_id'];  
