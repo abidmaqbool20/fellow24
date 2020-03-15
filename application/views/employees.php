@@ -3,7 +3,7 @@
 	    <div class="col-md-6">
 	    	<div class="row breadcrumbs-top">
               <div class="col-12">
-                <h5 class="content-header-title float-left pr-1 mb-0"><i class="bx bxs-group"></i>&nbsp;Employees</h5>
+                <h5 class="content-header-title float-left pr-1 mb-0"><i class="bx bxs-group"></i>&nbsp;Departments</h5>
                 <div class="breadcrumb-wrapper col-12">
                   <ol class="breadcrumb p-0 mb-0"> 
                     <li class="breadcrumb-item"><a href="#">Components</a> </li>
@@ -17,7 +17,7 @@
 	    <div class="col-md-6">
 	    	<ul class="action-btns pull-right">
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-employee')); ?>"><i class="bx bx-plus"></i></button>
+	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-departments')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
 	    		 
 	    		<li>
