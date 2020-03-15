@@ -12,7 +12,7 @@ if (isset($id) && $id > 0) {
   <div class="model-content">
     <div class="card shadow-none quill-wrapper">
       <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-        <h3 class="card-title">Campaign Form</h3>
+        <h3 class="card-title">Department Form</h3>
         <button type="button" class="close close-icon close-modal close-model">
           <i class="bx bx-x"></i>
         </button>
@@ -25,10 +25,24 @@ if (isset($id) && $id > 0) {
         <div class="card-content">
           <div class="card-body">
             <div class="row">
-              <div class="col-md-12 col-lg-12 col-sm-12">
+              <div class="col-md-3 col-lg-3 col-sm-3">
                 <div class="form-group">
-                  <label class="form-label"><span class="required-label">*</span>Campaign Title</label>
-                  <input type="text" name="title" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->title;} ?>">
+                  <label class="form-label"><span class="required-label">*</span>Department Name</label>
+                  <input type="text" name="name" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->name;} ?>">
+                </div>
+              </div>
+
+              <div class="col-md-3 col-lg-3 col-sm-3">
+                <div class="form-group">
+                  <label class="form-label"><span class="required-label">*</span>Department Short Name</label>
+                  <input type="text" name="short_name" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->short_name;} ?>">
+                </div>
+              </div>
+
+              <div class="col-md-3 col-lg-3 col-sm-3">
+                <div class="form-group">
+                  <label class="form-label"><span class="required-label">*</span>Parent Department</label>
+                  <input type="text" name="short_name" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->parent_department;} ?>">
                 </div>
               </div>
 
