@@ -112,7 +112,7 @@ html body .content.app-content .page-overlay.show{
     transform: translateX(110%);
     transition: all .3s ease;
     z-index: 1033;
-    right: 3rem;
+    right: 1rem;
     left: auto;
     bottom: 0;
     top: 7vh;
