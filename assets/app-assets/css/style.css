@@ -223,3 +223,6 @@ html body.navbar-sticky .app-content .content-wrapper{
     width: 20px;
     padding: 5px 10px !important;
 }
+.p-r-0{
+    padding-right: 0;
+}
