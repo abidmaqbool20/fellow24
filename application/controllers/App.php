@@ -863,6 +863,110 @@ class App extends My_Controller {
 
         echo true;
     }
+
+    public function filter_campaigns(){
+
+            $data = $this->input->post(); 
+            if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+               $data['page'] = $this->uri->segment(3);
+            } 
+
+            $records = '';
+            $result = $this->App_Model->get_filtered_campaigns($data); 
+            if($result['records']->num_rows() > 0){
+
+                // echo "string";
+               
+                foreach ($result['records']->result() as $key => $value) {
+                            $checked ="";
+                            if($value->status == 1){
+                                $checked = 'checked';
+                            }
+                            $rec_permissions = "";
+                            $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'" href="javascript:;">Edit</a>';
+                      
+                       
+                            $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-campaign')).'">View</a>';
+                    
+                      
+                            $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'campaigns')).'" href="javascript:;">Delete</a>';
+                      
+                   
+                                     $records .= ' <tr class="rec-'.$value->id.'">
+                                        <td  class="table-checkbox">
+                                            <div class="checkbox checkbox-success">
+                                                <input type="checkbox" class="table_record_checkbox" id="colorCheckbox'.$value->id.'"> 
+                                                <label for="colorCheckbox'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold-500">'.$value->title.'</td>
+                                        <td>'.substr($value->description,0,80).'</td>
+                                        <td class="text-bold-500">'.$value->date_added.'</td>
+                                        <td> 
+                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                                <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                            </div>
+                                        </td>
+                                    </tr>';              
+                }
+            }
+
+
+            $per_page = $data['per_page'];
+            if( $per_page == 0)
+                $per_page = 5000000000;
+
+            $config['base_url'] = base_url("App/filter_campaigns");
+            $config['total_rows'] = $result['total_records'];
+            $config['per_page'] = $per_page;
+            $config["uri_segment"] = 3; 
+            $config['first_url'] = base_url('App/filter_campaigns/1');  
+            $config['num_links'] = 3;
+            $config['use_page_numbers'] = TRUE;
+            $config['reuse_query_string'] = FALSE;  
+            $config['enable_query_strings']= FALSE; 
+            $config['attributes'] = array('class' => 'page-link');
+            $config['first_link'] = '<<';
+            $config['first_tag_open'] = '<li class="page-item">';
+            $config['first_tag_close'] = '</li>'; 
+            $config['last_link'] = '>>';
+            $config['last_tag_open'] = '<li class="page-item next">';
+            $config['last_tag_close'] = '</li>'; 
+            $config['next_link'] = '>';
+            $config['next_tag_open'] = '<li class="page-item next">';
+            $config['next_tag_close'] = '</li>';
+            $config['prev_link'] = '<';
+            $config['prev_tag_open'] = '<li class="page-item previous">';
+            $config['prev_tag_close'] = '</li>'; 
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:;">';
+            $config['cur_tag_close'] = '</a></li>'; 
+            $config['num_tag_open'] = '<li class="page-item">';
+            $config['num_tag_close'] = '</li>';
+     
+            
+            $this->pagination->initialize($config);
+            $links = $this->pagination->create_links();
+
+            $result['links']  = $links;
+            $result['records']  = $records;
+            $result['total_records']  = $result['total_records'];
+            
+
+            echo json_encode($result); 
+        }
 	
 
 }

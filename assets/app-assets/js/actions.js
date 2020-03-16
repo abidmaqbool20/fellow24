@@ -1064,11 +1064,29 @@ $(document).on("change",".dept_employees",function(){
 	}
 });
 
+
+$(document).on("change",".per-page-rec",function(e){
+	$('.per_page').val($(this).val());
+	//$(this).parent('.per-page-records').parent('.per-page-btn').find('button').html($(this).attr('records'));
+	$('.filter-records').trigger('submit');
+});
+
+$(document).on("change",".filter-dropdown",function(e){
+	$('.filter-records').trigger('submit');
+});
+
+$(document).on("keyup",".filter-text-field",function(e){
+	$length = $(this).val().replace(/ /g,'').length;
+	if($length > 2){
+		$('.filter-records').trigger('submit');
+	}
+});
+
 $(document).on("submit",".filter-records",function(e){
 	e.preventDefault();  
-
+	$('.per_page').val($('.per-page-rec').val());
 	var formData = new FormData(this);
-	formData.append("csrf_token", $csrf_token);
+	//formData.append("csrf_token", $csrf_token);
 	$.ajax({
 			    type:'POST',
 			    url: $(this).attr("action"),
@@ -1082,11 +1100,13 @@ $(document).on("submit",".filter-records",function(e){
 
 			    success:function(response)
 			    {
+			    	
 			    	if(response){
 			    		$result = $.parseJSON(response);
 			    		$('.table-records').html($result.records); 
 			    	    $(".data-pagination").html($result.links);
 			    		$(document).find(".total_records").html($result.total_records);
+			    		console.log($result.links);
 			    		   
 			    	}
 

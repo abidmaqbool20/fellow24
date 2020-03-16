@@ -146,7 +146,8 @@ html body .content.app-content .page-overlay.show{
 .page-sidebar{
     border-left: 1px solid #DFE3E7;
     height: 74vh;
-    padding:0px; 
+    padding:0px;
+    padding-right:1rem ;
 }
 
 .page-sidebar .card-header{
@@ -218,7 +219,7 @@ html body.navbar-sticky .app-content .content-wrapper{
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
-    padding-left: 34px !important;
+    /* padding-left: 34px !important; */
 }
  
 .table-checkbox{
@@ -247,3 +248,4 @@ html body.navbar-sticky .app-content .content-wrapper{
     display: none;
 }
 .show{display: block;}
+.per-page-btn{margin-top: 8px !important;}

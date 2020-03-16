@@ -79,14 +79,14 @@
 <div class="page-body">
 	<section class=""> 
 		<div class="row">
-			<div class="col-12 page-data">
+			<div class="col-12 page-data p-r-0">
 			  <div class="table-responsive">
-			  	<table class="table table-hover mb-0 .p-r-0">
+			  	<table class="table table-hover mb-0">
 				    <thead>
 				      <tr> 
 				      	<th class="table-checkbox table_record_checkbox"> 
 				        	<div class="checkbox checkbox-success">
-		                        <input type="checkbox" id="colorCheckbox0" class="table_head_checkbox" table="campaigns" checked> 
+		                        <input type="checkbox" id="colorCheckbox0" class="table_head_checkbox" table="campaigns"> 
 		                        <label for="colorCheckbox0"></label>
 		                    </div>
 				        </th>
@@ -97,7 +97,7 @@
 				        <th>ACTION</th>
 				      </tr>
 				    </thead>
-				    <tbody class="campaigns">
+				    <tbody class="campaigns table-records">
 				        
 					      	<?php 
 					      	if($records->num_rows() > 0){
@@ -146,25 +146,41 @@
 			  <div class="pagination-wrapper row">
 			  	<div class="col-md-6"></div> 
 			  	<div class="col-md-6">
-			  		<nav aria-label="Page navigation example">
-		              <ul class="pagination  pull-right mr-3">
-		                <li class="page-item previous disabled">
-		                	<a class="page-link" href="#">
-			                    <i class="bx bx-chevron-left"></i>
-			                </a>
-		              	</li>
-		                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-		                <li class="page-item"><a class="page-link" href="#">2</a></li>
-		                <li class="page-item"><a class="page-link" href="#">3</a></li>
-		                <li class="page-item"><a class="page-link" href="#">4</a></li>
-		                <li class="page-item"><a class="page-link" href="#">5</a></li>
-		                <li class="page-item"><a class="page-link" href="#">6</a></li>
-		                <li class="page-item"><a class="page-link" href="#">7</a></li>
-		                <li class="page-item next"><a class="page-link" href="#">
-		                    <i class="bx bx-chevron-right"></i>
-		                  </a></li>
-		              </ul>
-		            </nav>
+			  		<div class="row">
+			  			<div class="col-12">
+			  				<div class="row">
+			  					<div class="col-2">
+							  		<!-- <div class="btn-group dropdown pull-right per-page-btn">
+						              <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="5">
+						                5
+						              </button>
+						              <div class="dropdown-menu per-page-records" aria-labelledby="dropdownMenuOffset">
+						              	<a class="dropdown-item per-page-rec" href="javascript:;" records="5">5</a>
+						                <a class="dropdown-item per-page-rec" href="javascript:;" records="10">10</a>
+						                <a class="dropdown-item per-page-rec" href="javascript:;" records="100">100</a>
+						                <a class="dropdown-item per-page-rec" href="javascript:;" records="500">500</a>
+						                <a class="dropdown-item per-page-rec" href="javascript:;" records="0">All</a>
+						              </div>
+						            </div> -->
+						            <select class="form-control select2 per-page-rec">
+						            	<option value="5">5</option>
+						            	<option value="100">100</option>
+						            	<option value="500">500</option>
+						            	<option value="0">All</option>
+
+						            </select>
+						        </div>
+						        <div class="col-6">
+						        	<nav aria-label="Page navigation example ">
+							              <ul class="pagination data-pagination pull-right mr-3 ">
+							                
+							              </ul>
+						            </nav>
+						        </div>
+						    </div>
+						</div>
+					</div>
+			  		
 			  	</div>
 			  </div>
 			</div>
@@ -178,21 +194,57 @@
 				        </button>
 				      </div>
 				      <!-- form start -->
-				      <form class="edit-kanban-item">
+				     <form method="post" autocomplete="off" action="<?= base_url('App/filter_campaigns'); ?>" enctype="multipart/form-data" class="filter-records">
+				     	<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+				     	<input type="hidden" name="per_page" id="per_page" value="10" class="per_page">
 				        <div class="card-content">
 				          <div class="card-body">
-				             
+				             <div class="row">
+				             	<div class="col-md-12">
+				             		 <fieldset class="form-group">
+		                                <label for="search_string">Search Like</label>
+		                                <input type="text" class="form-control filter-text-field" id="search_string" placeholder="" name="search_string">
+		                            </fieldset>
+		                            <fieldset class="form-group">
+		                                <label for="basicInput">Title</label>
+		                                <input type="text" class="form-control filter-text-field" id="basicInput" placeholder="Enter Title" name="title">
+		                            </fieldset>
+
+		                            <fieldset class="form-group">
+		                                <label for="description">Description</label>
+		                                <input type="text" class="form-control filter-text-field" id="description" name="description">
+		                            </fieldset>
+
+		                            <fieldset class="form-group">
+		                                <label for="added_by">Added By</label>
+		                               <select class="form-control select2 filter-dropdown" required="required" name="added_by" id="added_by">
+				                          <option value="">Select</option>
+				                            <?php
+				                                $records = $this->App_Model->get_all_employees(); 
+				                                if($records->num_rows() > 0){
+				                                   foreach ($records->result() as $key => $value) {
+				                                      echo '<option value="'.$value->id.'">'.$value->first_name.' '.$value->last_name.'</option>';
+				                                   }
+				                                }
+				                            ?>
+				                        </select>
+		                            </fieldset>
+
+		                            <fieldset class="form-group">
+		                                <label for="status">Status</label>
+		                               <select class="form-control select2 filter-dropdown" required="required" name="status" id="status">
+				                          <option value="">Select</option>
+				                           <option value="1">Active</option>
+				                           <option value="0">Inactive</option>
+
+				                        </select>
+		                            </fieldset>
+		                        </div>
+				             </div>
 				          </div>
 				        </div>
 				        <div class="card-footer d-flex justify-content-end">
-				          <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
-				            <i class='bx bx-trash mr-50'></i>
-				            <span>Delete</span>
-				          </button>
-				          <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
-				            <i class='bx bx-send mr-50'></i>
-				            <span>Save</span>
-				          </button>
+				         
 				        </div>
 				      </form>
 				      <!-- form start end-->
@@ -216,14 +268,7 @@
 				          </div>
 				        </div>
 				        <div class="card-footer d-flex justify-content-end">
-				          <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
-				            <i class='bx bx-trash mr-50'></i>
-				            <span>Delete</span>
-				          </button>
-				          <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
-				            <i class='bx bx-send mr-50'></i>
-				            <span>Save</span>
-				          </button>
+				         
 				        </div>
 				      </form>
 				      <!-- form start end-->
@@ -247,14 +292,7 @@
 				          </div>
 				        </div>
 				        <div class="card-footer d-flex justify-content-end">
-				          <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
-				            <i class='bx bx-trash mr-50'></i>
-				            <span>Delete</span>
-				          </button>
-				          <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
-				            <i class='bx bx-send mr-50'></i>
-				            <span>Save</span>
-				          </button>
+				         
 				        </div>
 				      </form>
 				      <!-- form start end-->
@@ -266,8 +304,15 @@
  
 	<footer class="footer footer-static footer-light">
 	    <ul class="">
-	    	<li><span>Selected Record</span><span id="total_selected_number">0</span></li>
+	    	<li><span>Selected Record :</span><span id="total_selected_number" class="total_records">0</span></li>
 	    </ul>
 	</footer>
 </div>
+<script>
+	$(".select2").select2({'width':'100%'});
+
+	$(document).ready(function(){
+		$('.filter-records').trigger('submit');
+	});
+</script>
  
