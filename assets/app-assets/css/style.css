@@ -199,7 +199,7 @@ html body.navbar-sticky .app-content .content-wrapper{
 .badge, .btn, .btn-link, .custom-select, .dropdown-item, .form-control, .input-group-text, .select2 {
     font-weight: 100 !important;
     font-size: small !important;
-    height:38px !important;
+    /*height:38px !important;*/
 }
 
 
@@ -217,4 +217,9 @@ html body.navbar-sticky .app-content .content-wrapper{
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     padding-left: 34px !important;
+}
+ 
+.table-checkbox{
+    width: 20px;
+    padding: 5px 10px !important;
 }
