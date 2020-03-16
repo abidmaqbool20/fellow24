@@ -18,6 +18,7 @@ html body.navbar-sticky .app-content .content-wrapper{
 
 .table td{
 	padding: 4px 5px 4px 20px;
+    font-size: 13px;
 }
 .table thead th{
 	padding: 10px 20px;
@@ -26,6 +27,7 @@ html body.navbar-sticky .app-content .content-wrapper{
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
     z-index: 1;
     background: white;
+    font-size: 11px;
 }
 .page-body{
 	background: #fff;
@@ -143,7 +145,7 @@ html body .content.app-content .page-overlay.show{
 }
 .page-sidebar{
     border-left: 1px solid #DFE3E7;
-    height: 70vh;
+    height: 74vh;
     padding:0px; 
 }
 
