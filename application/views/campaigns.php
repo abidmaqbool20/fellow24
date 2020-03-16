@@ -18,7 +18,7 @@
             </div>
 	    </div>
 	    <div class="col-md-6">
-	    	<ul class="action-btns pull-right">
+	    	<ul class="action-btns default-actions pull-right">
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
@@ -29,6 +29,17 @@
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-success page-sidebar-open" target="quick-report-sidebar" title="Quick Reports"><i class="bx bxs-report"></i></button>
 	    		</li>
+	    		
+	    		<li>
+	    			<div class="btn-group" role="group" aria-label=" "> 
+	                  <button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
+	                  <button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	                </div>
+	    		</li>
+	    		
+	    	</ul>
+	    	<ul class="action-btns selected-actions pull-right hide">
+	    		
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-light" title="Reload Page"><i class="bx bx-loader-alt"></i></button>
 	    		</li>
@@ -70,9 +81,15 @@
 		<div class="row">
 			<div class="col-12 page-data">
 			  <div class="table-responsive">
-			  	<table class="table table-hover mb-0">
+			  	<table class="table table-hover mb-0 .p-r-0">
 				    <thead>
 				      <tr> 
+				      	<th class="table-checkbox table_record_checkbox"> 
+				        	<div class="checkbox checkbox-success">
+		                        <input type="checkbox" id="colorCheckbox0" class="table_head_checkbox" table="campaigns" checked> 
+		                        <label for="colorCheckbox0"></label>
+		                    </div>
+				        </th>
 				        <th>Title </th>
 				        <th>Description </th>
 				        <th>Date Added</th>
@@ -80,7 +97,7 @@
 				        <th>ACTION</th>
 				      </tr>
 				    </thead>
-				    <tbody>
+				    <tbody class="campaigns">
 				        
 					      	<?php 
 					      	if($records->num_rows() > 0){
@@ -91,8 +108,14 @@
 					      			}
 					      	?>
 					      			<tr class="rec-<?=$value->id ;?>">
+					      				<td  class="table-checkbox">
+								      		<div class="checkbox checkbox-success">
+						                        <input type="checkbox" class="table_record_checkbox" id="colorCheckbox<?=$value->id ;?>"> 
+						                        <label for="colorCheckbox<?=$value->id ;?>"></label>
+						                    </div>
+				      					</td>
 								      	<td class="text-bold-500"><?php echo $value->title;?></td>
-								        <td><?php echo $value->description;?></td>
+								        <td><?php echo substr($value->description,0,80);?></td>
 								        <td class="text-bold-500"><?php echo $value->date_added;?></td>
 								        <td> 
 								        	<div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
@@ -107,7 +130,7 @@
 							                  </button>
 							                  <div class="dropdown-menu dropdown-menu-right">
 							                    <a class="dropdown-item open-model" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/form-campaign')); ?>" href="javascript:;">Edit</a>
-							                    <a class="dropdown-item" href="">View</a>
+							                    <a class="dropdown-item open-model" href="javascript:;" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/view-campaign')); ?>">View</a>
 							                    <a class="dropdown-item delete" data="<?php echo get_json(array('id'=>$value->id,'table'=>'campaigns')); ?>" href="javascript:;">Delete</a>
 							                  </div>
 							                </div>
@@ -242,9 +265,9 @@
 	</section>
  
 	<footer class="footer footer-static footer-light">
-	    <p class="clearfix mb-0"><span class="float-left d-inline-block"><?= date("Y"); ?> &copy; Fellow24</span><span class="float-right d-sm-inline-block d-none">Crafted with<i class="bx bxs-heart pink mx-50 font-small-3"></i>by<a class="text-uppercase" href="https://1.envato.market/pixinvent_portfolio" target="_blank">Fellow24</a></span>
-	    <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="bx bx-up-arrow-alt"></i></button>
-	</p>
+	    <ul class="">
+	    	<li><span>Selected Record</span><span id="total_selected_number">0</span></li>
+	    </ul>
 	</footer>
 </div>
  

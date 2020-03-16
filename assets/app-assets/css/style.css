@@ -226,3 +226,22 @@ html body.navbar-sticky .app-content .content-wrapper{
 .p-r-0{
     padding-right: 0;
 }
+
+.record-view{
+   padding: 20px 5px;
+}
+.record-view h3{
+    padding: 5px;
+}
+.description{
+    text-align: justify;
+}
+.record-info-table{
+    font-size: 11px !important;
+    padding: 5px !important;
+}
+
+.hide{
+    display: none;
+}
+.show{display: block;}

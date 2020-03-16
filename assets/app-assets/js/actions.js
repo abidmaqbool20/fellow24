@@ -1215,11 +1215,15 @@ function selectallrecords($this,$table)
 	 
 	if($($this).is(":checked"))
 	{	
-		 
+		
+ 	    $('.selected-actions').removeClass('hide');
+		$('.default-actions').addClass('hide');
+
 		$($this).prop("checked",true); 
 	  	$("."+$table).find(".table_record_checkbox").each(function(){
 	  		$(this).prop("checked",true);
-	  		$(this).closest("tr").find("td").css("background-color","rgb(225, 235, 255)");
+	  		console.log('tes');
+	  		$(this).closest("tr").find("td").css("background-color","#e4ffe4");
 	  		$counter = $counter + 1;
 	  	}); 
 
@@ -1228,6 +1232,8 @@ function selectallrecords($this,$table)
 	}
 	else
 	{  
+		$('.default-actions').removeClass('hide');
+		$('.selected-actions').addClass('hide');
 		$($this).prop("checked",false);
 	  	$("."+$table).find(".table_record_checkbox").each(function(){
 	  		$(this).prop("checked",false);
@@ -1241,12 +1247,18 @@ function selectallrecords($this,$table)
 	remove_loader();
 	
 } 
- 
+ $(document).on('click', '.table_head_checkbox', function () {
+ 	
+   $table = $(this).attr('table');
+   selectallrecords(this,$table);
+
+
+});
 
 $(document).on('click', '.table_record_checkbox', function () {
     if($(this).is(":checked"))
 	{	 
-		$(this).closest("tr").find("td").css("background-color","rgb(225, 235, 255)");
+		$(this).closest("tr").find("td").css("background-color","#e4ffe4");
 	    $counter = $counter + 1;
 		$("#total_selected_number").html($counter);
 	}
