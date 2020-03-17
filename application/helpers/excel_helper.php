@@ -37,11 +37,11 @@
                     }
                 }
 
-        		$CI->excel->getActiveSheet()->getStyle($col.'4')->getFont()->setBold(true);
-           		$CI->excel->getActiveSheet()->getStyle($col.'4')->getFont()->setSize(13);
-            	$CI->excel->getActiveSheet()->setCellValue($col.'4', $header_name);
-            	$CI->excel->getActiveSheet()->getStyle($col.'4')->getFill()->getStartColor()->setARGB('#00ff00');
-                $CI->excel->getActiveSheet()->getStyle($col.'4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        		$CI->excel->getActiveSheet()->getStyle($col.'2')->getFont()->setBold(true);
+           		$CI->excel->getActiveSheet()->getStyle($col.'2')->getFont()->setSize(13);
+            	$CI->excel->getActiveSheet()->setCellValue($col.'2', $header_name);
+            	$CI->excel->getActiveSheet()->getStyle($col.'2')->getFill()->getStartColor()->setARGB('#00ff00');
+                $CI->excel->getActiveSheet()->getStyle($col.'2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         	
         	
         	 ++$col; 	
@@ -70,7 +70,7 @@
                 $exceldata[] = $row;
         }
         //Fill data 
-        $CI->excel->getActiveSheet()->fromArray($exceldata, null, 'A6');
+        $CI->excel->getActiveSheet()->fromArray($exceldata, null, 'A3');
          
      
         $path = "assets/system/excel/";
