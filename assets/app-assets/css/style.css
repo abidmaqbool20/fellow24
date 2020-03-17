@@ -99,7 +99,7 @@ html body .content .content-wrapper .content-header-title {
 }
 
 .pagination-wrapper {
-    background-color: #d4dff3;
+    background-color: #f3f3f3f3;
 }
 
 html body .content.app-content .page-overlay {
@@ -325,14 +325,14 @@ h4 {
 }
 
 html body {
-    background-color: #d4dff3;
+    background-color: #f9f9f9f9;
 }
 .breadcrumb{
-    background-color: #d4dff3;
+    background-color: #f3f3f3f3;
     font-size:14px;
 }
 .card-footer, .card-header {
-    background-color: #FDFDFD;
+    background-color: #f6f6f6f6;
 }
 .content-header-title{
     font-size: 15px;
