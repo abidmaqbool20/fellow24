@@ -7,7 +7,11 @@
     
   }
 ?>
-
+<style>
+  .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 34px !important;
+}
+</style>
 <div class="page-body-modal-window cus-model-window model-first show large-model"> 
   <div class="model-content">
     <div class="card shadow-none quill-wrapper">
@@ -80,6 +84,42 @@
                   </div>
                 </div>
 
+                <div class="col-md-4 col-lg-4 col-sm-4">
+                  <div class="form-group">
+                    <label class="form-label" for="password-name-icon"><span class="required-label">*</span>Password</label>
+                    <div class="position-relative has-icon-left">
+                      <input type="text" id="password-name-icon" class="form-control password" name="password" placeholder="password" required="required" value="<?php if (isset($record_data)) {echo $record_data->password;} ?>">
+                      <div class="form-control-position">
+                        <i class="bx bx-key"></i> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-lg-4 col-sm-4">
+                  <div class="form-group">
+                    <label class="form-label" for="doj-name-icon"><span class="required-label">*</span>Date of Joining</label>
+                    <div class="position-relative has-icon-left">
+                      <input type="text" name="doj" id="doj-name-icon" placeholder="Date of Joining" class="form-control pickadate-months-year datepicker required doj" required="required" value="<?php if (isset($record_data)) {echo $record_data->doj;} ?>">
+                      <div class="form-control-position">
+                        <i class="bx bx-calendar"> </i> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-lg-4 col-sm-4">
+                  <div class="form-group">
+                    <label class="form-label" for="dob-name-icon" ><span class="required-label">*</span>Date of Birth</label>
+                    <div class="position-relative has-icon-left">
+                      <input type="text" id="dob-name-icon" name="dob" placeholder="Date of Birth" class="form-control  datepicker required dob" required="required" value="<?php if (isset($record_data)) {echo $record_data->dob;} ?>">
+                      <div class="form-control-position">
+                        <i class="bx bx-calendar"> </i> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-md-3 col-lg-3 col-sm-3">
                   <div class="form-group">
                     <label class="form-label" for="martial-name-icon"><span class="required-label">*</span>Martial Status</label>
@@ -91,18 +131,6 @@
                       </select>
                       <div class="form-control-position">
                         <i class="bx bx-donate-heart"></i> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3 col-lg-3 col-sm-3">
-                  <div class="form-group">
-                    <label class="form-label" for="password-name-icon"><span class="required-label">*</span>Password</label>
-                    <div class="position-relative has-icon-left">
-                      <input type="text" id="password-name-icon" class="form-control password" name="password" placeholder="password" required="required" value="<?php if (isset($record_data)) {echo $record_data->password;} ?>">
-                      <div class="form-control-position">
-                        <i class="bx bx-key"></i> 
                       </div>
                     </div>
                   </div>
@@ -126,21 +154,9 @@
 
                 <div class="col-md-3 col-lg-3 col-sm-3">
                   <div class="form-group">
-                    <label class="form-label" for="dob-name-icon" ><span class="required-label">*</span>Date of Birth</label>
-                    <div class="position-relative has-icon-left">
-                      <input type="text" id="dob-name-icon" name="dob" placeholder="Date of Birth" class="form-control pickadate picker__input required dob" required="required" value="<?php if (isset($record_data)) {echo $record_data->dob;} ?>">
-                      <div class="form-control-position">
-                        <i class="bx bx-calendar"> </i> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3 col-lg-3 col-sm-3">
-                  <div class="form-group">
                     <label class="form-label" for="profile-name-icon"><span class="required-label">*</span>Profile Pic</label>
                     <div class="position-relative has-icon-left">
-                      <input type="file" name="profile_pic" id="profile-name-icon" class="form-control profile_pic required dob" value="">
+                      <input type="file" name="profile_pic" id="profile-name-icon" class="form-control required pic" value="">
                       <div class="form-control-position">
                         <i class="bx bx-image"></i> 
                       </div>
@@ -148,17 +164,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-3 col-lg-3 col-sm-3">
-                  <div class="form-group">
-                    <label class="form-label" for="doj-name-icon"><span class="required-label">*</span>Date of Joining</label>
-                    <div class="position-relative has-icon-left">
-                      <input type="text" name="doj" id="doj-name-icon" placeholder="Date of Joining" class="form-control required doj" required="required" value="<?php if (isset($record_data)) {echo $record_data->doj;} ?>">
-                      <div class="form-control-position">
-                        <i class="bx bx-calendar"> </i> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
                 
               </div>
             </div>
@@ -382,7 +388,7 @@
                         <select class="select2 form-control" name='designation_id' id='designation_id' class='designation_id'>
                           <option value=''>Select Designation</option>
                           <?php 
-                            $designation = $this->App_Model->get_designations();
+                            $designation = $this->App_Model->designations();
                             $selected = "";
                             if(isset($record_data)){
                               if($designation->num_rows() > 0){
@@ -410,7 +416,7 @@
                         <select class="select2 form-control" name='payscale_id' id='payscale_id' class='payscale_id'>
                           <option value=''>Select Pay-Scale</option>
                           <?php 
-                            $payscale = $this->App_Model->get_pay_scales();
+                            $payscale = $this->App_Model->get_payscales();
                             $selected = "";
                             if(isset($record_data)){
                               if($payscale->num_rows() > 0){
@@ -553,3 +559,10 @@
     CKEDITOR.config.height = 100; 
   }
 </script>
+
+<script>
+  $('.datepicker').pickadate({
+    selectYears: true,
+    selectMonths: true
+  });
+ </script>

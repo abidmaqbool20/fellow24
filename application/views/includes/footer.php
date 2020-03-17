@@ -18,8 +18,6 @@
 
 <script src="<?= APP_ASSETS ?>/vendors/js/jkanban/jkanban.min.js"></script>
 <script src="<?= APP_ASSETS ?>/vendors/js/editors/quill/quill.min.js"></script>
-<script src="<?= APP_ASSETS ?>/vendors/js/pickers/pickadate/picker.js"></script>
-<script src="<?= APP_ASSETS ?>/vendors/js/pickers/pickadate/picker.date.js"></script>
 <script src="<?= APP_ASSETS ?>/vendors/js/ui/blockUI.min.js"></script>
  <script src="<?= APP_ASSETS ?>/js/scripts/extensions/ext-component-block-ui.js"></script>
 <!-- BEGIN Vendor JS-->
@@ -50,6 +48,9 @@
 <script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 <script src="<?= APP_ASSETS ?>/js/actions.js"></script>
 
+<script src="<?= APP_ASSETS ?>/vendors/js/pickers/pickadate/picker.js"></script>
+<script src="<?= APP_ASSETS ?>/vendors/js/pickers/pickadate/picker.date.js"></script>
+<!-- <script src="<?= APP_ASSETS ?>/vendors/js/fontawesome/js/all.js"></script> -->
 
 
 

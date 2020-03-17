@@ -9,19 +9,21 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
-html body.navbar-sticky .app-content .content-wrapper{
-	padding: 1.8rem 0rem 0 !important;
-}
-.actions-wrapper{
-	padding: 0rem 2.2rem; 
+html body.navbar-sticky .app-content .content-wrapper {
+    padding: 1.8rem 0rem 0 !important;
 }
 
-.table td{
-	padding: 4px 5px 4px 20px;
+.actions-wrapper {
+    padding: 0rem 2.2rem;
+}
+
+.table td {
+    padding: 4px 5px 4px 20px;
     font-size: 13px;
 }
-.table thead th{
-	padding: 10px 20px;
+
+.table thead th {
+    padding: 10px 20px;
     position: sticky;
     top: 0;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
@@ -29,62 +31,79 @@ html body.navbar-sticky .app-content .content-wrapper{
     background: white;
     font-size: 11px;
 }
-.page-body{
-	background: #fff;
-	height: 82.5vh;
-	 
+
+.page-body {
+    background: #fff;
+    height: 82.5vh;
+
 }
-.table-responsive{ 
-	height: 66vh;
+
+.table-responsive {
+    height: 66vh;
 }
+
 footer.footer {
     padding: 1rem 2.2rem;
     /*box-shadow: -6px 5px 3px 5px #000;*/
     border-top: 1px solid #DFE3E7;
     margin-left: 0px !important;
 }
-.action-dropdown{
-	border: 0px;
+
+.action-dropdown {
+    border: 0px;
     background: transparent;
 
 }
-.dropdown .dropdown-toggle::after, .dropleft .dropdown-toggle::after, .dropright .dropdown-toggle::after, .dropup .dropdown-toggle::after{
-	display: none;
+
+.dropdown .dropdown-toggle::after,
+.dropleft .dropdown-toggle::after,
+.dropright .dropdown-toggle::after,
+.dropup .dropdown-toggle::after {
+    display: none;
 }
- 
-.action-btns{
-	list-style: none;
-	float: right;
-	margin-bottom: 5px;
+
+.action-btns {
+    list-style: none;
+    float: right;
+    margin-bottom: 5px;
 }
-.action-btns li{
-	text-align: center;
-	padding: 2px;
-	float: right;
-	margin: 2px;
+
+.action-btns li {
+    text-align: center;
+    padding: 2px;
+    float: right;
+    margin: 2px;
 }
-.breadcrumb-wrapper{
-	clear: both;
+
+.breadcrumb-wrapper {
+    clear: both;
     width: 100%;
     margin: 0;
     padding: 0px;
 }
 
-html body .content .content-wrapper .content-header-title{
-	border-right: 0px;
+html body .content .content-wrapper .content-header-title {
+    border-right: 0px;
 }
-.breadcrumb .breadcrumb-item+.breadcrumb-item:before{
-	display: none;
+
+.breadcrumb .breadcrumb-item+.breadcrumb-item:before {
+    display: none;
 }
-.breadcrumb .breadcrumb-item+.breadcrumb-item i{
-	line-height: 23px;
+
+.breadcrumb .breadcrumb-item+.breadcrumb-item i {
+    line-height: 23px;
 }
-.pull-right{
-	float: right;
+
+.pull-right {
+    float: right;
 }
-.pagination-wrapper{background-color: #f2f4f4;}
-html body .content.app-content .page-overlay{
-	position: fixed;
+
+.pagination-wrapper {
+    background-color: #d4dff3;
+}
+
+html body .content.app-content .page-overlay {
+    position: fixed;
     opacity: 0.4;
     width: 100%;
     height: 100%;
@@ -92,7 +111,7 @@ html body .content.app-content .page-overlay{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #e4e4e4; 
+    background-color: #e4e4e4;
     /*rgba(0,0,0,.5);*/
     cursor: pointer;
     -webkit-transition: all .7s;
@@ -100,13 +119,15 @@ html body .content.app-content .page-overlay{
     z-index: 1;
     display: none;
 }
-html body .content.app-content .page-overlay.show{
-	display: block;
+
+html body .content.app-content .page-overlay.show {
+    display: block;
 }
-.page-body-modal-window{
-	/*box-shadow: -8px 0 18px 0 rgba(25, 42, 70, 0.13);*/
+
+.page-body-modal-window {
+    /*box-shadow: -8px 0 18px 0 rgba(25, 42, 70, 0.13);*/
     height: 93vh;
-   
+
     background-color: #FFFFFF;
     position: fixed;
     transform: translateX(110%);
@@ -117,7 +138,8 @@ html body .content.app-content .page-overlay.show{
     bottom: 0;
     top: 7vh;
     opacity: 0;
-    overflow: auto; /* 
+    overflow: auto;
+    /* 
    / margin-right: 4rem; */
 }
 
@@ -128,83 +150,109 @@ html body .content.app-content .page-overlay.show{
 
 .page-body-modal-window.show {
     opacity: 1;
-    transform: translateX(4%) translateY(1px);
+    transform: translateX(3%) translateY(1px);
 }
-.page-body-modal-window .card{
-	margin-bottom: 0px;
+
+.page-body-modal-window .card {
+    margin-bottom: 0px;
 }
-.page-body-modal-window .card-body{
-	 
+
+.page-body-modal-window .card-body {
+
     height: 73vh;
     overflow: auto;
 }
-.page-body-modal-window .card-footer{
-	border-top: 1px solid #DFE3E7;
-}
-.page-sidebar{
-    border-left: 1px solid #DFE3E7;
-    height: 74vh;
-    padding:0px;
-    padding-right:1rem ;
+
+.page-body-modal-window .card-footer {
+    border-top: 1px solid #DFE3E7;
 }
 
-.page-sidebar .card-header{
+.page-sidebar {
+    border-left: 1px solid #DFE3E7;
+    height: 74vh;
+    padding: 0px;
+    padding-right: 1rem;
+}
+
+.page-sidebar .card-header {
     padding: 7px 20px !important;
-} 
- 
-.page-sidebar.show{
+}
+
+.page-sidebar.show {
     display: block;
 }
 
-.page-sidebar.hide{
+.page-sidebar.hide {
     display: none;
 }
 
-.user-name{ 
+.user-name {
     width: 82%;
     float: left;
     font-size: 12px;
 }
-.user-id{
-   width: 82%;
-   float: left;
-   font-size: 11px;
-   color: #ccc;
+
+.user-id {
+    width: 82%;
+    float: left;
+    font-size: 11px;
+    color: #ccc;
 }
-.user-img{
+
+.user-img {
     float: left;
     width: 12%;
 }
-.header-navbar{
+
+.header-navbar {
     min-height: 3rem;
     height: 3rem;
 }
-html body.navbar-sticky .app-content .content-wrapper{
-        padding: 0.8rem 0rem 0 !important;
+
+html body.navbar-sticky .app-content .content-wrapper {
+    padding: 0.8rem 0rem 0 !important;
 }
-.pagination{
+
+.pagination {
     margin: 7px 0px;
 }
-.small-model{
+
+.small-model {
     width: 40rem;
+    box-shadow: 4px 14px 11px #394d70;
 }
-.medium-model{
+
+.medium-model {
     width: 55rem;
+    box-shadow: 4px 14px 11px #394d70;
 }
-.large-model{
+
+.large-model {
     width: 70rem;
+    box-shadow: 4px 14px 11px #394d70;
 }
-.ex-large-model{
+
+.ex-large-model {
     width: 85rem;
+    box-shadow: 4px 14px 11px #394d70;
 }
-.badge, .btn, .btn-link, .custom-select, .dropdown-item, .form-control, .input-group-text, .select2 {
+
+.badge,
+.btn,
+.btn-link,
+.custom-select,
+.dropdown-item,
+.form-control,
+.input-group-text,
+.select2 {
     font-weight: 100 !important;
     font-size: small !important;
     /*height:38px !important;*/
 }
 
 
-.h4, h4 {
+.h4,
+h4 {
     font-size: 1.47rem;
     color: #3e75dd;
 }
@@ -212,39 +260,45 @@ html body.navbar-sticky .app-content .content-wrapper{
 .dropdown-item {
     padding: .4rem 1.6rem;
 }
-.required-label{
-    color:red;
+
+.required-label {
+    color: red;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     /* padding-left: 34px !important; */
 }
- 
-.table-checkbox{
+
+.table-checkbox {
     width: 20px;
     padding: 5px 10px !important;
 }
-.p-r-0{
+
+.p-r-0 {
     padding-right: 0;
 }
 
-.record-view{
-   padding: 20px 5px;
+.record-view {
+    padding: 20px 5px;
 }
-.record-view h3{
+
+.record-view h3 {
     padding: 5px;
 }
-.description{
+
+.description {
     text-align: justify;
 }
-.record-info-table{
+
+.record-info-table {
     font-size: 11px !important;
     padding: 5px !important;
 }
 
-.hide{
+.hide {
     display: none;
 }
+<<<<<<< HEAD
 .show{display: block;}
 .per-page-btn{margin-top: 8px !important;}
 .page-records{margin-top: 5px;margin-left:5px;}
@@ -255,6 +309,47 @@ html body.navbar-sticky .app-content .content-wrapper{
     margin: 10px auto;
     background-color: #f2eded;}
 .upload-file .bx{font-size: 120px;}
+=======
+>>>>>>> 66d19cb0b7d008977aec7f59a4a4ec226d1a2e57
 
+.show {
+    display: block;
+}
 
+.per-page-btn {
+    margin-top: 8px !important;
+}
 
+.page-records {
+    margin-top: 5px;
+}
+
+.per-page-label {
+    margin-top: 13px;
+    margin-left: 12px;
+    text-align: right;
+}
+
+.picker__nav--prev:before {
+	content: '\f060' !important;
+}
+.picker__nav--next:before {
+	content: '\f061' !important;
+}
+
+html body {
+    background-color: #d4dff3;
+}
+.breadcrumb{
+    background-color: #d4dff3;
+    font-size:14px;
+}
+.card-footer, .card-header {
+    background-color: #FDFDFD;
+}
+.content-header-title{
+    font-size: 15px;
+}
+.selected-record{
+    padding-top:12px;
+}

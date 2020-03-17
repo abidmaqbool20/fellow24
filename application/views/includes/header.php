@@ -46,6 +46,8 @@
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>vendors/css/toast/jquery.toast.min.css">
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>vendors/css/sweet-alert/sweetalert.css">
       <!-- END: Page CSS-->
+      <!-- <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>vendors/css/fontawesome/css/all.css>   -->
+
       <!-- BEGIN: Custom CSS-->
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/css/style.css">  
       <!-- END: Custom CSS-->
