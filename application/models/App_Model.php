@@ -233,5 +233,15 @@ class App_Model extends CI_Model {
             return $result;
 
 	}
+
+	public function get_campaigns_for_excel($ids){
+		$this->db->where_in("campaigns.id",$ids);
+        $this->db->where(array("campaigns.deleted"=>0));
+        $this->db->select("campaigns.title,campaigns.description");
+        $this->db->from("campaigns");
+        return $rec = $this->db->get();
+
+
+	}
 	 
 }

@@ -24,7 +24,7 @@
 	    		</li>
 	    		 
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-info open-model" data="<?php echo get_json(array('id'=>'0','view'=>'models/form-user')); ?>" title="Import Records"><i class="bx bx-upload"></i></button>
+	    			<button type="button" class="btn btn-icon btn-info page-sidebar-open" target="import-records-sidebar" title="Import Records"><i class="bx bx-upload"></i></button>
 	    		</li>
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-success page-sidebar-open" target="quick-report-sidebar" title="Quick Reports"><i class="bx bxs-report"></i></button>
@@ -60,11 +60,15 @@
 		                  </span>
 		                </button>
 		                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="tag">
-		                  <a href="#" class="dropdown-item align-items-center">
+		                  <a href="javascript:;" class="dropdown-item align-items-center export-all-data " function="export_all_campaigns">
 		                    <span class="bullet bullet-success bullet-sm"></span>
 		                    <span> &nbsp;Export All</span>
 		                  </a>
-		                  <a href="#" class="dropdown-item align-items-center">
+		                  <a href="javascript:;" function="export_campaigns" class="dropdown-item align-items-center export-data">
+		                    <span class="bullet bullet-success bullet-sm"></span>
+		                    <span> &nbsp;Export Selected Only</span>
+		                  </a>
+		                  <a href="javascript:;" class="dropdown-item align-items-center">
 		                    <span class="bullet bullet-primary bullet-sm"></span>
 		                    <span> &nbsp;Delete</span>
 		                  </a>
@@ -153,7 +157,7 @@
 			  						<div class="page-records">
 							  		  
 							            <select class="form-control select2 per-page-rec">
-							            	<option value="5">5</option>
+							            	<option value="10">10</option>
 							            	<option value="100">100</option>
 							            	<option value="500">500</option>
 							            	<option value="0">All</option>
@@ -296,6 +300,54 @@
 				        <div class="card-content">
 				          <div class="card-body">
 				             
+				          </div>
+				        </div>
+				        <div class="card-footer d-flex justify-content-end">
+				         
+				        </div>
+				      </form>
+				      <!-- form start end-->
+				    </div>
+				</div>
+			</div>
+			<div class="col-3 import-records-sidebar page-sidebar hide">
+				<div class="filter-side-content">
+				    <div class="card shadow-none quill-wrapper">
+				      <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
+				        <h3 class="card-title">Import Campaigns </h3>
+				        <button type="button" class="close close-icon page-sidebar-close">
+				          <i class="bx bx-x"></i>
+				        </button>
+				      </div>
+				      <!-- form start -->
+				     <form method="post" autocomplete="off" action="<?= base_url('App/import_campaign_csv_file'); ?>" enctype="multipart/form-data" class="import-csv-form">
+				     	<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+				     	<input type="hidden" name="per_page" id="per_page" value="10" class="per_page">
+				        <div class="card-content">
+				          <div class="card-body">
+				             <div class="row">
+				             	<div class="col-md-12">
+				             		 <fieldset class="form-group hide">
+		                                <label for="search_string">Choose Excel File </label>
+		                                <input type="file" class="form-control upload-csv-file" id="excel_file" placeholder="" name="import_file">
+		                            </fieldset>
+
+
+		                             <fieldset class="form-group">
+		                             	<div class="upload-file">
+		                                  <i class="bx bx-cloud-upload"></i>
+		                                </div>
+		                            </fieldset>
+		                            
+		                        </div>
+		                        <div class="col-12"><hr></div>
+		                        <div class="col-12">
+		                        	<p>Click the button below to download the importable Sample File</p>
+		                        	<fieldset style="text-align: center" class="form-group">
+		                                <button type="button" class="btn btn-primary btn-sm sample-import-file" target="campaigns.csv"><i class="bx bx-cloud-download"></i> Download Sample</button>
+		                            </fieldset>
+		                        </div>
+				             </div>
 				          </div>
 				        </div>
 				        <div class="card-footer d-flex justify-content-end">

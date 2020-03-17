@@ -110,126 +110,15 @@ class App extends My_Controller {
         return $is_conn;
     }
 
-    public function save_multiple_hrms_files($path,$files=array(),$table) 
-	{ 
-		$filedata = array(); 
-		$uploaded_files = array();
-		if (!file_exists($path)) {  mkdir($path, 0777, true); } 
-		$filesCount = count($files);
-
-		for($i = 0; $i < $filesCount; $i++) 
-		{ 
-			$_FILES['userFile']['name'] = $files[$i]['name']; 
-			$_FILES['userFile']['type'] = $files[$i]['type']; 
-			$_FILES['userFile']['tmp_name'] = $files[$i]['tmp_name']; 
-			$_FILES['userFile']['error'] = $files[$i]['error']; 
-			$_FILES['userFile']['size'] = $files[$i]['size']; 
-
-			$config = array(); 
-			$config['upload_path']          = $path; 
-			$config['allowed_types']        = '*'; 
-			$config['max_size']             = 1024*1024*1024*1024*1024*1024; 
-			$config['encrypt_name']         = true; 
-
-			$this->load->library('upload', $config); 
-			$this->upload->initialize($config); 
-			if($this->upload->do_upload('userFile'))
-			{ 
-				$fileData = $this->upload->data(); 
-				$filedata = array();
-
-				//$filedata['table_id']   =    $id;  
-				$filedata['table_name'] =    $table; 
-				$filedata["original_name"] = $fileData['file_name']; 
-				$filedata['file_name'] =     $_FILES['userFile']['name'];  
-				$filedata['file_type'] =     $_FILES['userFile']['type']; 
-				$filedata['file_size'] =     $_FILES['userFile']['size']; 
-				$filedata['file_type_id'] =  $this->input->post('file_type_id'); 
-				$filedata['date_added']=     $this->date; 
-				$filedata['added_by']  =     $this->user_data['id']; 
-				$filedata['modified_by'] =   $this->user_data['id']; 
-
-				$this->db->insert("files",$filedata);   
-
-				$uploaded_files[] = $fileData['file_name']; 
-			}
-
-		}
-
-		return $uploaded_files; 
-	}
-
-	public function upload_file()
-	{
-
-			$save = true;   $message = $file_names = array(); 
-			$path = "assets/admin/adminassets/"; 
-			$file_type_id=$this->input->post('file_type_id');
-			$table = 'files';
-			if(isset($_FILES) && sizeof($_FILES) > 0) 
-			{ 
-				
-				foreach ($_FILES as $key => $value)  
-				{ 
-
-					if(is_array($_FILES[$key]['name'])) 
-					{ 
-
-						if($_FILES[$key]['error'][0] == 0) 
-						{ 
-							$files =  $this->reArrayFiles($_FILES[$key]); 
-							$file_names=$this->save_multiple_hrms_files($path,$files,$table); 
-						} 
-
-					} 
-					else 
-					{ 
-						if($_FILES[$key]['error'] == 0) 
-						{ 
-						// $filedata['table_id'] = $id;  
-							$filedata['table_name'] = $table; 
-							$filedata['file_type_id']=$file_type_id;
-							$filedata["original_name"] = $this->save_file($path,$key); 
-							$filedata['file_name'] = $_FILES[$key]['name']; 
-							$filedata['file_type'] = $_FILES[$key]['type']; 
-							$filedata['file_size'] = $_FILES[$key]['size']; 
-							$filedata['date_added'] = $this->date; 
-							$filedata['added_by'] = $this->user_data['id']; 
-							$filedata['modified_by'] = $this->user_data['id']; 
-
-							$this->db->insert("files",$filedata); 
-						// $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id));
-
-
-
-						} 
-					}  
-
-					if($this->input->is_ajax_request()){
-							$message['success'] = $save ;
-							$message['message'] = 'Record is saved successfully!' ;
-							echo json_encode($message);
-							}
-							else{ 
-								$this->session->set_flashdata("message",$alert); 
-								redirect($_SERVER['HTTP_REFERER']);
-							}
-				} 
-			}
-
-	
-	}
-
-	
+   
     public function generate_excel_file($filename,$file_title,$function,$ids)
     { 
         $response = '';
         if(!empty($ids))
         {
-            $records = $this->HRM_Model->$function($ids);
+            $records = $this->App_Model->$function($ids);
             if($records->num_rows() > 0){
                 $records_array = $records->result_array(); 
-            
                 $file_columns = array_keys($records_array[0]);
                 $xls = generate_excel($filename,$file_title,$file_columns,$records_array);
                 $response = base_url($xls);
@@ -895,7 +784,7 @@ class App extends My_Controller {
                                      $records .= ' <tr class="rec-'.$value->id.'">
                                         <td  class="table-checkbox">
                                             <div class="checkbox checkbox-success">
-                                                <input type="checkbox" class="table_record_checkbox" id="colorCheckbox'.$value->id.'"> 
+                                                <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
                                         </td>
@@ -928,45 +817,138 @@ class App extends My_Controller {
             $per_page = $data['per_page'];
             if( $per_page == 0)
                 $per_page = 5000000000;
-
-            $config['base_url'] = base_url("App/filter_campaigns");
-            $config['total_rows'] = $result['total_records'];
-            $config['per_page'] = $per_page;
-            $config["uri_segment"] = 3; 
-            $config['first_url'] = base_url('App/filter_campaigns/1');  
-            $config['num_links'] = 3;
-            $config['use_page_numbers'] = TRUE;
-            $config['reuse_query_string'] = FALSE;  
-            $config['enable_query_strings']= FALSE; 
-            $config['attributes'] = array('class' => 'page-link');
-            $config['first_link'] = '<<';
-            $config['first_tag_open'] = '<li class="page-item">';
-            $config['first_tag_close'] = '</li>'; 
-            $config['last_link'] = '>>';
-            $config['last_tag_open'] = '<li class="page-item next">';
-            $config['last_tag_close'] = '</li>'; 
-            $config['next_link'] = '>';
-            $config['next_tag_open'] = '<li class="page-item next">';
-            $config['next_tag_close'] = '</li>';
-            $config['prev_link'] = '<';
-            $config['prev_tag_open'] = '<li class="page-item previous">';
-            $config['prev_tag_close'] = '</li>'; 
-            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:;">';
-            $config['cur_tag_close'] = '</a></li>'; 
-            $config['num_tag_open'] = '<li class="page-item">';
-            $config['num_tag_close'] = '</li>';
-     
-            
-            $this->pagination->initialize($config);
-            $links = $this->pagination->create_links();
-
+            $first_url = base_url('App/filter_campaigns');
+            $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
             $result['links']  = $links;
             $result['records']  = $records;
             $result['total_records']  = $result['total_records'];
-            
-
             echo json_encode($result); 
+    }
+
+    public function create_pagination($url,$total_record,$per_page){
+
+        $config['base_url'] = $url;
+        $config['total_rows'] = $total_record;
+        $config['per_page'] = $per_page;
+        $config["uri_segment"] = 3; 
+        $config['first_url'] = $url; 
+        $config['num_links'] = 3;
+        $config['use_page_numbers'] = TRUE;
+        $config['reuse_query_string'] = FALSE;  
+        $config['enable_query_strings']= FALSE; 
+        $config['attributes'] = array('class' => 'page-link');
+        $config['first_link'] = '<<';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>'; 
+        $config['last_link'] = '>>';
+        $config['last_tag_open'] = '<li class="page-item next">';
+        $config['last_tag_close'] = '</li>'; 
+        $config['next_link'] = '>';
+        $config['next_tag_open'] = '<li class="page-item next">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<';
+        $config['prev_tag_open'] = '<li class="page-item previous">';
+        $config['prev_tag_close'] = '</li>'; 
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:;">';
+        $config['cur_tag_close'] = '</a></li>'; 
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $this->pagination->initialize($config);
+        return $links = $this->pagination->create_links();
+
+    }
+
+    public function export_campaigns(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('campaigns','Campaings ','get_campaigns_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_campaigns(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('campaigns',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('campaigns','Campaings ','get_campaigns_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_campaign_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['title'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[1]);
+                                            $check = $this->db->get_where('campaigns',array('title'=>$record_data['title']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('campaigns',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                             $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                             $alert  = 'No Record Imported';
+                           
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
         }
-	
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+
+    public function download_sample_file(){
+        $data = $this->input->post();
+        if(isset($data['file_name'])){
+            echo APP_ASSETS.'/sample-files/'.$data['file_name'];
+        }
+    }
+
+    public function validate_import_field_value($input){
+        if($input != "" && $input != 'NA'){
+            return $input;
+        } 
+    }
 
 }

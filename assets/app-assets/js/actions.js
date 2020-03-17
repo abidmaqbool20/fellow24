@@ -1290,23 +1290,14 @@ $(document).on('click', '.table_record_checkbox', function () {
 	}
 });
 
-$(document).on('click', '.report-data', function () {
+$(document).on('click', '.export-data', function () {
 	
 	$ids =   $('.table_record_checkbox:checked').map(function() 
 		 	 {
 			   return this.value;
 			 }).get(); 
 	if($ids.length > 0){
-		$url = "";
-		$data = $(this).attr("data");
-		if($data != ""){
-			$data = $.parseJSON($data);
-			if($data.table != ""){
-				if($data.table == 'employees')
-					$url = $data.url;
-			}
-		}
-		 
+		$url = $base_url+"/App/"+$(this).attr('function');
 		if($url != ""){ 
 			
 			$.ajax({
@@ -1347,6 +1338,41 @@ $(document).on('click', '.report-data', function () {
 			      'error'
 			    );
 	}
+});
+$(document).on('click', '.export-all-data', function () {
+		$url = $base_url+"/App/"+$(this).attr('function');
+		if($url != ""){ 
+			
+			$.ajax({
+				    type:'POST',
+				    url: $url,
+				    data: {csrf_token:$csrf_token},
+				   	 
+				    beforeSend:function(){
+				    	  add_loader();
+				    },
+
+				    success:function(response)
+				    {
+				    	if(response != 'false'){
+				    		var file_url = response; 
+						    window.open(file_url, '_blank');
+				    	}
+				    	
+				    },
+				    error:function(msg){
+				    	console.log(msg);
+				    	 swal(
+							      'Error!',
+							      'error'
+							 );
+				    },
+				    complete:function(){
+				    	 remove_loader();
+				    }
+			}); 
+		
+		}
 });
 
 
@@ -2224,4 +2250,118 @@ $(document).on("click",".delete_contract",function(){
 
 	return false;
 });
+
+
+$(document).on("click",".sample-import-file",function(e){
+	e.preventDefault();
+	$file_name = $(this).attr('target');
+	$.ajax({
+			    type:'POST',
+			    url: $base_url+'/app/download_sample_file',
+			    data: {csrf_token:$csrf_token,file_name:$file_name},
+	
+			    beforeSend:function(){
+			    	  add_loader();
+			    },
+
+			    success:function(response)
+			    {
+
+		    	    if(response != 'false'){
+			    		var file_url = response; 
+					    window.open(file_url, '_blank');
+			    	}
+
+			    },
+			    error:function(msg){
+
+			    	 swal(
+						      'Error!',
+						      'error'
+						 );
+			    },
+			    complete:function(){
+			    	 remove_loader();
+			    }
+			});
+
+	return false;
+});
+
+
+
+$(document).on("click",".upload-file",function(e){
+	e.preventDefault();
+	$('.upload-csv-file').trigger('click');
+});
+
+$(document).on("change",".upload-csv-file",function(e){
+	e.preventDefault();
+	$(this).closest('form').trigger('submit');
+});
+
+
+$(document).on("submit",".import-csv-form",function(e){
+	e.preventDefault();
+	var formData = new FormData(this);
+	$form = $(this);
+	$.ajax({
+			    type:'POST',
+			    url: $(this).attr("action"),
+			    data: formData,
+			   	cache: false,
+		        contentType: false,
+		        processData: false,
+		        async :true,
+			    beforeSend:function(){
+			    	  add_loader();
+			    },
+			   
+			    success:function(response)
+			    {
+
+			    	if(response){
+			    		$result = $.parseJSON(response);
+			    		if($result['success']){
+			    			swal(
+						      'Success!',
+						      $result['message'],
+						      'success'
+						      
+						    );
+			    		}else{
+			    		  swal(
+						      'Error!',
+						      $result['message'],
+						      'error'
+						    );
+			    		}
+			    		   
+			    	}
+
+
+			    },
+			    error:function(msg){
+
+			    	     swal(
+						      'Error!',
+						      'error'
+						 );
+			    },
+			    complete:function(){
+			    	setTimeout(function(){
+			    		 $('.import-progress-bar').addClass('hide');
+			    		},5000);
+                    
+			    	 remove_loader();
+			    	 $form.trigger('reset');
+			    }
+			});
+
+	return false;
+})
+
+
+
+
 

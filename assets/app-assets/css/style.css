@@ -298,6 +298,19 @@ h4 {
 .hide {
     display: none;
 }
+<<<<<<< HEAD
+.show{display: block;}
+.per-page-btn{margin-top: 8px !important;}
+.page-records{margin-top: 5px;margin-left:5px;}
+.upload-file{width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    margin: 10px auto;
+    background-color: #f2eded;}
+.upload-file .bx{font-size: 120px;}
+=======
+>>>>>>> 66d19cb0b7d008977aec7f59a4a4ec226d1a2e57
 
 .show {
     display: block;
