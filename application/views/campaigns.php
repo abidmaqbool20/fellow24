@@ -1,6 +1,4 @@
 
-<?php $records = $this->App_Model->get_campaigns(); ?>
-
 <section class="actions-wrapper">
 	<div class="row">
 	    <div class="col-md-6">
@@ -26,9 +24,7 @@
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-info page-sidebar-open" target="import-records-sidebar" title="Import Records"><i class="bx bx-upload"></i></button>
 	    		</li>
-	    		<li>
-	    			<button type="button" class="btn btn-icon btn-success page-sidebar-open" target="quick-report-sidebar" title="Quick Reports"><i class="bx bxs-report"></i></button>
-	    		</li>
+	    		
 	    		
 	    		<li>
 	    			<div class="btn-group" role="group" aria-label=" "> 
@@ -85,7 +81,7 @@
 		<div class="row">
 			<div class="col-12 page-data p-r-0">
 			  <div class="table-responsive">
-			  	<table class="table table-hover mb-0">
+			  	<table class="table table-hover mb-0 page-table" id="table-sortable">
 				    <thead>
 				      <tr> 
 				      	<th class="table-checkbox table_record_checkbox"> 
@@ -94,56 +90,17 @@
 		                        <label for="colorCheckbox0"></label>
 		                    </div>
 				        </th>
-				        <th>Title </th>
-				        <th>Description </th>
-				        <th>Date Added</th>
-				        <th>Status</th>
+				        <th class="col-title">Title <i class="bx bx-sort"></i></th>
+				        <th class="col-description">Description <i class="bx bx-sort"></i></th>
+				        <th class="col-date_added">Date Added <i class="bx bx-sort"></i></th>
+				        <th class="col-date_modification hide">Date Modification <i class="bx bx-sort"></i></th>
+				        <th class="col-added_by hide">Added By <i class="bx bx-sort"></i></th>
+				        <th class="col-modified_by hide">Modified By <i class="bx bx-sort"></i></th>
+				        <th class="col-status">Status <i class="bx bx-sort"></i></th>
 				        <th>ACTION</th>
 				      </tr>
 				    </thead>
-				    <tbody class="campaigns table-records">
-				        
-					      	<?php 
-					      	if($records->num_rows() > 0){
-					      		foreach ($records->result() as $key => $value) { 
-					      			$checked ="";
-					      			if($value->status == 1){
-					      				$checked = 'checked';
-					      			}
-					      	?>
-					      			<tr class="rec-<?=$value->id ;?>">
-					      				<td  class="table-checkbox">
-								      		<div class="checkbox checkbox-success">
-						                        <input type="checkbox" class="table_record_checkbox" id="colorCheckbox<?=$value->id ;?>"> 
-						                        <label for="colorCheckbox<?=$value->id ;?>"></label>
-						                    </div>
-				      					</td>
-								      	<td class="text-bold-500"><?php echo $value->title;?></td>
-								        <td><?php echo substr($value->description,0,80);?></td>
-								        <td class="text-bold-500"><?php echo $value->date_added;?></td>
-								        <td> 
-								        	<div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-								                <input type="checkbox" <?= $checked ;?> class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor<?=$key ?>" table-id="<?= $value->id;?>">
-								                <label class="custom-control-label" for="customSwitchcolor<?=$key ?>"></label>
-							                </div>
-          								</td>
-								        <td>
-											<div class="dropdown">
-							                  <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							                   <i class="bx bx-dots-vertical-rounded"></i>
-							                  </button>
-							                  <div class="dropdown-menu dropdown-menu-right">
-							                    <a class="dropdown-item open-model" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/form-campaign')); ?>" href="javascript:;">Edit</a>
-							                    <a class="dropdown-item open-model" href="javascript:;" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/view-campaign')); ?>">View</a>
-							                    <a class="dropdown-item delete" data="<?php echo get_json(array('id'=>$value->id,'table'=>'campaigns')); ?>" href="javascript:;">Delete</a>
-							                  </div>
-							                </div>
-				                        </td>
-							        </tr>
-					      			
-					      	<?php }};?>
-				        
-
+				    <tbody class="campaigns table-records">     	
 				    </tbody>
 			  	</table>
 			  </div> 
@@ -158,9 +115,8 @@
 							  		  
 							            <select class="form-control select2 per-page-rec">
 							            	<option value="10">10</option>
+							            	<option value="50">50</option>
 							            	<option value="100">100</option>
-							            	<option value="500">500</option>
-							            	<option value="0">All</option>
 
 							            </select>
 						        	</div>
@@ -275,7 +231,63 @@
 				      <form class="edit-kanban-item">
 				        <div class="card-content">
 				          <div class="card-body">
-				             
+				          	<div class="col-12">
+				          		<div class="row">
+				          			<div class="col-12">
+				          				<h4>Show & Hide Table Columns</h4>
+				          			</div>
+				          			<div class="col-12">
+				          				<p>Use these checkboxes to show or hide the table columns to increase the readability</p>
+				          			</div>
+				          		</div>
+				          	</div>
+				          	<div class="col-12">
+				          		<div class="row">
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" checked="checked" value="title" id="tbl-col-checkbox-1" name ="tbl-col-checkbox-1"> 
+			                                <label for="tbl-col-checkbox-1">Title </label>
+			                            </div>
+				          			</div>
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" checked="checked" value="description" id="tbl-col-checkbox-2" name ="tbl-col-checkbox-2"> 
+			                                <label for="tbl-col-checkbox-2">Description</label>
+			                            </div>
+				          			</div>
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" checked="checked" value="status" id="tbl-col-checkbox-3" name ="tbl-col-checkbox-3"> 
+			                                <label for="tbl-col-checkbox-3">Status</label>
+			                            </div>
+				          			</div>
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" value="added_by" id="tbl-col-checkbox-4" name ="tbl-col-checkbox-4"> 
+			                                <label for="tbl-col-checkbox-4">Added By</label>
+			                            </div>
+				          			</div>
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" value="modified_by" id="tbl-col-checkbox-5" name ="tbl-col-checkbox-5"> 
+			                                <label for="tbl-col-checkbox-5">Modified By</label>
+			                            </div>
+				          			</div>
+
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" checked="checked" value="date_added" id="tbl-col-checkbox-6" name ="tbl-col-checkbox-6"> 
+			                                <label for="tbl-col-checkbox-6">Date Added</label>
+			                            </div>
+				          			</div>
+				          			<div class="col-12 mb-1">
+				          				<div class="checkbox checkbox-success">
+			                                <input type="checkbox" class="table-column" value="date_modification" id="tbl-col-checkbox-7" name ="tbl-col-checkbox-7"> 
+			                                <label for="tbl-col-checkbox-7">Date Modification</label>
+			                            </div>
+				          			</div>
+				          		</div>
+				          	</div>
 				          </div>
 				        </div>
 				        <div class="card-footer d-flex justify-content-end">
@@ -286,30 +298,7 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-3 quick-report-sidebar page-sidebar hide">
-				<div class="filter-side-content">
-				    <div class="card shadow-none quill-wrapper">
-				      <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-				        <h3 class="card-title">Report Records</h3>
-				        <button type="button" class="close close-icon page-sidebar-close">
-				          <i class="bx bx-x"></i>
-				        </button>
-				      </div>
-				      <!-- form start -->
-				      <form class="edit-kanban-item">
-				        <div class="card-content">
-				          <div class="card-body">
-				             
-				          </div>
-				        </div>
-				        <div class="card-footer d-flex justify-content-end">
-				         
-				        </div>
-				      </form>
-				      <!-- form start end-->
-				    </div>
-				</div>
-			</div>
+			
 			<div class="col-3 import-records-sidebar page-sidebar hide">
 				<div class="filter-side-content">
 				    <div class="card shadow-none quill-wrapper">
@@ -372,4 +361,5 @@
 		$('.filter-records').trigger('submit');
 	});
 </script>
+
  

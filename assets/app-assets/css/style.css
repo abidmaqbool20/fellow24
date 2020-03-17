@@ -353,3 +353,4 @@ html body {
 .selected-record{
     padding-top:12px;
 }
+table th i{font-size: 12px !important;font-weight: bold;}
