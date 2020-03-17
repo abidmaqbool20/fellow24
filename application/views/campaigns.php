@@ -62,7 +62,7 @@
 		                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="tag">
 		                  <a href="#" class="dropdown-item align-items-center">
 		                    <span class="bullet bullet-success bullet-sm"></span>
-		                    <span> &nbsp;Export</span>
+		                    <span> &nbsp;Export All</span>
 		                  </a>
 		                  <a href="#" class="dropdown-item align-items-center">
 		                    <span class="bullet bullet-primary bullet-sm"></span>
@@ -144,32 +144,35 @@
 			  	</table>
 			  </div> 
 			  <div class="pagination-wrapper row">
-			  	<div class="col-md-6"></div> 
 			  	<div class="col-md-6">
 			  		<div class="row">
 			  			<div class="col-12">
 			  				<div class="row">
+			  					<div class="col-2"><label>Per Page</label></div>
 			  					<div class="col-2">
-							  		<!-- <div class="btn-group dropdown pull-right per-page-btn">
-						              <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="5">
-						                5
-						              </button>
-						              <div class="dropdown-menu per-page-records" aria-labelledby="dropdownMenuOffset">
-						              	<a class="dropdown-item per-page-rec" href="javascript:;" records="5">5</a>
-						                <a class="dropdown-item per-page-rec" href="javascript:;" records="10">10</a>
-						                <a class="dropdown-item per-page-rec" href="javascript:;" records="100">100</a>
-						                <a class="dropdown-item per-page-rec" href="javascript:;" records="500">500</a>
-						                <a class="dropdown-item per-page-rec" href="javascript:;" records="0">All</a>
-						              </div>
-						            </div> -->
-						            <select class="form-control select2 per-page-rec">
-						            	<option value="5">5</option>
-						            	<option value="100">100</option>
-						            	<option value="500">500</option>
-						            	<option value="0">All</option>
+			  						<div class="page-records">
+							  		  
+							            <select class="form-control select2 per-page-rec">
+							            	<option value="5">5</option>
+							            	<option value="100">100</option>
+							            	<option value="500">500</option>
+							            	<option value="0">All</option>
 
-						            </select>
+							            </select>
+						        	</div>
 						        </div>
+						        <div class="col-2"></div>
+						        <div class="col-6"></div>
+						    </div>
+						</div>
+					</div>
+			  	</div> 
+			  	<div class="col-md-6">
+			  		<div class="row">
+			  			<div class="col-12">
+			  				<div class="row">
+			  					<div class="col-2"></div>
+						        <div class="col-4"></div>
 						        <div class="col-6">
 						        	<nav aria-label="Page navigation example ">
 							              <ul class="pagination data-pagination pull-right mr-3 ">

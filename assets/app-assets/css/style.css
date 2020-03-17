@@ -82,9 +82,7 @@ html body .content .content-wrapper .content-header-title{
 .pull-right{
 	float: right;
 }
-.pagination-wrapper{
-
-}
+.pagination-wrapper{background-color: #f2f4f4;}
 html body .content.app-content .page-overlay{
 	position: fixed;
     opacity: 0.4;
@@ -249,3 +247,7 @@ html body.navbar-sticky .app-content .content-wrapper{
 }
 .show{display: block;}
 .per-page-btn{margin-top: 8px !important;}
+.page-records{margin-top: 5px;margin-left:5px;}
+
+
+
