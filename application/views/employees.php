@@ -106,7 +106,7 @@
 			                   <i class="bx bx-dots-vertical-rounded"></i>
 			                  </button>
 			                  <div class="dropdown-menu dropdown-menu-right">
-			                    <a class="dropdown-item" href="#">Edit</a>
+			                    <a class="dropdown-item open-model" href="javascript:;" data="<?php echo get_json(array('id'=>$value->id,'view'=>'models/form-employee')); ?>">Edit</a>
 			                    <a class="dropdown-item" href="#">View</a>
 			                    <a class="dropdown-item" href="#">Delete</a>
 			                  </div>
