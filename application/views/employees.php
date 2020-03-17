@@ -5,7 +5,7 @@
 	    <div class="col-md-6">
 	    	<div class="row breadcrumbs-top">
               <div class="col-12">
-                <h5 class="content-header-title float-left pr-1 mb-0"><i class="bx bxs-group"></i>&nbsp;Departments</h5>
+                <h5 class="content-header-title float-left pr-1 mb-0"><i class="bx bxs-group"></i>&nbsp;Employees</h5>
                 <div class="breadcrumb-wrapper col-12">
                   <ol class="breadcrumb p-0 mb-0"> 
                     <li class="breadcrumb-item"><a href="#">Components</a> </li>

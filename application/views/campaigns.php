@@ -148,7 +148,7 @@
 			  		<div class="row">
 			  			<div class="col-12">
 			  				<div class="row">
-			  					<div class="col-2"><label>Per Page</label></div>
+			  					<div class="col-2 per-page-label"><label>Per Page</label></div>
 			  					<div class="col-2">
 			  						<div class="page-records">
 							  		  
@@ -161,8 +161,12 @@
 							            </select>
 						        	</div>
 						        </div>
-						        <div class="col-2"></div>
-						        <div class="col-6"></div>
+						        <div class="col-4">
+									<ul class="selected-record">
+										<li><span>Selected Record :</span><span id="total_selected_number" class="total_records">0</span></li>
+									</ul>
+								</div>
+						        <div class="col-4"></div>
 						    </div>
 						</div>
 					</div>
@@ -306,9 +310,7 @@
 	</section>
  
 	<footer class="footer footer-static footer-light">
-	    <ul class="">
-	    	<li><span>Selected Record :</span><span id="total_selected_number" class="total_records">0</span></li>
-	    </ul>
+	    
 	</footer>
 </div>
 <script>
