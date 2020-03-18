@@ -782,16 +782,19 @@ class App extends My_Controller {
                       
                    
                                      $records .= ' <tr class="rec-'.$value->id.'">
-                                        <td  class="table-checkbox">
+                                        <td class="table-checkbox">
                                             <div class="checkbox checkbox-success">
                                                 <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
                                         </td>
-                                        <td class="text-bold-500">'.$value->title.'</td>
-                                        <td>'.substr($value->description,0,80).'</td>
-                                        <td class="text-bold-500">'.$value->date_added.'</td>
-                                        <td> 
+                                        <td class="text-bold-500 col-title">'.$value->title.'</td>
+                                        <td class="col-description">'.substr($value->description,0,80).'</td>
+                                        <td class="col-date_added">'.$value->date_added.'</td>
+                                        <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                        <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                        <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                        <td class="col-status"> 
                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
                                                 <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
                                                 <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
