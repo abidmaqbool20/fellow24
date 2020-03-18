@@ -18,37 +18,31 @@
 	    <div class="col-md-6">
 	    	<ul class="action-btns default-actions pull-right">
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
+	    			<button type="button" class="btn btn-icon btn-theme open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
 	    		 
 	    		<li>
 	    			<button type="button" class="btn btn-icon btn-info page-sidebar-open" target="import-records-sidebar" title="Import Records"><i class="bx bx-upload"></i></button>
 	    		</li>
-	    		
-	    		
 	    		<li>
-	    			<div class="btn-group" role="group" aria-label=" "> 
-	                  <button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
-	                  <button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
-	                </div>
+	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
 	    		</li>
-	    		
+	    		<li>
+	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	    		</li> 
+	    		 
 	    	</ul>
-	    	<ul class="action-btns selected-actions pull-right hide">
-	    		
+	    	<ul class="action-btns selected-actions pull-right hide"> 
+	    		 
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-light" title="Reload Page"><i class="bx bx-loader-alt"></i></button>
+	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
 	    		</li>
-
 	    		<li>
-	    			<div class="btn-group" role="group" aria-label=" "> 
-	                  <button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
-	                  <button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
-	                </div>
-	    		</li>
+	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	    		</li> 
 	    		<li>
 	    			<div class="dropdown">
-		                <button type="button" class="btn btn-icon dropdown-toggle btn-white action-icon" id="tag" data-toggle="dropdown"
+		                <button type="button" class="btn btn-icon dropdown-toggle btn-theme action-icon" id="tag" data-toggle="dropdown"
 		                  aria-haspopup="true" aria-expanded="false">
 		                  <span class="fonticon-wrap">
 		                    <i class="bx bx-check" >
@@ -105,12 +99,12 @@
 			  	</table>
 			  </div> 
 			  <div class="pagination-wrapper row">
-			  	<div class="col-md-6">
+			  	<div class="col-6">
 			  		<div class="row">
 			  			<div class="col-12">
 			  				<div class="row">
-			  					<div class="col-2 per-page-label"><label>Per Page</label></div>
-			  					<div class="col-2">
+			  					<div class="col-2 col-sm-2 per-page-label no-pad"><label>Per Page</label></div>
+			  					<div class="col-2 col-sm-2 no-pad">
 			  						<div class="page-records">
 							  		  
 							            <select class="form-control select2 per-page-rec">
@@ -121,12 +115,12 @@
 							            </select>
 						        	</div>
 						        </div>
-						        <div class="col-4">
+						        <div class="col-7 col-sm-7 no-pad ">
 									<ul class="selected-record">
 										<li><span>Selected Record :</span><span id="total_selected_number" class="total_records">0</span></li>
 									</ul>
 								</div>
-						        <div class="col-4"></div>
+						        
 						    </div>
 						</div>
 					</div>
@@ -333,7 +327,7 @@
 		                        <div class="col-12">
 		                        	<p>Click the button below to download the importable Sample File</p>
 		                        	<fieldset style="text-align: center" class="form-group">
-		                                <button type="button" class="btn btn-primary btn-sm sample-import-file" target="campaigns.csv"><i class="bx bx-cloud-download"></i> Download Sample</button>
+		                                <button type="button" class="btn btn-theme btn-sm sample-import-file" target="campaigns.csv"><i class="bx bx-cloud-download"></i> Download Sample</button>
 		                            </fieldset>
 		                        </div>
 				             </div>

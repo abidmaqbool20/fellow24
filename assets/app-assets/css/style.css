@@ -136,7 +136,7 @@ html body .content.app-content .page-overlay.show {
     right: 1rem;
     left: auto;
     bottom: 0;
-    top: 7vh;
+    top: 8vh;
     opacity: 0;
     overflow: auto;
     /* 
@@ -155,12 +155,15 @@ html body .content.app-content .page-overlay.show {
 
 .page-body-modal-window .card {
     margin-bottom: 0px;
+
 }
 
 .page-body-modal-window .card-body {
 
     height: 73vh;
     overflow: auto;
+    padding: 25px;
+    padding-top: 20px !important;
 }
 
 .page-body-modal-window .card-footer {
@@ -169,13 +172,24 @@ html body .content.app-content .page-overlay.show {
 
 .page-sidebar {
     border-left: 1px solid #DFE3E7;
-    height: 74vh;
+    height: 73vh;
     padding: 0px;
     padding-right: 1rem;
 }
 
 .page-sidebar .card-header {
     padding: 7px 20px !important;
+}
+.page-sidebar .card-body {
+   overflow: auto;
+   padding: 1rem;
+       height: 60vh;
+}
+
+.page-sidebar .card-footer{
+    /*border: 1px solid;*/
+    height: 7.6vh;
+    background: white;
 }
 
 .page-sidebar.show {
@@ -207,6 +221,20 @@ html body .content.app-content .page-overlay.show {
 .header-navbar {
     min-height: 3rem;
     height: 3rem;
+}
+.navbar-wrapper{
+    background: #633067;
+}
+.navbar-wrapper ul li a span{
+    color: #e6e6e6;
+}
+.header-navbar .navbar-container ul.nav li i.ficon{
+    color: #e6e6e6;
+    font-size: 17px;
+}
+
+.navbar-container {
+        height: 57px;
 }
 
 html body.navbar-sticky .app-content .content-wrapper {
@@ -279,7 +307,7 @@ h4 {
 }
 
 .record-view {
-    padding: 20px 5px;
+    /*padding: 20px 5px;*/
 }
 
 .record-view h3 {
@@ -341,7 +369,7 @@ html body {
     background-color: #f9f9f9f9;
 }
 .breadcrumb{
-    background-color: #f3f3f3f3;
+    background-color: transparent;
     font-size:14px;
 }
 .card-footer, .card-header {
@@ -354,3 +382,15 @@ html body {
     padding-top:12px;
 }
 table th i{font-size: 12px !important;font-weight: bold;}
+.btn-theme{
+    background-color: #633067;
+    border-color: #633067;
+    color: white;
+} 
+.btn-theme:hover{
+    background-color: #633067;
+    border-color: #633067;
+}
+.no-pad{
+    padding: 0px;
+}
