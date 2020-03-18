@@ -381,7 +381,6 @@ html body {
 .selected-record{
     padding-top:12px;
 }
-<<<<<<< HEAD
 .hover-style:hover{
     background-color: #f9f9f9f9;
     border-radius: 3px;
@@ -391,7 +390,6 @@ html body {
     border-left: 0px solid #719DF0;
     border-style: inset;
     transition: all .7s ease-in-out;
-=======
 table th i{font-size: 12px !important;font-weight: bold;}
 .btn-theme{
     background-color: #633067;
@@ -428,5 +426,4 @@ table th i{font-size: 12px !important;font-weight: bold;}
         display: block;
         padding: 0rem 1.33rem;
     }
->>>>>>> fc922582ac50333fba0b7d26135908a0f29ef976
 }
