@@ -86,12 +86,12 @@
                   </div>
                   <ul class="nav navbar-nav float-right">
                      <li class="dropdown dropdown-language nav-item">
-                        <a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
+                        <a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-tooltip="tooltip" data-placement="bottom" data-original-title="Change Language"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
                      </li>
-                     <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
+                     <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" data-tooltip="tooltip" data-placement="bottom" data-original-title="Full Screen"><i class="ficon bx bx-fullscreen"></i></a></li>
                      <li class="nav-item nav-search">
-                        <a class="nav-link nav-link-search"><i class="ficon bx bx-search"></i></a>
+                        <a class="nav-link nav-link-search"><i class="ficon bx bx-search" data-tooltip="tooltip" data-placement="bottom" data-original-title="Search"></i></a>
                         <div class="search-input">
                            <div class="search-input-icon"><i class="bx bx-search primary"></i></div>
                            <input class="input" type="text" placeholder="Explore Frest..." tabindex="-1" data-search="template-search">
@@ -100,7 +100,7 @@
                         </div>
                      </li>
                      <li class="dropdown dropdown-notification nav-item">
-                        <a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+                        <a class="nav-link nav-link-label" href="#" data-tooltip="tooltip" data-placement="bottom" data-original-title="Notification" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
                         <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                            <li class="dropdown-menu-header">
                               <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">7 new Notification</span><span class="text-bold-400 cursor-pointer">Mark all as read</span></div>
@@ -246,3 +246,8 @@
           <div class="content-header row"> </div>
           <div class="content-body">
 
+<script>
+   $(function () {
+		$('[data-tooltip="tooltip"]').tooltip()
+	})
+</script>

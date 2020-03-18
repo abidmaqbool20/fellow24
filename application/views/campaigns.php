@@ -18,39 +18,39 @@
 	    <div class="col-md-6">
 	    	<ul class="action-btns default-actions pull-right">
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-theme open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
+	    			<button type="button" data-tooltip="tooltip" data-placement="bottom"  data-original-title="ADD New Compaigns" class="btn btn-icon btn-theme open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-campaign')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
 	    		 
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-info page-sidebar-open" target="import-records-sidebar" title="Import Records"><i class="bx bx-upload"></i></button>
+	    			<button type="button" class="btn btn-icon btn-info page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Import Compaigns" target="import-records-sidebar" title="Import Records"><i class="bx bx-upload"></i></button>
 	    		</li>
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
+	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Filter Compaigns" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
 	    		</li>
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Sort Compaigns" target="sort-sidebar"><i class="bx bx-sort"></i></button>
 	    		</li> 
 	    		 
 	    	</ul>
 	    	<ul class="action-btns selected-actions pull-right hide"> 
 	    		 
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
+	    			<button type="button" class="btn btn-icon btn-white page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Filter Compaigns" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
 	    		</li>
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	    			<button type="button" class="btn btn-icon btn-warning page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Sort Compaigns" target="sort-sidebar"><i class="bx bx-sort"></i></button>
 	    		</li> 
 	    		<li>
 	    			<div class="dropdown">
-		                <button type="button" class="btn btn-icon dropdown-toggle btn-theme action-icon" id="tag" data-toggle="dropdown"
+		                <button type="button" class="btn btn-icon dropdown-toggle btn-theme action-icon" id="tag" data-tooltip="tooltip" data-placement="left" data-original-title="ADD Compaigns" data-toggle="dropdown"
 		                  aria-haspopup="true" aria-expanded="false">
 		                  <span class="fonticon-wrap">
-		                    <i class="bx bx-check" >
+		                    <i class="bx bx-down-arrow" >
 		                    </i>
 		                  </span>
 		                </button>
 		                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="tag">
-		                  <a href="javascript:;" class="dropdown-item align-items-center export-all-data " function="export_all_campaigns">
+		                  <a href="javascript:;" class="dropdown-item align-items-center export-all-data "  function="export_all_campaigns">
 		                    <span class="bullet bullet-success bullet-sm"></span>
 		                    <span> &nbsp;Export All</span>
 		                  </a>
@@ -354,6 +354,10 @@
 	$(document).ready(function(){
 		$('.filter-records').trigger('submit');
 	});
+
+	$(function () {
+		$('[data-tooltip="tooltip"]').tooltip()
+	})
 </script>
 
  

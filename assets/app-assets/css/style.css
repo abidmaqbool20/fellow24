@@ -390,6 +390,7 @@ html body {
     border-left: 0px solid #719DF0;
     border-style: inset;
     transition: all .7s ease-in-out;
+}
 table th i{font-size: 12px !important;font-weight: bold;}
 .btn-theme{
     background-color: #633067;
