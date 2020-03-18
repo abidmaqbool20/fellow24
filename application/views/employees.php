@@ -19,28 +19,28 @@
 	    <div class="col-md-6">
 	    	<ul class="action-btns pull-right">
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-employee')); ?>"><i class="bx bx-plus"></i></button>
+	    			<button type="button" data-tooltip="tooltip" data-placement="bottom" data-original-title="Add New Employee" class="btn btn-icon btn-primary open-model"  data="<?php echo get_json(array('id'=>'0','view'=>'models/form-employee')); ?>"><i class="bx bx-plus"></i></button>
 	    		</li>
 	    		 
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-info open-model" data="<?php echo get_json(array('id'=>'0','view'=>'models/form-user')); ?>" title="Import Records"><i class="bx bx-upload"></i></button>
+	    			<button type="button" data-tooltip="tooltip" data-placement="bottom" data-original-title="Import Employee" class="btn btn-icon btn-info open-model" data="<?php echo get_json(array('id'=>'0','view'=>'models/form-user')); ?>" title="Import Records"><i class="bx bx-upload"></i></button>
 	    		</li>
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-success page-sidebar-open" target="quick-report-sidebar" title="Quick Reports"><i class="bx bxs-report"></i></button>
+	    			<button type="button" data-tooltip="tooltip" data-placement="bottom" data-original-title="Quick Report" class="btn btn-icon btn-success page-sidebar-open" target="quick-report-sidebar" title="Quick Reports"><i class="bx bxs-report"></i></button>
 	    		</li>
 	    		<li>
-	    			<button type="button" class="btn btn-icon btn-light" title="Reload Page"><i class="bx bx-loader-alt"></i></button>
+	    			<button type="button" data-tooltip="tooltip" data-placement="bottom" data-original-title="Reload" class="btn btn-icon btn-light" title="Reload Page"><i class="bx bx-loader-alt"></i></button>
 	    		</li>
 
 	    		<li>
 	    			<div class="btn-group" role="group" aria-label=" "> 
-	                  <button type="button" class="btn btn-icon btn-white page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
-	                  <button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
+	                  <button type="button" class="btn btn-icon btn-white page-sidebar-open" data-tooltip="tooltip" data-placement="bottom" data-original-title="Filter Record" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
+	                  <button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar" data-tooltip="tooltip" data-placement="bottom" data-original-title="Sort Record"><i class="bx bx-sort"></i></button>
 	                </div>
 	    		</li>
 	    		<li>
 	    			<div class="dropdown">
-		                <button type="button" class="btn btn-icon dropdown-toggle btn-white action-icon" id="tag" data-toggle="dropdown"
+		                <button type="button" class="btn btn-icon dropdown-toggle btn-white action-icon" id="tag" data-tooltip="tooltip" data-placement="bottom" data-original-title="Export Record" data-toggle="dropdown"
 		                  aria-haspopup="true" aria-expanded="false">
 		                  <span class="fonticon-wrap">
 		                    <i class="bx bx-check" >
@@ -244,4 +244,10 @@
 	</p>
 	</footer>
 </div>
+
+<script>
+   $(function () {
+		$('[data-tooltip="tooltip"]').tooltip()
+	})
+</script>
  
