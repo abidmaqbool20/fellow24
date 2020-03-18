@@ -394,3 +394,27 @@ table th i{font-size: 12px !important;font-weight: bold;}
 .no-pad{
     padding: 0px;
 }
+
+@media (max-width: 991.98px){
+    #navbar-mobile.navbar-collapse .navbar-nav .nav-item {
+        height: 8vh;
+    }   
+
+    #navbar-mobile.navbar-collapse .navbar-nav .menu-toggle{
+            padding: .8rem .8rem 1.12rem 0;
+            top: 0;
+    }
+    .header-navbar .navbar-container ul.nav li a.nav-link-expand, .header-navbar .navbar-container ul.nav li a.nav-link-search{
+            padding: .8rem .75rem 1.15rem;
+    }
+    .header-navbar .navbar-container ul.nav li a.dropdown-user-link{
+            padding: .2rem 1.23rem;
+    }
+    .dropdown-notification{
+        padding: 9px 0;
+    }
+    .nav-link {
+        display: block;
+        padding: 0rem 1.33rem;
+    }
+}
