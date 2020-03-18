@@ -242,6 +242,9 @@
       <?php $this->load->view('includes/sidebar'); ?>
       <div class="app-content content">
         <div class="page-overlay"></div>
+        <div class="loader hide">
+           <img src="<?= APP_ASSETS ?>/images/loader.gif">
+        </div>
         <div class="content-wrapper">
           <div class="content-header row"> </div>
           <div class="content-body">

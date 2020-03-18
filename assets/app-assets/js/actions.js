@@ -136,6 +136,24 @@ $(window).on("load",function(){
 });
 
 
+$(document).on('click',".load-view ", function(e) { 
+	//e.preventDefault();
+	$data = $(this).attr('data');
+	if($data != ''){
+			// load_page($data,true);
+		$.post($base_url+'/app/save_request',{data:$data,csrf_token:$csrf_token,'request_type':'view'},function(request_id){
+			if(request_id){
+				load_page(request_id,true);
+			}
+			else{
+				toast_error_message('Failed!',"It seems you don't have internet connection. Please check!");
+			}
+			
+		})
+		
+	}
+});  
+
 $( '.app-sidebar' ).delegate( "li", "click", function(e) { 
 	e.preventDefault();
 	page_loader($(this));
@@ -176,13 +194,13 @@ $(document).on("click",".reload",function(){
 function load_page($request_id,$push_url){
 	if(internet_connection()){
 		if($request_id != ''){
-			add_loader();
+			//add_loader();
 			$(".page-loader").html('').load($base_url+'/app/view_loader',{request_id:$request_id,csrf_token:$csrf_token},function(){
 				if($push_url){
 					$browser_url = $base_url+"/app?"+$request_id; //generate_browser_url($data);
 					history.pushState(null, null, $browser_url);
 				}
-				remove_loader();
+				//remove_loader();
 			});
 		}
 	}
@@ -316,48 +334,12 @@ $(document).on("click",'.filter-form-btn',function(){
 
 function add_loader()
 {
-	// $(".loader").css("display","block");
-	var $white = '#fff';
-	$('.block-element').on('click', function () {
-	    var block_ele = $('.page-loader');
-	    $(block_ele).block({
-	      message: '<div class="bx bx-revision icon-spin font-medium-2"></div>',
-	      timeout: 200000000, //unblock after 2 seconds
-	      overlayCSS: {
-	        backgroundColor: $white,
-	        opacity: 0.8,
-	        cursor: 'wait'
-	      },
-	      css: {
-	        border: 0,
-	        padding: 0,
-	        backgroundColor: 'transparent'
-	      }
-	    });
-	});
+	$(".loader").removeClass("hide");
 }
 
 function remove_loader()
 {
-	// $(".loader").css("display","none");
-	var $white = '#fff';
-	$('.block-element').on('click', function () {
-	    var block_ele = $('.page-loader');
-	    $(block_ele).block({
-	      message: '<div class="bx bx-revision icon-spin font-medium-2"></div>',
-	      timeout: 10, //unblock after 2 seconds
-	      overlayCSS: {
-	        backgroundColor: $white,
-	        opacity: 0.8,
-	        cursor: 'wait'
-	      },
-	      css: {
-	        border: 0,
-	        padding: 0,
-	        backgroundColor: 'transparent'
-	      }
-	    });
-	});
+	$(".loader").addClass("hide");
 }
 
 $(document).on('click','.change-status',function(){
@@ -1341,6 +1323,125 @@ $(document).on('click', '.export-data', function () {
 			    );
 	}
 });
+
+// $(document).on('click', '.delete-compaigns', function () {
+
+// 	$ids = [];
+	
+// 	 $('.table_record_checkbox:checked').each(function() 
+// 		 	 {
+// 			   $ids.push(this.value);
+// 			 }); 
+// 	if($ids.length > 0){
+// 		$url = $base_url+"/App/"+$(this).attr('function');
+// 		if($url != ""){ 
+			
+// 			$.ajax({
+// 				    type:'POST',
+// 				    url: $url,
+// 				    data: {ids:$ids,csrf_token:$csrf_token},
+				   	 
+// 				    beforeSend:function(){
+// 				    	  add_loader();
+// 				    },
+
+// 				    success:function(response)
+// 				    {
+// 				    	//var file_url = response; 
+// 				    	// $("body").append("<a href='"+file_url+"' download id='download-excel'></a>");
+// 				    	// $("body").find("#download-excel").trigger("click");
+// 				    	// $("body").find("#download-excel").remove();
+// 						//window.open(file_url, '_blank');
+// 						swal("Success!", "Records Deleted Successfully", "success");
+// 				    },
+// 				    error:function(msg){
+// 				    	console.log(msg);
+// 				    	 swal(
+// 							      'Error!',
+// 							      'error'
+// 							 );
+// 				    },
+// 				    complete:function(){
+// 				    	 remove_loader();
+// 				    }
+// 			}); 
+// 		}
+// 	}
+// 	else{
+// 			swal(
+// 			      'Error!',
+// 			       'Records not',
+// 			      'error'
+// 			    );
+// 	}
+// });
+$(document).on("click",".delete-bulk",function(){
+	$ids = [];
+	
+	   $('.table_record_checkbox:checked').each(function() 
+		 	 {
+			   $ids.push(this.value);
+			 }); 
+	if($ids.length > 0){
+		$table = $(this).attr("table");
+		$parent_div = $(this).attr("parent-div");
+		$record = $(this);
+		swal({
+	        title: "Are you sure?",
+	        text: "You will not be able to recover this!",
+	        type: "warning",
+	        showCancelButton: true,
+	        confirmButtonColor: "#ff5f28",
+	        confirmButtonText: "Yes, delete it!",
+	        closeOnConfirm: true
+	    }, function(){
+
+	        add_loader();
+			$.ajax({
+				        type: "POST",
+				        url: $base_url+"/app/delete_record",
+				        data: {table:$table,id:$ids,csrf_token:$csrf_token},
+				        async:false,
+				        success: function(result) {
+				        	if(result == 'true'){
+				        		$.each($ids,function(i,$value){
+				        		  $($parent_div).find(".rec-"+$value).remove();	
+				        		})
+				        		$('.reload-page').trigger('click');
+				        	}else{
+				        		swal(
+							      'Error!',
+							       "Sorry! Record are not deleted.",
+							      'error'
+								);
+				        	}
+				           
+				        },
+				        error:function(){
+				        	swal(
+							      'Error!',
+							       "Sorry! Record can't be deleted.",
+							      'error'
+								);
+
+				        },
+				        complete: function(){
+				        	remove_loader();
+				        	toast_success_message('Success!',"Record is deleted successfully...");
+				        }
+				    });
+
+			return true;
+	    });
+	}else{
+		swal(
+			'Error!',
+			'No Records Selected',
+			'error'
+		);
+	}	
+	return false;
+});
 $(document).on('click', '.export-all-data', function () {
 		$url = $base_url+"/App/"+$(this).attr('function');
 		if($url != ""){ 
@@ -2084,9 +2185,6 @@ $(document).on("click",".emp-att-search-btn",function(e){
 	return false;
 });
 
-
-
-
 $(document).on('change','.salary_increments_employees',function(){
 	
 	$val=$(this).val();
@@ -2209,7 +2307,6 @@ function fetch_employee_allowances_history($emp_id){
 	}
 }
 
-
 $(document).on("click",".delete_contract",function(){
 
 	$data = $.parseJSON($(this).attr("data"));
@@ -2253,7 +2350,6 @@ $(document).on("click",".delete_contract",function(){
 	return false;
 });
 
-
 $(document).on("click",".sample-import-file",function(e){
 	e.preventDefault();
 	$file_name = $(this).attr('target');
@@ -2289,8 +2385,6 @@ $(document).on("click",".sample-import-file",function(e){
 
 	return false;
 });
-
-
 
 $(document).on("click",".upload-file",function(e){
 	e.preventDefault();
@@ -2384,7 +2478,6 @@ $(document).on("click","#table-sortable th",function(){
 	 })
 	 
 });
-
 
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;

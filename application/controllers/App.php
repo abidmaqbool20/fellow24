@@ -63,7 +63,9 @@ class App extends My_Controller {
         if(is_object($request_data)){
              $request_data = (array) json_decode(json_encode($request_data));
         }
-        
+        if(isset($request_data['type'])){
+            $this->session->set_userdata('view_type',$request_data['type']);
+        }
         echo $this->load->view($request_data['view'],$request_data,TRUE);
     }
  
@@ -150,9 +152,28 @@ class App extends My_Controller {
 	
 	public function delete_record(){ 
         $data = $this->input->post();
-        if($data['id'] != "" && $data['id'] > 0 && $data['table'] != "" && $data['table'] != ''){
-            return $deleted = $this->db->update($data['table'],array("deleted"=>1,"deleted_by"=>$this->master_id,"date_deleted"=>$this->date),array("id"=>$data['id']));
+        if(isset($data['id'])){
+            if(is_array($data['id'])){
+                $this->db->where_in('id',$data['id']);
+                $deleted = $this->db->update($data['table'],array('deleted'=>1));
+
+
+            }else{
+                
+                $deleted = $this->db->update($data['table'],array("deleted"=>1,"deleted_by"=>$this->master_id,"date_deleted"=>$this->date),array("id"=>$data['id']));   
+            }
         }
+
+        if(isset($deleted)){
+            if($deleted){
+                echo 'true';
+            }else{
+                echo 'false';
+            }
+        }else{
+            echo 'false';
+        }
+        
     } 
 
     public function get_module_permissions(){
@@ -780,10 +801,10 @@ class App extends My_Controller {
                       
                             $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'campaigns')).'" href="javascript:;">Delete</a>';
                       
-                   
+                            if($this->session->userdata('view_type')=='table'){
                                      $records .= ' <tr class="rec-'.$value->id.'">
                                         <td class="table-checkbox">
-                                            <div class="checkbox checkbox-success">
+                                            <div class="checkbox theme-checkbox ">
                                                 <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
@@ -795,7 +816,7 @@ class App extends My_Controller {
                                         <td class="hide col-added_by">'.$value->added_by_name.'</td>
                                         <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
                                         <td class="col-status"> 
-                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+                                            <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
                                                 <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
                                                 <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
                                             </div>
@@ -812,7 +833,35 @@ class App extends My_Controller {
                                               </div>
                                             </div>
                                         </td>
-                                    </tr>';              
+                                    </tr>';   
+                            } else{
+
+
+                                $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                                  <div class="card" style="height: 396.688px;">
+                                    <div class="card-content">
+                                    <div class="card-action">
+                                        <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                        </div>
+                                    </div>
+                                      <div class="card-body">
+                                        <h4 class="">'.$value->title.'</h4>
+                                        <p class="card-text">'.substr($value->description,0,80).'</p>
+                                        <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>';   
+
+                            }          
                 }
             }
 
@@ -953,5 +1002,7 @@ class App extends My_Controller {
             return $input;
         } 
     }
+
+   
 
 }
