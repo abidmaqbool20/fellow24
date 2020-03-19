@@ -749,7 +749,6 @@ class App extends My_Controller {
 	}
 
 
-
     public function change_status()
     {
         $data = $this->input->post();
@@ -809,7 +808,7 @@ class App extends My_Controller {
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
                                         </td>
-                                        <td class="text-bold-500 col-title">'.$value->title.'</td>
+                                        <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->title.'</a></td>
                                         <td class="col-description">'.substr($value->description,0,80).'</td>
                                         <td class="col-date_added">'.$value->date_added.'</td>
                                         <td class="hide col-date_modification">'.$value->date_modification.'</td>
@@ -853,7 +852,7 @@ class App extends My_Controller {
                                         </div>
                                     </div>
                                       <div class="card-body">
-                                        <h4 class="">'.$value->title.'</h4>
+                                        <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->title.'</a></h4>
                                         <p class="card-text">'.substr($value->description,0,80).'</p>
                                         <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
                                       </div>

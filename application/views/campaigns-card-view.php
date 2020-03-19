@@ -27,9 +27,7 @@
 				<li>
 					<button type="button" class="btn btn-icon btn-light page-sidebar-open" target="filter-sidebar"><i class="bx bxs-filter-alt"></i></button>
 				</li>
-				<li>
-					<button type="button" class="btn btn-icon btn-warning page-sidebar-open" target="sort-sidebar"><i class="bx bx-sort"></i></button>
-				</li>
+				
 				<li>
 					<button type="button" class="btn btn-icon btn-danger reload-page load-view" data="<?php echo get_json(array('id'=>'0','view'=>'campaigns-card-view','type'=>'card')); ?>"  title="Refresh Page"><i class="bx bx-refresh"></i></button>
 				</li> 
