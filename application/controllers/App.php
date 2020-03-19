@@ -1036,7 +1036,7 @@ class App extends My_Controller {
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
                                         </td>
-                                        <td class="text-bold-500 col-campaign_id"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'">'.$value->campaign_name.'</a></td>
+                                        <td class="text-bold-500 col-opportunity_id"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'">'.$value->campaign_name.'</a></td>
                                         <td class="col-client_name">'.$value->client_name.'</td>
                                         <td class="hide col-email ">'.$value->email.'</td>
                                         <td class="hide col-country_id">'.$value->country.'</td>
@@ -1052,7 +1052,7 @@ class App extends My_Controller {
                                         <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
                                         <td class="col-status"> 
                                             <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
-                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="opportunities"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
                                                 <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
                                             </div>
                                         </td>
@@ -1090,7 +1090,6 @@ class App extends My_Controller {
                                       <div class="card-body">
                                         <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->campaign_name.'</a></h4>
                                         <p class="card-text">'.$value->client_name.'</p>
-                                        <p class="card-text">'.substr($value->description,0,80).'</p>
                                         <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
                                       </div>
                                     </div>
@@ -1111,6 +1110,85 @@ class App extends My_Controller {
             $result['records']  = $records;
             $result['total_records']  = $result['total_records'];
             echo json_encode($result); 
+    }
+
+    public function import_opportunity_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['client_name'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['email'] = $this->validate_import_field_value($filesop[1]);
+                                            $record_data['phone'] = $this->validate_import_field_value($filesop[2]);
+                                            $record_data['mobile1'] = $this->validate_import_field_value($filesop[3]);
+                                            $record_data['mobile2'] = $this->validate_import_field_value($filesop[4]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[5]);
+                                            $this->db->insert('opportunities',$record_data);
+                                            $insert_records++;
+                                               
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                             $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                             $alert  = 'No Record Imported';
+                           
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+    public function export_opportunities(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('opportunities','Opportunities ','get_opportunities_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_opportunities(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('opportunities',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('opportunities','Opportunities ','get_opportunities_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
     }
 
    

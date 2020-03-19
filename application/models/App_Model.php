@@ -267,8 +267,19 @@ class App_Model extends CI_Model {
         $this->db->select("campaigns.title,campaigns.description");
         $this->db->from("campaigns");
         return $rec = $this->db->get();
+	}
 
-
+	public function get_opportunities_for_excel($ids){
+		$this->db->where_in("opportunities.id",$ids);
+        $this->db->where(array("opportunities.deleted"=>0));
+        $this->db->select("campaigns.title as campaign,opportunities.client_name,opportunities.email,phone,opportunities.mobile1,opportunities.mobile2,countries.name as country,states.name as state,cities.name as city,opportunities.description");
+        $this->db->from("opportunities");
+        $this->db->join("campaigns","opportunities.campaign_id = campaigns.id","left");
+        $this->db->join("countries","opportunities.country_id = countries.id","left");
+        $this->db->join("states","opportunities.state_id = states.id","left");
+        $this->db->join("cities","opportunities.city_id = cities.id","left");
+         $this->db->group_by('opportunities.id');
+        return $rec = $this->db->get();
 	}
 
 	public function get_opportunity_rec($id){

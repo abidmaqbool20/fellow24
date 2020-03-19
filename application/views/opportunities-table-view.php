@@ -59,11 +59,11 @@
 						</span>
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="tag">
-						<a href="javascript:;" class="dropdown-item align-items-center export-all-data " function="export_all_enquiries">
+						<a href="javascript:;" class="dropdown-item align-items-center export-all-data " function="export_all_opportunities">
 							<span class="bullet bullet-success bullet-sm"></span>
 							<span> &nbsp;Export All</span>
 						</a>
-						<a href="javascript:;" function="export_campaigns" class="dropdown-item align-items-center export-data">
+						<a href="javascript:;" function="export_opportunities" class="dropdown-item align-items-center export-data">
 							<span class="bullet bullet-success bullet-sm"></span>
 							<span> &nbsp;Export Selected Only</span>
 						</a>
@@ -90,7 +90,7 @@
 								<tr> 
 									<th class="table-checkbox table_record_checkbox"> 
 										<div class="checkbox theme-checkbox ">
-											<input type="checkbox" id="colorCheckbox0" class="table_head_checkbox" table="campaigns"> 
+											<input type="checkbox" id="colorCheckbox0" class="table_head_checkbox" table="opportunities"> 
 											<label for="colorCheckbox0"></label>
 										</div>
 									</th>
@@ -112,7 +112,7 @@
 									<th>ACTION</th>
 								</tr>
 							</thead>
-							<tbody class="opportunites table-records">     	
+							<tbody class="opportunities table-records">     	
 							</tbody>
 						</table>
 					</div> 
@@ -322,49 +322,50 @@
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="email" id="tbl-col-checkbox-3" name ="tbl-col-checkbox-3"> 
+													<input type="checkbox" class="table-column"  value="email" id="tbl-col-checkbox-3" name ="tbl-col-checkbox-3"> 
 													<label for="tbl-col-checkbox-3">Email </label>
 												</div>
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="phone" id="tbl-col-checkbox-4" name ="tbl-col-checkbox-4"> 
+													<input type="checkbox" class="table-column" value="phone" id="tbl-col-checkbox-4" name ="tbl-col-checkbox-4"> 
 													<label for="tbl-col-checkbox-4">Phone </label>
 												</div>
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="mobile1" id="tbl-col-checkbox-5" name ="tbl-col-checkbox-5"> 
+													<input type="checkbox" class="table-column" value="mobile1" id="tbl-col-checkbox-5" name ="tbl-col-checkbox-5"> 
 													<label for="tbl-col-checkbox-5">Mobile 1 </label>
 												</div>
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="campaign_id" id="tbl-col-checkbox-6" name ="tbl-col-checkbox-6"> 
+													<input type="checkbox" class="table-column" value="campaign_id" id="tbl-col-checkbox-6" name ="tbl-col-checkbox-6"> 
 													<label for="tbl-col-checkbox-6">Mobile 2 </label>
 												</div>
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="country_id" id="tbl-col-checkbox-7" name ="tbl-col-checkbox-7"> 
+													<input type="checkbox" class="table-column" value="country_id" id="tbl-col-checkbox-7" name ="tbl-col-checkbox-7"> 
 													<label for="tbl-col-checkbox-7">Country </label>
 												</div>
 											</div>
+											
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="city_id" id="tbl-col-checkbox-8" name ="tbl-col-checkbox-9"> 
-													<label for="tbl-col-checkbox-9">City </label>
-												</div>
-											</div>
-											<div class="col-12 mb-1">
-												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="state_id" id="tbl-col-checkbox-10" name ="tbl-col-checkbox-10"> 
+													<input type="checkbox" class="table-column" value="state_id" id="tbl-col-checkbox-10" name ="tbl-col-checkbox-10"> 
 													<label for="tbl-col-checkbox-10">State </label>
 												</div>
 											</div>
 											<div class="col-12 mb-1">
 												<div class="checkbox checkbox-success">
-													<input type="checkbox" class="table-column" checked="checked" value="description" id="tbl-col-checkbox-11" name ="tbl-col-checkbox-11"> 
+													<input type="checkbox" class="table-column" value="city_id" id="tbl-col-checkbox-8" name ="tbl-col-checkbox-8"> 
+													<label for="tbl-col-checkbox-8">City </label>
+												</div>
+											</div>
+											<div class="col-12 mb-1">
+												<div class="checkbox checkbox-success">
+													<input type="checkbox" class="table-column" value="description" id="tbl-col-checkbox-11" name ="tbl-col-checkbox-11"> 
 													<label for="tbl-col-checkbox-11">Description</label>
 												</div>
 											</div>
@@ -422,7 +423,7 @@
 							</button>
 						</div>
 						<!-- form start -->
-						<form method="post" autocomplete="off" action="<?= base_url('App/import_campaign_csv_file'); ?>" enctype="multipart/form-data" class="import-csv-form">
+						<form method="post" autocomplete="off" action="<?= base_url('App/import_opportunity_csv_file'); ?>" enctype="multipart/form-data" class="import-csv-form">
 							<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 							<input type="hidden" name="per_page" id="per_page" value="10" class="per_page">
 							<div class="card-content">
@@ -446,7 +447,7 @@
 										<div class="col-12">
 											<p>Click the button below to download the importable Sample File</p>
 											<fieldset style="text-align: center" class="form-group">
-												<button type="button" class="btn btn-theme btn-sm sample-import-file" target="campaigns.csv"><i class="bx bx-cloud-download"></i> Download Sample</button>
+												<button type="button" class="btn btn-theme btn-sm sample-import-file" target="opportunities.csv"><i class="bx bx-cloud-download"></i> Download Sample</button>
 											</fieldset>
 										</div>
 									</div>
