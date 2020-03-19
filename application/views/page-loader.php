@@ -18,7 +18,10 @@
 ?>
 <style>
 .card-view .card h4{
-    color : <?=$theme_color ;?>;
+    color : <?=$theme_color ;?> !important;
+}
+.card-view .card h4 a{
+    color : <?=$theme_color ;?> !important;
 }
 .btn-theme{
 	background-color: <?=$theme_color ;?>;
