@@ -202,7 +202,7 @@ class App extends My_Controller {
 
         if(count($data['data']) > 0){ 
             $data = $data['data'];
-            $records = $this->HRM_Model->get_childs($data); 
+            $records = $this->App_Model->get_childs($data); 
             if($records->num_rows() > 0){
                 echo json_encode($records->result());
             }
@@ -1000,6 +1000,117 @@ class App extends My_Controller {
         if($input != "" && $input != 'NA'){
             return $input;
         } 
+    }
+
+    public function filter_opportunities(){
+        $data = $this->input->post(); 
+            if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+               $data['page'] = $this->uri->segment(3);
+            } 
+
+            $records = '';
+            $result = $this->App_Model->get_filtered_opportunities($data); 
+            if($result['records']->num_rows() > 0){
+
+                // echo "string";
+               
+                foreach ($result['records']->result() as $key => $value) {
+                            $checked ="";
+                            if($value->status == 1){
+                                $checked = 'checked';
+                            }
+                            $rec_permissions = "";
+                            $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'" href="javascript:;">Edit</a>';
+                      
+                       
+                            $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-opportunity')).'">View</a>';
+                    
+                      
+                            $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'opportunities')).'" href="javascript:;">Delete</a>';
+                      
+                            if($this->session->userdata('view_type')=='table'){
+                                     $records .= ' <tr class="rec-'.$value->id.'">
+                                        <td class="table-checkbox">
+                                            <div class="checkbox theme-checkbox ">
+                                                <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                                <label for="colorCheckbox'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold-500 col-campaign_id"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'">'.$value->campaign_name.'</a></td>
+                                        <td class="col-client_name">'.$value->client_name.'</td>
+                                        <td class="hide col-email ">'.$value->email.'</td>
+                                        <td class="hide col-country_id">'.$value->country.'</td>
+                                        <td class="hide col-state_id">'.$value->state.'</td>
+                                        <td class="hide col-city_id">'.$value->city.'</td>
+                                        <td class="hide col-mobile1">'.$value->mobile1.'</td>
+                                        <td class="hide col-mobile2">'.$value->mobile2.'</td>
+                                        <td class="hide col-phone">'.$value->phone.'</td>
+                                        <td class="col-date_added">'.$value->date_added.'</td>
+                                        <td class="hide col-description">'.substr($value->description,0,80).'</td>
+                                        <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                        <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                        <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                        <td class="col-status"> 
+                                            <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="campaigns"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                                <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                            </div>
+                                        </td>
+                                    </tr>';   
+                            } else{
+
+
+                                $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                                  <div class="card" style="height: 396.688px;">
+                                    <div class="card-content">
+                                    <div class="card-action">
+                                        <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                        </div>
+                                    </div>
+                                      <div class="card-body">
+                                        <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->campaign_name.'</a></h4>
+                                        <p class="card-text">'.$value->client_name.'</p>
+                                        <p class="card-text">'.substr($value->description,0,80).'</p>
+                                        <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>';   
+
+                            }          
+                }
+            }
+
+
+            $per_page = $data['per_page'];
+            if( $per_page == 0)
+                $per_page = 5000000000;
+            $first_url = base_url('App/filter_opportunities');
+            $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+            $result['links']  = $links;
+            $result['records']  = $records;
+            $result['total_records']  = $result['total_records'];
+            echo json_encode($result); 
     }
 
    

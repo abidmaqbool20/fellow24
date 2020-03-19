@@ -45,11 +45,12 @@
                <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'payscales')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Payscales</span></a></li>
             </ul>
          </li>
-          <li class=" navigation-header"><span>Campaigns</span></li> 
+          <li class=" navigation-header"><span>Sales</span></li> 
          <li class="nav-item hover-style">
             <a href="#"><i class="bx bx-file"></i><span class="menu-title" data-i18n="HR">Campaigns</span></a>
             <ul class="">
                <li class="clickable" ><a href="javascript:;"  data="<?php echo get_json(array('id'=>'0','view'=>'campaigns-table-view','type'=>'table')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice List">Manage Campaigns</span></a></li>
+                <li class="clickable" ><a href="javascript:;"  data="<?php echo get_json(array('id'=>'0','view'=>'opportunities-table-view','type'=>'table')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice List">Opportunities</span></a></li>
                <li><a href="designations.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice"></span></a></li>
                <li><a href="departments.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Edit">Departments</span></a></li>
                <li><a href="payscales.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Payscales</span></a></li>
