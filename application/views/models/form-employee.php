@@ -21,6 +21,10 @@
           <i class="bx bx-x"></i>
         </button>
       </div>
+      <?php  
+        // echo "<pre>";print_r($record_data);
+        // die();
+      ?>
       <!-- form start -->
       <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_form'); ?>" enctype="multipart/form-data">
         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
@@ -180,7 +184,12 @@
                     <div class="form-group">
                       <label class="form-label" for="country_id"><span class="required-label">*</span>Country</label>
                       <div class="position-relative has-icon-left">
-                        <select class="select2 form-control " name='country_id' id='country_id' class='country_id'>
+                      <?php $selected_country = 0;
+                        if (isset($record_data)) {
+                          $selected_country = $record_data->country_id;
+                        } 
+                      ?>
+                        <select class="select2 form-control parent-dropdown" data="<?php echo get_json(array('target' => 'state_id', 'selected' => $selected_country, 'table' => 'states', 'key' => 'country')); ?>" name='country_id' id='country_id' class='country_id'>
                           <option value=''>Select Country</option>
                           <?php 
                             $countries = $this->App_Model->get_countries();
@@ -208,10 +217,15 @@
                     <div class="form-group">
                       <label class="form-label" for="state_id" ><span class="required-label">*</span>State</label>
                       <div class="position-relative has-icon-left">
-                        <select class="select2 form-control" name='state_id' id='state_id' class='state_id'>
+                      <?php $selected_state = 0;
+                        if (isset($record_data)) {
+                            $selected_state = $record_data->state_id;
+                        } 
+                      ?>
+                        <select class="select2 form-control parent-dropdown" name='state_id' id='state_id' class='state_id' data="<?php echo get_json(array('target' => 'city_id', 'selected' => $selected_state, 'table' => 'cities', 'key' => 'state')); ?>">
                           <option value=''>Select State</option>
                           <?php 
-                            $states = $this->App_Model->get_states();
+                            $states = $this->App_Model->get_states($record_data->country_id);
                             $selected = "";
                             if(isset($record_data)){
                               if($states->num_rows() > 0){
@@ -239,7 +253,7 @@
                         <select class="select2 form-control" name='city_id' id='city_id' class='city_id'>
                           <option value=''>Select City</option>
                           <?php 
-                            $cities = $this->App_Model->get_cities();
+                            $cities = $this->App_Model->get_cities($record_data->state_id);
                             $selected = "";
                             if(isset($record_data)){
                               if($cities->num_rows() > 0){
@@ -291,7 +305,7 @@
                     <div class="form-group">
                       <label class="form-label" for="phone"><span class="required-label">*</span>Phone</label>
                       <div class="position-relative has-icon-left">
-                        <input type="text" name="phone" id="phone" placeholder="Phone" class="form-control required phone"  required="required" value="<?php if (isset($record_data)) {echo $record_data->phnoe;} ?>">
+                        <input type="text" name="phone" id="phone" placeholder="Phone" class="form-control required phone"  required="required" value="<?php if (isset($record_data)) {echo $record_data->phone;} ?>">
                         <div class="form-control-position">
                           <i class="bx bx-phone"> </i> 
                         </div>

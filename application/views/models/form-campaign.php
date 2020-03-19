@@ -61,15 +61,15 @@ if (isset($id) && $id > 0) {
 <script>
   loadEditor('description');
   function loadEditor(id){
-  CKEDITOR.replace( id, {
-  toolbar: [
-  { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [  'Undo', 'Redo' ] },
-  { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-' ] },
-  { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList',   'Blockquote',  'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-  { name: 'links', items: [ 'Link'  ] } ,
-  { name: 'tools', items: [ 'Maximize' ] }
-  ]
-  });
+    CKEDITOR.replace( id, {
+      toolbar: [
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [  'Undo', 'Redo' ] },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList',   'Blockquote',  'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+        { name: 'links', items: [ 'Link'  ] } ,
+        { name: 'tools', items: [ 'Maximize' ] }
+      ]
+    });
   }
 
   

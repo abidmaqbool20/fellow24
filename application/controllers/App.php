@@ -20,7 +20,9 @@ class App extends My_Controller {
         ini_set('max_execution_time','5000');
         ini_set('max_input_time','5000');
         ini_set('memory_limit','1000M'); 
- 	}
+    }
+    
+    //Start Generic Functions
 
 	public function index(){ 
         $data['view'] = 'page-loader';
@@ -68,7 +70,6 @@ class App extends My_Controller {
         }
         echo $this->load->view($request_data['view'],$request_data,TRUE);
     }
- 
 
     public function load_form(){
 
@@ -111,7 +112,6 @@ class App extends My_Controller {
         }
         return $is_conn;
     }
-
    
     public function generate_excel_file($filename,$file_title,$function,$ids)
     { 
@@ -130,7 +130,6 @@ class App extends My_Controller {
         return $response;
         
     }
-
 
     public function generate_pdf($html,$report_name) 
     {  
@@ -211,7 +210,6 @@ class App extends My_Controller {
             } 
         } 
     } 
-
 
     public function load_file_data(){
         $employees = array();
@@ -617,7 +615,6 @@ class App extends My_Controller {
         }  
         return $data; 
     } 
-
     
     public function save_form() 
     { 
@@ -748,7 +745,6 @@ class App extends My_Controller {
         }   
 	}
 
-
     public function change_status()
     {
         $data = $this->input->post();
@@ -773,6 +769,65 @@ class App extends My_Controller {
         echo true;
     }
 
+    public function create_pagination($url,$total_record,$per_page){
+
+        $config['base_url'] = $url;
+        $config['total_rows'] = $total_record;
+        $config['per_page'] = $per_page;
+        $config["uri_segment"] = 3; 
+        $config['first_url'] = $url; 
+        $config['num_links'] = 3;
+        $config['use_page_numbers'] = TRUE;
+        $config['reuse_query_string'] = FALSE;  
+        $config['enable_query_strings']= FALSE; 
+        $config['attributes'] = array('class' => 'page-link');
+        $config['first_link'] = '<<';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>'; 
+        $config['last_link'] = '>>';
+        $config['last_tag_open'] = '<li class="page-item next">';
+        $config['last_tag_close'] = '</li>'; 
+        $config['next_link'] = '>';
+        $config['next_tag_open'] = '<li class="page-item next">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<';
+        $config['prev_tag_open'] = '<li class="page-item previous">';
+        $config['prev_tag_close'] = '</li>'; 
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:;">';
+        $config['cur_tag_close'] = '</a></li>'; 
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $this->pagination->initialize($config);
+        return $links = $this->pagination->create_links();
+
+    }
+
+    public function download_sample_file(){
+        $data = $this->input->post();
+        if(isset($data['file_name'])){
+            echo APP_ASSETS.'/sample-files/'.$data['file_name'];
+        }
+    }
+
+    public function validate_import_field_value($input){
+        if($input != "" && $input != 'NA'){
+            return $input;
+        } 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start Campaigns functions
     public function filter_campaigns(){
 
             $data = $this->input->post(); 
@@ -876,39 +931,6 @@ class App extends My_Controller {
             echo json_encode($result); 
     }
 
-    public function create_pagination($url,$total_record,$per_page){
-
-        $config['base_url'] = $url;
-        $config['total_rows'] = $total_record;
-        $config['per_page'] = $per_page;
-        $config["uri_segment"] = 3; 
-        $config['first_url'] = $url; 
-        $config['num_links'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        $config['reuse_query_string'] = FALSE;  
-        $config['enable_query_strings']= FALSE; 
-        $config['attributes'] = array('class' => 'page-link');
-        $config['first_link'] = '<<';
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>'; 
-        $config['last_link'] = '>>';
-        $config['last_tag_open'] = '<li class="page-item next">';
-        $config['last_tag_close'] = '</li>'; 
-        $config['next_link'] = '>';
-        $config['next_tag_open'] = '<li class="page-item next">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_link'] = '<';
-        $config['prev_tag_open'] = '<li class="page-item previous">';
-        $config['prev_tag_close'] = '</li>'; 
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:;">';
-        $config['cur_tag_close'] = '</a></li>'; 
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $this->pagination->initialize($config);
-        return $links = $this->pagination->create_links();
-
-    }
-
     public function export_campaigns(){
         $data = $this->input->post();
         $response = $this->generate_excel_file('campaigns','Campaings ','get_campaigns_for_excel',$data['ids']);
@@ -989,18 +1011,214 @@ class App extends My_Controller {
         echo json_encode($message);
     }
 
-    public function download_sample_file(){
-        $data = $this->input->post();
-        if(isset($data['file_name'])){
-            echo APP_ASSETS.'/sample-files/'.$data['file_name'];
-        }
+
+
+
+
+
+
+
+
+
+    // Start Employees functions
+    public function filter_employees(){
+
+            $data = $this->input->post(); 
+            if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+               $data['page'] = $this->uri->segment(3);
+            } 
+
+            $records = '';
+            $result = $this->App_Model->get_filtered_employees($data); 
+            if($result['records']->num_rows() > 0){
+
+                // echo "string";
+               
+                foreach ($result['records']->result() as $key => $value) {
+                            $checked ="";
+                            if($value->status == 1){
+                                $checked = 'checked';
+                            }
+                            $rec_permissions = "";
+                            $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'" href="javascript:;">Edit</a>';
+                      
+                       
+                            $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-employee')).'">View</a>';
+                    
+                      
+                            $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'employees')).'" href="javascript:;">Delete</a>';
+                      
+                            if($this->session->userdata('view_type')=='table'){
+                                if(isset($value->profile_pic)){
+                                    $profile_img = '<img src="'.FILE_ASSETS.'employees/'.$value->id.'/'.$value->profile_pic.'" alt="img placeholder" height="32" width="32">';	
+                                } else{ 
+                                    $profile_img = '<img src="'.APP_ASSETS.'/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">' ;
+                                }
+                                     $records .= ' <tr class="rec-'.$value->id.'">
+                                        <td class="table-checkbox">
+                                            <div class="checkbox theme-checkbox ">
+                                                <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                                <label for="colorCheckbox'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold-500 col-title">
+                                            <a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">
+                                                <div class="col-2 avatar">
+                                                    '.$profile_img.'                                 
+                                                </div>
+                                                <div class="user col-9">'.$value->first_name.' '.$value->last_name.'</div> 
+                                            </a>
+                                        </td>
+                                        <td class="col-description">'.$value->email.'</td>
+                                        <td class="col-description">'.$value->national_id.'</td>
+                                        <td class="col-description">'.$value->gender.'</td>
+                                        <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->doj)).'</td>
+                                        <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->date_added)).'</td>
+                                        <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                        <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                        <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                        <td class="col-status"> 
+                                            <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="employees"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                                <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                            </div>
+                                        </td>
+                                    </tr>';   
+                            } else{
+
+
+                                $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                                  <div class="card" style="height: 396.688px;">
+                                    <div class="card-content">
+                                    <div class="card-action">
+                                        <div class="dropdown">
+                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="bx bx-dots-vertical-rounded"></i>
+                                              </button>
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                
+                                                '. $rec_permissions.'
+                                               
+                                              </div>
+                                        </div>
+                                    </div>
+                                      <div class="card-body">
+                                        <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">'.$value->title.'</a></h4>
+                                        <p class="card-text">'.substr($value->description,0,80).'</p>
+                                        <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>';   
+
+                            }          
+                }
+            }
+
+
+            $per_page = $data['per_page'];
+            if( $per_page == 0)
+                $per_page = 5000000000;
+            $first_url = base_url('App/filter_employees');
+            $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+            $result['links']  = $links;
+            $result['records']  = $records;
+            $result['total_records']  = $result['total_records'];
+            echo json_encode($result); 
     }
 
-    public function validate_import_field_value($input){
-        if($input != "" && $input != 'NA'){
-            return $input;
-        } 
+    public function export_employees(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('employees','Employees ','get_employees_for_excel',$data['ids']);
+        echo $response;
     }
+
+    public function export_all_employees(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('employees',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('employees','Employees ','get_employees_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_employees_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['title'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[1]);
+                                            $check = $this->db->get_where('employees',array('title'=>$record_data['title']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('employees',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                             $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                             $alert  = 'No Record Imported';
+                           
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+
 
    
 

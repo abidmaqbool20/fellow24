@@ -478,3 +478,15 @@ table th i{font-size: 12px !important;font-weight: bold;}
         padding: 0rem 1.33rem;
     }
 }
+
+
+.avatar {
+    float: left;
+    margin-right: 5px !important;
+}
+.user{
+    padding-top: 13px;
+    width: 82%;
+    float: left;
+    font-size: 12px;
+}
