@@ -142,6 +142,12 @@ class App_Model extends CI_Model {
         return $rec = $this->db->get();
     }
     
+    public function get_childs($data)
+    {
+        return $this->db->get_where($data['table'], array($data['key'] => $data['key_id'], "deleted" => 0, "status" => 1));
+    }
+
+
 
 
 
@@ -429,20 +435,12 @@ class App_Model extends CI_Model {
                 $this->db->or_like('employees.martial_status',$data['search_string'],'both');
                 $this->db->or_like('employees.doj',$data['search_string'],'both');
                 $this->db->or_like('employees.dob',$data['search_string'],'both');
-                $this->db->or_like('employees.country_id',$data['search_string'],'both');
-                $this->db->or_like('employees.state_id',$data['search_string'],'both');
-                $this->db->or_like('employees.city_id',$data['search_string'],'both');
                 $this->db->or_like('employees.zip_code',$data['search_string'],'both');
                 $this->db->or_like('employees.address',$data['search_string'],'both');
                 $this->db->or_like('employees.mobile_1',$data['search_string'],'both');
                 $this->db->or_like('employees.mobile_2',$data['search_string'],'both');
                 $this->db->or_like('employees.email',$data['search_string'],'both');
                 $this->db->or_like('employees.basic_salary',$data['search_string'],'both');
-                $this->db->or_like('employees.department_id',$data['search_string'],'both');
-                $this->db->or_like('employees.designation_id',$data['search_string'],'both');
-                $this->db->or_like('employees.payscale_id',$data['search_string'],'both');
-                $this->db->or_like('employees.organization_id',$data['search_string'],'both');
-                $this->db->or_like('employees.role_id',$data['search_string'],'both');
                 $this->db->or_like('employees.id',$data['search_string'],'both');
                 $this->db->group_end();
             }
@@ -484,6 +482,7 @@ class App_Model extends CI_Model {
             $total_records = $tempdb->count_all_results();
             $this->db->limit($limit,$offset);
             $this->db->order_by("employees.id","ASC");
+            $this->db->group_by("employees.id");
             $rec = $this->db->get();
             $result['total_records'] = $total_records;
             $result['records'] = $rec;
@@ -508,6 +507,18 @@ class App_Model extends CI_Model {
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+    //Start opportunity Functions
 	public function get_opportunity_rec($id){
 		    $this->db->where(array('opportunities.deleted'=>0,'opportunities.id'=>$id));
 		    $this->db->select("opportunities.*,campaigns.title as campaign_name,countries.name as country,cities.name as city,states.name as state,users.name as added_by_name,modified.name as modified_by_name");

@@ -18,6 +18,8 @@
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/vendors/css/vendors.min.css">
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/vendors/css/charts/apexcharts.css">
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/vendors/css/extensions/dragula.min.css">
+      
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/vendors/css/tables/datatable/datatables.min.css">
       <link rel="stylesheet" type="text/css" href="<?= APP_ASSETS ?>/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">

@@ -1,6 +1,7 @@
  </div>  </div> </div>
 
 <!-- END: Footer-->
+
 <!-- BEGIN: Vendor JS-->
 <script src="<?= APP_ASSETS ?>/vendors/js/vendors.min.js"></script>
 <script src="<?= APP_ASSETS ?>/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
@@ -27,6 +28,10 @@
 
 <script src="<?= APP_ASSETS ?>vendors/js/forms/select/select2.full.min.js"></script>
 <script src="<?= APP_ASSETS ?>js/scripts/forms/select/form-select2.min.js"></script>
+
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
+
 <!-- END: Page Vendor JS-->
 <!-- BEGIN: Theme JS-->
 <script src="<?= APP_ASSETS ?>/js/core/app-menu.min.js"></script>
@@ -53,7 +58,9 @@
 <!-- <script src="<?= APP_ASSETS ?>/vendors/js/fontawesome/js/all.js"></script> -->
 
 
-
+<!-- <script>
+    $.noConflict(true);
+</script> -->
  
  
 </body>

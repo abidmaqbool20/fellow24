@@ -1020,7 +1020,147 @@ class App extends My_Controller {
 
 
 
+
+
+
+
+
+
+
     // Start Employees functions
+    public function save_employee() 
+    { 
+        $save = false;   $message = array(); $id = "";   
+        $data = $this->input->post();
+      
+        if(isset($data['edit_record_id']))  
+            $id = $data['edit_record_id'];  
+            
+        $doj = $data['prefix__doj__suffix'];  
+        $dob = $data['prefix__dob__suffix'];  
+        $table = $data['table_name'];  
+        unset($data['csrf_token'],$data['edit_record_id'],$data['table_name'],$data['prefix__dob__suffix'],$data['prefix__doj__suffix'],$data['dob'],$data['doj']);
+
+        if($id == "") 
+        {  
+            $data['date_added'] = $this->date; 
+            $data['added_by'] = $this->user_data['id']; 
+            $data['doj'] = $doj; 
+            $data['dob'] = $dob;
+            $data = $this->JsonEncode($data); 
+            $this->db->insert($table,$data); 
+            $id = $this->db->insert_id(); 
+               
+            $filedata = array(); 
+            $path = "assets/admin/adminassets/".$table."/".$id."/"; 
+            
+            if(isset($_FILES) && sizeof($_FILES) > 0) 
+            { 
+                foreach ($_FILES as $key => $value)  
+                { 
+                    if(is_array($_FILES[$key]['name'])) 
+                    { 
+                        if($_FILES[$key]['error'][0] == 0) 
+                        { 
+                            $files =  $this->reArrayFiles($_FILES[$key]); 
+                            $this->save_multiple_files($path,$files,$table,$id); 
+                        } 
+                    } 
+                    else 
+                    { 
+                        if($_FILES[$key]['error'] == 0) 
+                        { 
+                            $filedata['table_id'] = $id;  
+                            $filedata['table_name'] = $table; 
+                            $filedata["original_name"] = $this->save_file($path,$key); 
+                            $filedata['file_name'] = $_FILES[$key]['name']; 
+                            $filedata['file_type'] = $_FILES[$key]['type']; 
+                            $filedata['file_size'] = $_FILES[$key]['size']; 
+                            $filedata['date_added'] = $this->date; 
+                            $filedata['added_by'] = $this->user_data['id']; 
+                            $filedata['modified_by'] = $this->user_data['id']; 
+
+                            $this->db->insert("files",$filedata); 
+                            $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id));
+                        } 
+                    }  
+                } 
+            } 
+            
+            $alert  =  '<div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Successful!</h4>
+                             Record is saved successfully...
+                        </div>';  
+            $save = true;   
+        } 
+        else 
+        { 
+            $data['Date_Modification'] = $this->date; 
+            $data['modified_by'] = $this->user_data['id'];  
+            $data['doj'] = $doj; 
+            $data['dob'] = $dob; 
+            $data = $this->JsonEncode($data);  
+ 
+            $files_allowed = true;
+            $path = "assets/admin/adminassets/".$table."/".$id."/"; 
+            if(isset($_FILES) && sizeof($_FILES) > 0) 
+            { 
+                $filedata = array(); 
+                foreach ($_FILES as $key => $value)  
+                { 
+                    if(is_array($_FILES[$key]['name'])) 
+                    { 
+                        if($_FILES[$key]['error'][0] == 0) 
+                        { 
+                            $files =  $this->reArrayFiles($_FILES[$key]); 
+                            $this->save_multiple_files($path,$files,$table,$id); 
+                        } 
+                    } 
+                    else 
+                    {  
+                        if($_FILES[$key]['error'] == 0) 
+                        { 
+                            $filedata['table_id'] = $id;  
+                            $filedata['table_name'] = $table; 
+                            $filedata["original_name"] = $this->save_file($path,$key); 
+                            $filedata['file_name'] = $_FILES[$key]['name']; 
+                            $filedata['file_type'] = $_FILES[$key]['type']; 
+                            $filedata['file_size'] = $_FILES[$key]['size']; 
+                            $filedata['date_added'] = $this->date; 
+                            $filedata['added_by'] = $this->user_data['id']; 
+                            $filedata['modified_by'] = $this->user_data['id'];  
+                            
+                            $this->db->insert("files",$filedata); 
+                            $this->db->update($table,array($key => $filedata["original_name"]),array("id"=>$id)); 
+                        } 
+                    }  
+                }  
+            }  
+
+                            
+            $this->db->update($table,$data,array("id"=>$id));  
+            // echo $this->db->last_query();
+     //        die();
+            $alert  =  '<div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Successful!</h4>
+                             Record is updated successfully...
+                        </div>'; 
+            $save = true;   
+        }  
+
+        if($this->input->is_ajax_request()){
+            $message['success'] = $save ;
+            $message['message'] = 'Record is saved successfully!' ;
+            echo json_encode($message);
+        }
+        else{ 
+            $this->session->set_flashdata("message",$alert); 
+            redirect($_SERVER['HTTP_REFERER']);
+        }   
+	}
+
     public function filter_employees(){
 
             $data = $this->input->post(); 
@@ -1069,10 +1209,10 @@ class App extends My_Controller {
                                                 <div class="user col-9">'.$value->first_name.' '.$value->last_name.'</div> 
                                             </a>
                                         </td>
-                                        <td class="col-description">'.$value->email.'</td>
-                                        <td class="col-description">'.$value->national_id.'</td>
-                                        <td class="col-description">'.$value->gender.'</td>
-                                        <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->doj)).'</td>
+                                        <td class="col-email">'.$value->email.'</td>
+                                        <td class="col-national_id">'.$value->national_id.'</td>
+                                        <td class="col-gender">'.$value->gender.'</td>
+                                        <td class="col-doj">'.date('l d F Y H:i',strtotime($value->doj)).'</td>
                                         <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->date_added)).'</td>
                                         <td class="hide col-date_modification">'.$value->date_modification.'</td>
                                         <td class="hide col-added_by">'.$value->added_by_name.'</td>
@@ -1220,6 +1360,21 @@ class App extends My_Controller {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start opportunities functions
     public function filter_opportunities(){
         $data = $this->input->post(); 
             if($this->uri->segment(3) && $this->uri->segment(3) > 0){

@@ -21,12 +21,8 @@
           <i class="bx bx-x"></i>
         </button>
       </div>
-      <?php  
-        // echo "<pre>";print_r($record_data);
-        // die();
-      ?>
       <!-- form start -->
-      <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_form'); ?>" enctype="multipart/form-data">
+      <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_employee'); ?>" enctype="multipart/form-data">
         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
         <input type="hidden" name="table_name" id="table_name" value="employees">
         <input type="hidden" name="edit_record_id" id="edit_record_id" value="<?php if (isset($record_data)) {echo $record_data->id;} ?>">
@@ -184,26 +180,22 @@
                     <div class="form-group">
                       <label class="form-label" for="country_id"><span class="required-label">*</span>Country</label>
                       <div class="position-relative has-icon-left">
-                      <?php $selected_country = 0;
-                        if (isset($record_data)) {
-                          $selected_country = $record_data->country_id;
-                        } 
-                      ?>
-                        <select class="select2 form-control parent-dropdown" data="<?php echo get_json(array('target' => 'state_id', 'selected' => $selected_country, 'table' => 'states', 'key' => 'country')); ?>" name='country_id' id='country_id' class='country_id'>
+                      <?php $country_id = 0; if(isset($record_data)){ $country_id = $record_data->country_id; } ?>
+                        <select class="select2 form-control parent-dropdown" data="<?php echo get_json(array('target'=>'state_id','selected'=>$country_id,'table'=>'states','key'=>'country')); ?>" name='country_id' id='country_id' class='country_id'>
                           <option value=''>Select Country</option>
                           <?php 
-                            $countries = $this->App_Model->get_countries();
-                            $selected = "";
-                            if(isset($record_data)){
+                            $countries = $this->App_Model->get_countries();                            
                               if($countries->num_rows() > 0){
                                 foreach($countries->result() as $key => $value){
-                                  if($value->id == $record_data->country_id){
-                                    $selected = "selected='selected'";
+                                  $selected = "";
+                                  if(isset($record_data)){
+                                    if($value->id == $record_data->country_id){
+                                      $selected = "selected='selected'";
+                                    }
                                   }
                                   echo "<option value='$value->id' $selected >$value->name</option>";
                                 }
                               }
-                            }
                           ?>
                         </select>
                         <div class="form-control-position">
@@ -217,26 +209,24 @@
                     <div class="form-group">
                       <label class="form-label" for="state_id" ><span class="required-label">*</span>State</label>
                       <div class="position-relative has-icon-left">
-                      <?php $selected_state = 0;
-                        if (isset($record_data)) {
-                            $selected_state = $record_data->state_id;
-                        } 
-                      ?>
-                        <select class="select2 form-control parent-dropdown" name='state_id' id='state_id' class='state_id' data="<?php echo get_json(array('target' => 'city_id', 'selected' => $selected_state, 'table' => 'cities', 'key' => 'state')); ?>">
+                      <?php $state_id = 0; if(isset($record_data)){ $state_id = $record_data->state_id; } ?>
+                        <select class="select2 form-control parent-dropdown" name='state_id' id='state_id' class='state_id' data="<?php echo get_json(array('target'=>'city_id','selected'=>$state_id,'table'=>'cities','key'=>'state')); ?>">
                           <option value=''>Select State</option>
                           <?php 
                             $states = $this->App_Model->get_states($record_data->country_id);
-                            $selected = "";
-                            if(isset($record_data)){
+                            
                               if($states->num_rows() > 0){
                                 foreach($states->result() as $key => $value){
-                                  if($value->id == $record_data->state_id){
-                                    $selected = "selected='selected'";
+                                  $selected = "";
+                                  if(isset($record_data)){
+                                    if($value->id == $record_data->state_id){
+                                      $selected = 'selected="selected"';
+                                    }
                                   }
                                   echo "<option value='$value->id' $selected >$value->name</option>";
                                 }
                               }
-                            }
+                            
                           ?>
                         </select>
                         <div class="form-control-position">
@@ -253,18 +243,18 @@
                         <select class="select2 form-control" name='city_id' id='city_id' class='city_id'>
                           <option value=''>Select City</option>
                           <?php 
-                            $cities = $this->App_Model->get_cities($record_data->state_id);
-                            $selected = "";
-                            if(isset($record_data)){
+                            $cities = $this->App_Model->get_state_cities($record_data->state_id);
                               if($cities->num_rows() > 0){
                                 foreach($cities->result() as $key => $value){
-                                  if($value->id == $record_data->city_id){
-                                    $selected = "selected='selected'";
+                                  $selected = "";
+                                  if(isset($record_data)){
+                                    if($value->id == $record_data->city_id){
+                                      $selected = "selected='selected'";
+                                    }
                                   }
                                   echo "<option value='$value->id' $selected >$value->name</option>";
                                 }
                               }
-                            }
                           ?>
                         </select>
                         <div class="form-control-position">
@@ -375,10 +365,10 @@
                           <option value=''>Select Department</option>
                           <?php 
                             $department = $this->App_Model->get_departments();
-                            $selected = "";
                             if(isset($record_data)){
                               if($department->num_rows() > 0){
                                 foreach($department->result() as $key => $value){
+                                  $selected = "";
                                   if($value->id == $record_data->department_id){
                                     $selected = "selected='selected'";
                                   }
@@ -403,10 +393,10 @@
                           <option value=''>Select Designation</option>
                           <?php 
                             $designation = $this->App_Model->designations();
-                            $selected = "";
                             if(isset($record_data)){
                               if($designation->num_rows() > 0){
                                 foreach($designation->result() as $key => $value){
+                                  $selected = "";
                                   if($value->id == $record_data->designation_id){
                                     $selected = "selected='selected'";
                                   }
@@ -431,10 +421,10 @@
                           <option value=''>Select Pay-Scale</option>
                           <?php 
                             $payscale = $this->App_Model->get_payscales();
-                            $selected = "";
                             if(isset($record_data)){
                               if($payscale->num_rows() > 0){
                                 foreach($payscale->result() as $key => $value){
+                                  $selected = "";
                                   if($value->id == $record_data->payscale_id){
                                     $selected = "selected='selected'";
                                   }
@@ -459,10 +449,10 @@
                           <option value=''>Select Organization</option> 
                           <?php 
                             $organization = $this->App_Model->get_organizations();
-                            $selected = "";
                             if(isset($record_data)){
                               if($organization->num_rows() > 0){
                                 foreach($organization->result() as $key => $value){
+                                  $selected = "";
                                   if($value->id == $record_data->organization_id){
                                     $selected = "selected='selected'";
                                   }
@@ -487,10 +477,10 @@
                           <option value=''>Select Role</option>
                           <?php 
                             $roles = $this->App_Model->get_roles();
-                            $selected = "";
                             if(isset($record_data)){
                               if($roles->num_rows() > 0){
                                 foreach($roles->result() as $key => $value){
+                                  $selected = "";
                                   if($value->id == $record_data->role_id){
                                     $selected = "selected='selected'";
                                   }
@@ -577,6 +567,10 @@
 <script>
   $('.datepicker').pickadate({
     selectYears: true,
-    selectMonths: true
+    selectMonths: true,
+    format: 'dddd, dd mmm, yyyy',
+    formatSubmit: 'yyyy-mm-dd',
+    hiddenPrefix: 'prefix__',
+    hiddenSuffix: '__suffix'
   });
  </script>
