@@ -77,7 +77,7 @@
 			</li>
 		   </ul>
 	    </div>
-</div>
+	</div>
 </section>
 <div class="page-body">
 	<section class=""> 
@@ -122,7 +122,7 @@
 										<div class="page-records">
 
 											<select class="form-control select2 per-page-rec">
-												<option value="10">10</option>
+												<option value="16">16</option>
 												<option value="50">50</option>
 												<option value="100">100</option>
 

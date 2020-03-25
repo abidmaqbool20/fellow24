@@ -181,7 +181,7 @@ class App_Model extends CI_Model {
 
 	public function get_filtered_campaigns($data = array()){
 
-        $limit = 5;
+        $limit = 16;
         $offset = 0;
 
            $this->db->where(array('campaigns.deleted'=>0));
@@ -304,7 +304,7 @@ class App_Model extends CI_Model {
 
     public function get_filtered_employees($data = array()){
 
-        $limit = 5;
+        $limit = 16;
         $offset = 0;
 
            $this->db->where(array('employees.deleted'=>0));

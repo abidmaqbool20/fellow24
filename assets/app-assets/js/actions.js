@@ -1375,6 +1375,7 @@ $(document).on('click', '.export-data', function () {
 // 			    );
 // 	}
 // });
+
 $(document).on("click",".delete-bulk",function(){
 	$ids = [];
 	
@@ -1442,6 +1443,7 @@ $(document).on("click",".delete-bulk",function(){
 	}	
 	return false;
 });
+
 $(document).on('click', '.export-all-data', function () {
 		$url = $base_url+"/App/"+$(this).attr('function');
 		if($url != ""){ 
@@ -1477,7 +1479,6 @@ $(document).on('click', '.export-all-data', function () {
 		
 		}
 });
-
 
 $(document).on('submit','.report-form',function(e){
 	e.preventDefault();
@@ -1715,6 +1716,7 @@ function fetch_previous_salary_employees($emp_id){
 		});
 	}
 }
+
 $(document).on("change",".fetch-institute",function(){
 	$value = $(this).val();
 	fetch_job_placement_employees($value);
@@ -1741,6 +1743,7 @@ function fetch_job_placement_employees($emp_id){
 			});
 		}
 }
+
 function fetch_job_placement_institue($emp_id){
 	if ($emp_id != '') {
 		add_loader();

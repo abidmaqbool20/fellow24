@@ -35,14 +35,16 @@
             </ul>
          </li>
 
-         <li class=" navigation-header"><span>Apps</span></li> 
+         <li class=" navigation-header"><span>System Defaults</span></li> 
          <li class="nav-item hover-style">
             <a href="#"><i class="bx bx-user"></i><span class="menu-title" data-i18n="HR">HR</span></a>
             <ul class="">
                <li class="clickable" ><a href="javascript:;"  data="<?php echo get_json(array('id'=>'0','view'=>'employees-table-view','type'=>'table')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice List">Employees</span></a></li>
-               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'designations')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice">Designations</span></a></li>
-               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'departments')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Edit">Departments</span></a></li>
-               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'payscales')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Payscales</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'designations-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice">Designations</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'departments-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Edit">Departments</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'pay-scales-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Pay-Scales</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'roles-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Roles</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'organizations-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Organizations</span></a></li>
             </ul>
          </li>
           <li class=" navigation-header"><span>Sales</span></li> 

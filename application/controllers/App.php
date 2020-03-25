@@ -892,7 +892,7 @@ class App extends My_Controller {
 
 
                                 $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
-                                  <div class="card" style="height: 396.688px;">
+                                  <div class="card" style="min-height: 90.688px;">
                                     <div class="card-content">
                                     <div class="card-action">
                                         <div class="dropdown">
@@ -906,8 +906,8 @@ class App extends My_Controller {
                                               </div>
                                         </div>
                                     </div>
-                                      <div class="card-body">
-                                        <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->title.'</a></h4>
+                                      <div class="card-body card-text">
+                                        <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-campaign')).'">'.$value->title.'</a></h4>
                                         <p class="card-text">'.substr($value->description,0,80).'</p>
                                         <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
                                       </div>
@@ -1163,120 +1163,123 @@ class App extends My_Controller {
 
     public function filter_employees(){
 
-            $data = $this->input->post(); 
-            if($this->uri->segment(3) && $this->uri->segment(3) > 0){
-               $data['page'] = $this->uri->segment(3);
-            } 
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+            $data['page'] = $this->uri->segment(3);
+        } 
 
-            $records = '';
-            $result = $this->App_Model->get_filtered_employees($data); 
-            if($result['records']->num_rows() > 0){
+        $records = '';
+        $result = $this->App_Model->get_filtered_employees($data); 
+        if($result['records']->num_rows() > 0){
 
-                // echo "string";
-               
-                foreach ($result['records']->result() as $key => $value) {
-                            $checked ="";
-                            if($value->status == 1){
-                                $checked = 'checked';
-                            }
-                            $rec_permissions = "";
-                            $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'" href="javascript:;">Edit</a>';
-                      
-                       
-                            $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-employee')).'">View</a>';
+            // echo "string";
+            
+            foreach ($result['records']->result() as $key => $value) {
+                        $checked ="";
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'" href="javascript:;">Edit</a>';
                     
-                      
-                            $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'employees')).'" href="javascript:;">Delete</a>';
-                      
-                            if($this->session->userdata('view_type')=='table'){
-                                if(isset($value->profile_pic)){
-                                    $profile_img = '<img src="'.FILE_ASSETS.'employees/'.$value->id.'/'.$value->profile_pic.'" alt="img placeholder" height="32" width="32">';	
-                                } else{ 
-                                    $profile_img = '<img src="'.APP_ASSETS.'/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">' ;
-                                }
-                                     $records .= ' <tr class="rec-'.$value->id.'">
-                                        <td class="table-checkbox">
-                                            <div class="checkbox theme-checkbox ">
-                                                <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
-                                                <label for="colorCheckbox'.$value->id.'"></label>
-                                            </div>
-                                        </td>
-                                        <td class="text-bold-500 col-title">
-                                            <a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">
-                                                <div class="col-2 avatar">
-                                                    '.$profile_img.'                                 
-                                                </div>
-                                                <div class="user col-9">'.$value->first_name.' '.$value->last_name.'</div> 
-                                            </a>
-                                        </td>
-                                        <td class="col-email">'.$value->email.'</td>
-                                        <td class="col-national_id">'.$value->national_id.'</td>
-                                        <td class="col-gender">'.$value->gender.'</td>
-                                        <td class="col-doj">'.date('l d F Y H:i',strtotime($value->doj)).'</td>
-                                        <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->date_added)).'</td>
-                                        <td class="hide col-date_modification">'.$value->date_modification.'</td>
-                                        <td class="hide col-added_by">'.$value->added_by_name.'</td>
-                                        <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
-                                        <td class="col-status"> 
-                                            <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
-                                                <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="employees"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
-                                                <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                               <i class="bx bx-dots-vertical-rounded"></i>
-                                              </button>
-                                              <div class="dropdown-menu dropdown-menu-right">
-                                                
-                                                '. $rec_permissions.'
-                                               
-                                              </div>
-                                            </div>
-                                        </td>
-                                    </tr>';   
-                            } else{
+                    
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-employee')).'">View</a>';
+                
+                    
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'employees')).'" href="javascript:;">Delete</a>';
+                        
+                        if(isset($value->profile_pic)){
+                            $profile_img = '<img src="'.FILE_ASSETS.'employees/'.$value->id.'/'.$value->profile_pic.'" alt="img placeholder" class="card-img-style">';	
+                        } else{ 
+                            $profile_img = '<img src="'.APP_ASSETS.'/images/profile/user-uploads/social-2.jpg" alt="img placeholder" class="card-img-style">' ;
+                        }
 
-
-                                $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
-                                  <div class="card" style="height: 396.688px;">
-                                    <div class="card-content">
-                                    <div class="card-action">
-                                        <div class="dropdown">
-                                              <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                               <i class="bx bx-dots-vertical-rounded"></i>
-                                              </button>
-                                              <div class="dropdown-menu dropdown-menu-right">
-                                                
-                                                '. $rec_permissions.'
-                                               
-                                              </div>
+                        if($this->session->userdata('view_type')=='table'){
+                            
+                                    $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
                                         </div>
-                                    </div>
-                                      <div class="card-body">
-                                        <h4 class=""><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">'.$value->title.'</a></h4>
-                                        <p class="card-text">'.substr($value->description,0,80).'</p>
-                                        <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>';   
+                                    </td>
+                                    <td class="text-bold-500 col-title">
+                                        <a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">
+                                            <div class="card-image">
+                                                '.$profile_img.'                                 
+                                            </div>
+                                            <div class="user">'.$value->first_name.' '.$value->last_name.'</div> 
+                                        </a>
+                                    </td>
+                                    <td class="col-email">'.$value->email.'</td>
+                                    <td class="col-national_id">'.$value->national_id.'</td>
+                                    <td class="col-gender">'.$value->gender.'</td>
+                                    <td class="col-doj">'.date('l d F Y H:i',strtotime($value->doj)).'</td>
+                                    <td class="col-date_added">'.date('l d F Y H:i',strtotime($value->date_added)).'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="employees"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                            
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
 
-                            }          
-                }
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                                            <div class="card" style="min-height: 90.688px;">
+                                                <div class="card-content">
+                                                        <div class="card-action">
+                                                            <div class="dropdown">
+                                                                    <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                                    </button>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                    
+                                                                    '. $rec_permissions.'
+                                                                    
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="card-image"> '.$profile_img.'</div>
+                                                            <h5 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-employee')).'">'.$value->first_name.' '.$value->last_name.'</a></h5>
+                                                            <p class="card-text">Email: '.$value->email.'</p>
+                                                            <p class="card-text">Contact: '.$value->mobile_1.'</p>
+                                                            <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>';   
+
+                        }          
             }
+        }
 
 
-            $per_page = $data['per_page'];
-            if( $per_page == 0)
-                $per_page = 5000000000;
-            $first_url = base_url('App/filter_employees');
-            $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
-            $result['links']  = $links;
-            $result['records']  = $records;
-            $result['total_records']  = $result['total_records'];
-            echo json_encode($result); 
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_employees');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
     }
 
     public function export_employees(){
