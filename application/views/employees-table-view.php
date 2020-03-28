@@ -254,11 +254,11 @@
 												<select class="select2 form-control filter-dropdown" name='state_id' id='state_id' class='state_id' >
 													<option value=''>Select State</option>
 													<?php 
-														$states = $this->App_Model->get_states($record_data->country_id);
+														$states = $this->App_Model->get_state();
 														if($states->num_rows() > 0){
 															foreach($states->result() as $key => $value){
-															$selected = "";
-															echo "<option value='$value->id' $selected >$value->name</option>";
+																$selected = "";
+																echo "<option value='$value->id' $selected >$value->name</option>";
 															}
 														}
 													?>
@@ -270,7 +270,7 @@
 												<select class="select2 form-control filter-dropdown" name='city_id' id='city_id' class='city_id'>
 													<option value=''>Select City</option>
 													<?php 
-														$cities = $this->App_Model->get_state_cities($record_data->state_id);
+														$cities = $this->App_Model->get_cities();
 														if($cities->num_rows() > 0){
 															foreach($cities->result() as $key => $value){
 															$selected = "";
@@ -324,7 +324,7 @@
 												<select class="select2 form-control filter-dropdown" name='designation_id' id='designation_id' class='designation_id'>
 													<option value=''>Select Designation</option>
 													<?php 
-														$designation = $this->App_Model->designations();
+														$designation = $this->App_Model->get_designations();
 														$selected = "";
 														if(isset($record_data)){
 														if($designation->num_rows() > 0){
@@ -345,7 +345,7 @@
 												<select class="select2 form-control filter-dropdown" name='payscale_id' id='payscale_id' class='payscale_id'>
 													<option value=''>Select Pay-Scale</option>
 													<?php 
-														$payscale = $this->App_Model->get_payscales();
+														$payscale = $this->App_Model->get_pay_scales();
 														if(isset($record_data)){
 														if($payscale->num_rows() > 0){
 															foreach($payscale->result() as $key => $value){

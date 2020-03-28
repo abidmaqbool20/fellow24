@@ -827,6 +827,21 @@ class App extends My_Controller {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Start Campaigns functions
     public function filter_campaigns(){
 
@@ -1022,14 +1037,1120 @@ class App extends My_Controller {
 
 
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start Designation functions
+    public function filter_designations(){
+
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+           $data['page'] = $this->uri->segment(3);
+        } 
+
+        $records = '';
+        $result = $this->App_Model->get_filtered_designations($data); 
+        if($result['records']->num_rows() > 0){
+
+            // echo "string";
+           
+            foreach ($result['records']->result() as $key => $value) {
+                        $checked = $download = "";
+                        //print_r($value);
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        if(isset($value->file)){
+                            $download = '<a href="'.FILE_ASSETS.'assets/admin/adminassets/designations/'.$value->id.'/'.$value->file.'" class="btn btn-info btn-sm" style="border-color: #306750!important; background-color: #306750!important; color: #FFF !important; padding: 4px 10px;" download target="_blank"><i class="bx bx-download"></i></a>';
+                        }
+                        else{
+                            $download = "NO File!";
+                        }
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-designation')).'" href="javascript:;">Edit</a>';
+                  
+                   
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-designation')).'">View</a>';
+                
+                  
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'designations')).'" href="javascript:;">Delete</a>';
+                  
+                        if($this->session->userdata('view_type')=='table'){
+                                 $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-designation')).'">'.$value->name.'</a></td>
+                                    <td class="col-job_nature">'.$value->job_nature.'</td>
+                                    <td class="col-pay_scale">'.$value->pay_scale.'</td>
+                                    <td class="col-file hide">'.$download.'</td>
+                                    <td class="col-description">'.substr($value->description,0,80).'</td>
+                                    <td class="col-date_added">'.$value->date_added.'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="designations"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
+
+
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                              <div class="card" style="min-height: 90.688px;">
+                                <div class="card-content">
+                                <div class="card-action">
+                                    <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                    </div>
+                                </div>
+                                  <div class="card-body card-text">
+                                    <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-designation')).'">'.$value->name.'</a></h4>
+                                    <p class="card-text"> Job Nature : <span style="color:#5a8dee;">'.$value->job_nature.'</span></p>
+                                    <p class="card-text"> Pay-Scale : <span style="color:#5a8dee;">'.$value->pay_scale.'</span></p>
+                                    <p class="card-text">  Description : '.substr($value->description,0,80).'</p>
+                                    <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>';   
+
+                        }          
+            }
+        }
+
+
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_designations');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
+    }
+
+    public function export_designations(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('designations','Designations ','get_designations_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_designations(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('designations',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('designations','Designations ','get_designations_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_designation_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['title'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[1]);
+                                            $check = $this->db->get_where('designations',array('title'=>$record_data['title']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('designations',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                            $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                            $alert  = 'No Record Imported';
+                        
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start Department functions
+    public function filter_departments(){
+
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+           $data['page'] = $this->uri->segment(3);
+        } 
+
+        $records = '';
+        $result = $this->App_Model->get_filtered_departments($data); 
+        if($result['records']->num_rows() > 0){
+
+            // echo "string";
+           
+            foreach ($result['records']->result() as $key => $value) {
+                        $checked ="";
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-departments')).'" href="javascript:;">Edit</a>';
+                  
+                   
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-departments')).'">View</a>';
+                
+                  
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'departments')).'" href="javascript:;">Delete</a>';
+                  
+                        if($this->session->userdata('view_type')=='table'){
+                                 $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-departments')).'">'.$value->name.'</a></td>
+                                    <td class="col-description">'.$value->par_dept_name.'</td>
+                                    <td class="col-description">'.$value->department_type.'</td>
+                                    <td class="col-description">'.$value->short_name.'</td>
+                                    <td class="col-description">'.$value->first_name.' '.$value->last_name.'</td>
+                                    <td class="col-description">'.substr($value->description,0,80).'</td>
+                                    <td class="col-date_added">'.$value->date_added.'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="departments"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
+
+
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                              <div class="card" style="min-height: 90.688px;">
+                                <div class="card-content">
+                                <div class="card-action">
+                                    <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '.$rec_permissions.'
+                                           
+                                          </div>
+                                    </div>
+                                </div>
+                                  <div class="card-body card-text">
+                                    <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-departments')).'">'.$value->title.'</a></h4>
+                                    <p class="card-text">'.$value->par_dept_name.'</p>
+                                    <p class="card-text">'.$value->department_type.'</p>
+                                    <p class="card-text">'.substr($value->description,0,80).'</p>
+                                    <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>';   
+
+                        }          
+            }
+        }
+
+
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_departments');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
+    }
+
+    public function export_departments(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('departments','Departments ','get_departments_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_departments(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('departments',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('departments','Departments ','get_departments_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_departments_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['title'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[1]);
+                                            $check = $this->db->get_where('departments',array('title'=>$record_data['title']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('departments',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                            $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                            $alert  = 'No Record Imported';
+                        
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start nature_of_jobs functions
+    public function filter_nature_of_jobs(){
+
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+           $data['page'] = $this->uri->segment(3);
+        } 
+
+        $records = '';
+        $result = $this->App_Model->get_filtered_nature_of_jobs($data); 
+        if($result['records']->num_rows() > 0){
+
+            // echo "string";
+           
+            foreach ($result['records']->result() as $key => $value) {
+                //print_r($value);
+                        $checked = $download = "";
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        if(isset($value->file)){
+                            $download = '<a href="'.FILE_ASSETS.'assets/admin/adminassets/designations/'.$value->id.'/'.$value->file.'" class="btn btn-info btn-sm" style="border-color: #306750!important; background-color: #306750!important; color: #FFF !important; padding: 4px 10px;" download target="_blank"><i class="bx bx-download"></i></a>';
+                        }
+                        else{
+                            $download = "NO File!";
+                        }
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-nature-of-jobs')).'" href="javascript:;">Edit</a>';
+                  
+                   
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-nature-of-jobs')).'">View</a>';
+                
+                  
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'nature_of_jobs')).'" href="javascript:;">Delete</a>';
+                  
+                        if($this->session->userdata('view_type')=='table'){
+                                 $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-nature-of-jobs')).'">'.$value->name.'</a></td>
+                                    <td class="col-file">'.$download.'</td>
+                                    <td class="col-date_added">'.$value->date_added.'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="nature_of_jobs"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
+
+
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                              <div class="card" style="min-height: 90.688px;">
+                                <div class="card-content">
+                                <div class="card-action">
+                                    <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                    </div>
+                                </div>
+                                  <div class="card-body card-text">
+                                    <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-nature-of-jobs')).'">'.$value->name.'</a></h4>
+                                    <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>';   
+
+                        }          
+            }
+        }
+
+
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_nature_of_jobs');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
+    }
+
+    public function export_nature_of_jobs(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('nature_of_jobs','Nature Of Job ','get_nature_of_jobs_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_nature_of_jobs(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('nature_of_jobs',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('nature_of_jobs','Nature Of Job ','get_nature_of_jobs_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_nature_of_jobs_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['name'] = $this->validate_import_field_value($filesop[0]);
+                                            $check = $this->db->get_where('nature_of_jobs',array('title'=>$record_data['title']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('nature_of_jobs',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                            $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                            $alert  = 'No Record Imported';
+                        
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start pay_scales functions
+    public function filter_pay_scales(){
+
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+           $data['page'] = $this->uri->segment(3);
+        } 
+
+        $records = '';
+        $result = $this->App_Model->get_filtered_pay_scales($data); 
+        if($result['records']->num_rows() > 0){
+
+            // echo "string";
+           
+            foreach ($result['records']->result() as $key => $value) {
+                        $checked ="";
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        if(isset($value->file)){
+                            $download = '<a href="'.FILE_ASSETS.'assets/admin/adminassets/designations/'.$value->id.'/'.$value->file.'" class="btn btn-info btn-sm" style="border-color: #306750!important; background-color: #306750!important; color: #FFF !important; padding: 4px 10px;" download target="_blank"><i class="bx bx-download"></i></a>';
+                        }
+                        else{
+                            $download = "NO File!";
+                        }
+
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-pay-scales')).'" href="javascript:;">Edit</a>';
+                  
+                   
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-pay-scales')).'">View</a>';
+                
+                  
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'pay_scales')).'" href="javascript:;">Delete</a>';
+                  
+                        if($this->session->userdata('view_type')=='table'){
+                                 $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-pay-scales')).'">'.$value->name.'</a></td>
+                                    <td class="col-salary_package">'.$value->salary_package.'</td>
+                                    <td class="col-nature_of_jobs_name">'.$value->nature_of_jobs_name.'</td>
+                                    <td class="col-file hide">'.$download.'</td>
+                                    <td class="col-terms hide">'.substr($value->terms,0,80).'</td>
+                                    <td class="col-job_resp hide">'.substr($value->job_resp,0,80).'</td>
+                                    <td class="col-description hide">'.substr($value->description,0,80).'</td>
+                                    <td class="col-date_added">'.$value->date_added.'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="pay_scales"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
+
+
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                              <div class="card" style="min-height: 90.688px;">
+                                <div class="card-content">
+                                <div class="card-action">
+                                    <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                    </div>
+                                </div>
+                                  <div class="card-body card-text">
+                                    <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-pay-scales')).'">'.$value->name.'</a></h4>
+                                    <p class="card-text"> Salary Package :<span style="color:#5a8dee;">'.$value->salary_package.'</span></p>
+                                    <p class="card-text">JOB Nature :<span style="color:#5a8dee;">'.$value->nature_of_jobs_name.'</span></p>
+                                    <p class="card-text">'.substr($value->description,0,80).'</p>
+                                    <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>';   
+                        }          
+            }
+        }
+
+
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_pay_scales');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
+    }
+
+    public function export_pay_scales(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('pay_scales','Pay Scales','get_pay_scales_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_pay_scales(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('pay_scales',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('pay_scales','Pay Scales','get_pay_scales_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_pay_scales_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['name'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['salary_package'] = $this->validate_import_field_value($filesop[1]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[2]);
+                                            $record_data['terms'] = $this->validate_import_field_value($filesop[2]);
+                                            $record_data['job_resp'] = $this->validate_import_field_value($filesop[2]);
+                                            $check = $this->db->get_where('pay_scales',array('name'=>$record_data['name']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('pay_scales',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                            $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                            $alert  = 'No Record Imported';
+                        
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Start organizations functions
+    public function filter_organizations(){
+
+        $data = $this->input->post(); 
+        if($this->uri->segment(3) && $this->uri->segment(3) > 0){
+           $data['page'] = $this->uri->segment(3);
+        } 
+
+        $records = '';
+        $result = $this->App_Model->get_filtered_organizations($data); 
+        if($result['records']->num_rows() > 0){
+
+            // echo "string";
+           
+            foreach ($result['records']->result() as $key => $value) {
+                        $checked ="";
+                        if($value->status == 1){
+                            $checked = 'checked';
+                        }
+                        $rec_permissions = "";
+                        $rec_permissions .= '<a class="dropdown-item open-model" data="'.get_json(array('id'=>$value->id,'view'=>'models/form-organization')).'" href="javascript:;">Edit</a>';
+                  
+                   
+                        $rec_permissions .= '<a class="dropdown-item open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/view-organization')).'">View</a>';
+                
+                  
+                        $rec_permissions .= ' <a class="dropdown-item delete" data="'.get_json(array('id'=>$value->id,'table'=>'organizations')).'" href="javascript:;">Delete</a>';
+                  
+                        if($this->session->userdata('view_type')=='table'){
+                                 $records .= ' <tr class="rec-'.$value->id.'">
+                                    <td class="table-checkbox">
+                                        <div class="checkbox theme-checkbox ">
+                                            <input type="checkbox" class="table_record_checkbox" value="'.$value->id.'" id="colorCheckbox'.$value->id.'"> 
+                                            <label for="colorCheckbox'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-bold-500 col-title"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-organization')).'">'.$value->name.'</a></td>
+                                    <td class="col-description">'.$value->short_name.'</td>
+                                    <td class="col-description">'.substr($value->description,0,80).'</td>
+                                    <td class="col-date_added">'.$value->date_added.'</td>
+                                    <td class="hide col-date_modification">'.$value->date_modification.'</td>
+                                    <td class="hide col-added_by">'.$value->added_by_name.'</td>
+                                    <td class="hide col-modified_by">'.$value->modified_by_name.'</td>
+                                    <td class="col-status"> 
+                                        <div class="custom-control theme-switch custom-switch custom-switch-success mr-2 mb-1">
+                                            <input type="checkbox" '.$checked.' class="custom-control-input change-status" table="organizations"  id="customSwitchcolor'.$value->id.'" table-id="'.$value->id.'">
+                                            <label class="custom-control-label" for="customSwitchcolor'.$value->id.'"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>';   
+                        } else{
+
+
+                            $records .= '<div class="col-md-3 col-sm-6 mb-sm-1">
+                              <div class="card" style="min-height: 90.688px;">
+                                <div class="card-content">
+                                <div class="card-action">
+                                    <div class="dropdown">
+                                          <button type="button" class="action-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right">
+                                            
+                                            '. $rec_permissions.'
+                                           
+                                          </div>
+                                    </div>
+                                </div>
+                                  <div class="card-body card-text">
+                                    <h4 class="card-heading"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-organization')).'">'.$value->name.'</a></h4>
+                                    <p class="card-text">'.$value->short_name.'</p>
+                                    <p class="card-text">'.substr($value->description,0,80).'</p>
+                                    <small class="text-muted">'.date('l d F Y H:i ',strtotime($value->date_added)).'</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>';   
+                        }          
+            }
+        }
+
+
+        $per_page = $data['per_page'];
+        if( $per_page == 0)
+            $per_page = 5000000000;
+        $first_url = base_url('App/filter_organizations');
+        $links = $this->create_pagination($first_url,$result['total_records'], $per_page);
+        $result['links']  = $links;
+        $result['records']  = $records;
+        $result['total_records']  = $result['total_records'];
+        echo json_encode($result); 
+    }
+
+    public function export_organizations(){
+        $data = $this->input->post();
+        $response = $this->generate_excel_file('organizations','Organization','get_organizations_for_excel',$data['ids']);
+        echo $response;
+    }
+
+    public function export_all_organizations(){
+        $data = $this->input->post();
+        $records = $this->db->select('GROUP_CONCAT(id) as ids')->get_where('organizations',array('deleted'=>0));
+
+        if($records->num_rows() >0){
+            $ids = $records->row()->ids;
+            $ids = explode(',' ,$ids);
+            $response = $this->generate_excel_file('organizations','Organization','get_organizations_for_excel',$ids);
+            echo $response;
+        }else{
+            echo 'false';
+        }   
+
+    }
+
+    public function import_organizations_csv_file(){
+        $save = false; $alert = "";
+
+        if(isset($_FILES['import_file'])){
+            if($_FILES['import_file']['name'] != ""){
+                $allowed = array('csv');
+                $ext = pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION);
+                if (!in_array($ext, $allowed)) {
+                    $alert  = ' The file type must be CSV ';
+                    $save = false;  
+                }else{
+                    $file = $_FILES['import_file']['tmp_name'];
+                    $handle = fopen($file, "r");
+                    if ($file == NULL) {
+                            $alert  = 'No File Uploaded...'; 
+                            $save = false;  
+                    }
+                    else{
+                            $i = 0;
+                            $duplicate_records = $insert_records = 0;
+                            while(($filesop = fgetcsv($handle, 10000, ",")) !== false){ 
+                                if($i > 0){
+                                    if(isset($filesop[0]) && isset($filesop[1])){  
+                                        $record_data = array(); 
+                                        if($filesop[0] !=""){
+                                            $record_data['name'] = $this->validate_import_field_value($filesop[0]);
+                                            $record_data['short_name'] = $this->validate_import_field_value($filesop[1]);
+                                            $record_data['description'] = $this->validate_import_field_value($filesop[2]);
+                                            $check = $this->db->get_where('organizations',array('name'=>$record_data['name']));
+                                            if($check->num_rows() < 1){
+                                                $this->db->insert('organizations',$record_data);
+                                                $insert_records++;
+                                            }else{
+                                                $duplicate_records++;
+                                            }
+                                        }  
+                                    }
+                                }
+
+                                $i++;
+                            }     
+                        if($insert_records > 0){
+                            $alert  = $insert_records.' records has been imported successfully';  
+                            $save = true; 
+                        }else{
+                            $alert  = 'No Record Imported';
+                        
+                            $save = true; 
+                        }
+
+                    }   
+
+                }
+            }
+        }
+        $message['message'] = $alert;
+        $message['success'] = $save;
+        echo json_encode($message);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
     // Start Employees functions
-    public function save_employee() 
-    { 
+    public function save_employee() { 
         $save = false;   $message = array(); $id = "";   
         $data = $this->input->post();
       
@@ -1377,6 +2498,17 @@ class App extends My_Controller {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
     //start opportunities functions
     public function filter_opportunities(){
         $data = $this->input->post(); 
@@ -1412,7 +2544,7 @@ class App extends My_Controller {
                                                 <label for="colorCheckbox'.$value->id.'"></label>
                                             </div>
                                         </td>
-                                        <td class="text-bold-500 col-opportunity_id"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'">'.$value->campaign_name.'</a></td>
+                                        <td class="text-bold-500 col-opportunity_id"><a class="open-model" href="javascript:;" data="'. get_json(array('id'=>$value->id,'view'=>'models/form-opportunity')).'">'.$value->designation_name.'</a></td>
                                         <td class="col-client_name">'.$value->client_name.'</td>
                                         <td class="hide col-email ">'.$value->email.'</td>
                                         <td class="hide col-country_id">'.$value->country.'</td>

@@ -43,7 +43,7 @@
                <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'designations-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice">Designations</span></a></li>
                <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'departments-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Edit">Departments</span></a></li>
                <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'pay-scales-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Pay-Scales</span></a></li>
-               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'roles-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Roles</span></a></li>
+               <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'nature-of-jobs-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Nature Of Jobs</span></a></li>
                <li class="clickable"><a href="javascript:;" data="<?php echo get_json(array('id'=>'0','view'=>'organizations-table-view')); ?>"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Invoice Add">Organizations</span></a></li>
             </ul>
          </li>

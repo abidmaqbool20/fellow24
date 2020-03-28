@@ -191,7 +191,7 @@ html body .content.app-content .page-overlay.show {
 .page-sidebar{
     overflow: auto;
     padding: 1rem !important;
-    height: 60vh;
+    min-height: 60vh;
 }
 
 .page-sidebar .card-footer{
@@ -491,6 +491,7 @@ table th i{font-size: 12px !important;font-weight: bold;}
 }
 .card-heading{
     line-height: 0.9rem;
+    text-transform: uppercase;
 }
 .card-body {
     padding: 1rem 0.5rem 1rem 0.7rem !important;
@@ -506,4 +507,8 @@ table th i{font-size: 12px !important;font-weight: bold;}
 }
 .btn i {
     top: 0px !important;
+}
+.col-title
+{
+   text-transform: uppercase; 
 }

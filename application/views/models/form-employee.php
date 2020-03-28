@@ -475,19 +475,23 @@
                       <div class="position-relative has-icon-left">
                         <select class="select2 form-control" name='role_id' id='role_id' class='role_id'>
                           <option value=''>Select Role</option>
+                          <option value='Super Admin'>Super Admin</option>
+                          <option value='Admin'>Admin</option>
+                          <option value='Team Lead'>Team Lead</option>
+                          <option value='Client'>Client</option>
                           <?php 
-                            $roles = $this->App_Model->get_roles();
-                            if(isset($record_data)){
-                              if($roles->num_rows() > 0){
-                                foreach($roles->result() as $key => $value){
-                                  $selected = "";
-                                  if($value->id == $record_data->role_id){
-                                    $selected = "selected='selected'";
-                                  }
-                                  echo "<option value='$value->id' $selected >$value->name</option>";
-                                }
-                              }
-                            }
+                            // $roles = $this->App_Model->get_roles();
+                            // if(isset($record_data)){
+                            //   if($roles->num_rows() > 0){
+                            //     foreach($roles->result() as $key => $value){
+                            //       $selected = "";
+                            //       if($value->id == $record_data->role_id){
+                            //         $selected = "selected='selected'";
+                            //       }
+                            //       echo "<option value='$value->id' $selected >$value->name</option>";
+                            //     }
+                            //   }
+                            // }
                           ?>
                         </select>
                         <div class="form-control-position">

@@ -1,8 +1,10 @@
 <?php
 if (isset($id) && $id > 0) {
-  $record = $this->App_Model->get_payscale_rec($id);
+  $record = $this->App_Model->get_nature_of_jobs_rec($id);
   if ($record->num_rows() > 0) {
     $record_data = $record->row();
+    print_r($record_data);
+    die();
   }
   
 }
@@ -12,7 +14,7 @@ if (isset($id) && $id > 0) {
   <div class="model-content">
     <div class="card shadow-none quill-wrapper">
       <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-        <h3 class="card-title">Payscale Form</h3>
+        <h3 class="card-title">Nature of Jobs Form</h3>
         <button type="button" class="close close-icon close-modal close-model">
           <i class="bx bx-x"></i>
         </button>
@@ -20,29 +22,22 @@ if (isset($id) && $id > 0) {
       <!-- form start -->
       <form class="edit-kanban-item general-form" method="post" autocomplete="off" action="<?= base_url('app/save_form'); ?>" enctype="multipart/form-data">
         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-        <input type="hidden" name="table_name" id="table_name" value="pay_scales">
+        <input type="hidden" name="table_name" id="table_name" value="nature_of_jobs">
         <input type="hidden" name="edit_record_id" id="edit_record_id" value="<?php if (isset($record_data)) {echo $record_data->id;} ?>">
         <div class="card-content">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
-                  <label class="form-label"><span class="required-label">*</span>Payscale Title</label>
+                  <label class="form-label"><span class="required-label">*</span>Title</label>
                   <input type="text" name="name" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->name;} ?>">
                 </div>
               </div>
 
-              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                      <div class="form-group">
-                        <label class="form-label"><span class="required-label">*</span>Salary Package</label>
-                         <input type="number" min="0" name="salary_package" class="form-control required" required="required" value="<?php if (isset($record_data)) {echo $record_data->salary_package;} ?>">
-                      </div>
-                    </div>
-
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="form-group">
-                  <label class="form-label">Description</label>
-                 <textarea name="description" class="form-control" id="description" cols="5" rows="6"><?php if (isset($record_data)) {echo $record_data->description;} ?></textarea>
+                  <label class="form-label">JOB Nature File</label>
+                  <input type="file" name="file" class="form-control" id="file">
                 </div>
               </div>
 
@@ -68,16 +63,14 @@ if (isset($id) && $id > 0) {
 <script>
   loadEditor('description');
   function loadEditor(id){
-  CKEDITOR.replace( id, {
-  toolbar: [
-  { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [  'Undo', 'Redo' ] },
-  { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-' ] },
-  { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList',   'Blockquote',  'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-  { name: 'links', items: [ 'Link'  ] } ,
-  { name: 'tools', items: [ 'Maximize' ] }
-  ]
-  });
+    CKEDITOR.replace( id, {
+      toolbar: [
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [  'Undo', 'Redo' ] },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList',   'Blockquote',  'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+        { name: 'links', items: [ 'Link'  ] } ,
+        { name: 'tools', items: [ 'Maximize' ] }
+      ]
+    });
   }
-
-  
 </script>

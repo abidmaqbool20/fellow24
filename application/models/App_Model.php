@@ -6,63 +6,6 @@ class App_Model extends CI_Model {
  	public function __construct(){
  		parent::__construct();
  	}
-	
-	public function get_organizations(){
-		$this->db->where(array("organizations.deleted" => 0));
-        $this->db->select("organizations.*");
-        $this->db->from("organizations");
-        return $rec = $this->db->get();
-	}
-
-	public function get_organizations_rec($id){
-		$this->db->where(array("organizations.deleted" => 0,'id'=>$id));
-        $this->db->select("organizations.*");
-        $this->db->from("organizations");
-        return $rec = $this->db->get();
-	}
-
-	public function get_departments(){
-		$this->db->where(array("departments.deleted" => 0));
-        $this->db->select("departments.*");
-        $this->db->from("departments");
-        return $rec = $this->db->get();
-	}
-
-	public function get_departments_rec($id){
-		$this->db->where(array("departments.deleted" => 0,'id'=>$id));
-        $this->db->select("departments.*");
-        $this->db->from("departments");
-        return $rec = $this->db->get();
-	}
-
-	public function get_payscales(){
- 	    $this->db->where(array("pay_scales.deleted" => 0));
-        $this->db->select("pay_scales.*");
-        $this->db->from("pay_scales");
-        return $rec = $this->db->get();
-    }
-     
- 	public function get_payscale_rec($id){
- 		$this->db->where(array("pay_scales.deleted" => 0,'id'=>$id));
-        $this->db->select("pay_scales.*");
-        $this->db->from("pay_scales");
-        return $rec = $this->db->get();
- 	}
-
- 	public function designations(){
- 		$this->db->where(array("designations.deleted" => 0));
-        $this->db->select("designations.*,pay_scales.name as payscale");
-        $this->db->join('pay_scales','designations.payscale_id = pay_scales.id','left');
-        $this->db->from("designations");
-        return $rec = $this->db->get();
- 	}
-
- 	public function get_designation_rec($id){
- 	    $this->db->where(array("designations.deleted" => 0,'id'=>$id));
-        $this->db->select("designations.*");
-        $this->db->from("designations");
-        return $rec = $this->db->get();
- 	}
 
 	public function get_cities(){
 		$this->db->where(array("cities.deleted" => 0));
@@ -110,6 +53,14 @@ class App_Model extends CI_Model {
         return $rec = $this->db->get();
     }
 
+    public function get_state()
+    {
+        $this->db->where(array("states.deleted" => 0));
+        $this->db->select("states.*");
+        $this->db->from("states");
+        return $rec = $this->db->get();
+    }
+
     public function get_state_cities($state)
     {
         $this->db->where(array("cities.deleted" => 0, "cities.state" => $state));
@@ -126,7 +77,6 @@ class App_Model extends CI_Model {
         $this->db->from("states");
         return $rec = $this->db->get();
 	}
-
 
 	public function get_roles(){
 		$this->db->where(array("roles.deleted" => 0));
@@ -146,6 +96,9 @@ class App_Model extends CI_Model {
     {
         return $this->db->get_where($data['table'], array($data['key'] => $data['key_id'], "deleted" => 0, "status" => 1));
     }
+
+
+
 
 
 
@@ -248,9 +201,629 @@ class App_Model extends CI_Model {
         $this->db->select("campaigns.title,campaigns.description");
         $this->db->from("campaigns");
         return $rec = $this->db->get();
+    }
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start designations Function 
+    public function get_designations(){
+        $this->db->where(array("designations.deleted" => 0));
+        $this->db->select("designations.*,pay_scales.name as pay_scale, nature_of_jobs.name as job_nature");
+        $this->db->join('pay_scales','designations.scale_id = pay_scales.id','left');
+        $this->db->join('nature_of_jobs','designations.job_nature_id = nature_of_jobs.id','left');
+        $this->db->from("designations");
+        return $rec = $this->db->get();
+    }
+
+    public function get_designations_rec($id){
+        $this->db->where(array("designations.deleted" => 0,'designations.id'=>$id));
+        $this->db->select("designations.*,pay_scales.name as scale_name");
+        $this->db->join('pay_scales','designations.scale_id = pay_scales.id','left');
+        $this->db->from("designations");
+       return $rec = $this->db->get();
+
+    }
+
+	public function get_filtered_designations($data = array()){
+
+        $limit = 16;
+        $offset = 0;
+
+           $this->db->where(array('designations.deleted'=>0));
+
+            if(isset($data['added_by']) && $data['added_by'] != ''){ 
+                $this->db->where(array('designations.added_by'=>$data['added_by']));
+            }
+
+            if(isset($data['name']) && $data['name'] != ''){
+               
+                $this->db->where(array('designations.name'=>$data['name']));
+            }
+
+            if(isset($data['description']) && $data['description'] != ''){
+               
+                $this->db->where(array('designations.description'=>$data['description']));
+            }
+
+            if(isset($data['scale_id']) && $data['scale_id'] != ''){
+               
+                $this->db->where(array('designations.scale_id'=>$data['scale_id']));
+            }
+
+            if(isset($data['status']) && $data['status'] != ''){
+               
+                $this->db->where(array('designations.status'=>$data['status']));
+            }
+
+
+           
+            if(isset($data['search_string']) && $data['search_string'] != ''){
+                $this->db->group_start(); 
+                $this->db->or_like('users.name',$data['search_string'],'both');
+                $this->db->or_like('designations.name',$data['search_string'],'both');
+                $this->db->or_like('designations.description',$data['search_string'],'both');
+                $this->db->or_like('designations.scale_id',$data['search_string'],'both');
+                $this->db->or_like('designations.id',$data['search_string'],'both');
+                $this->db->group_end();
+            }
+
+            if(isset($data['per_page']) && $data['per_page'] > 0){
+                $limit = $data['per_page'];
+            }
+            else{
+                $limit = 5000000000;
+            }
+
+            if(isset($data['page']) && $data['page'] > 0){
+                $offset = ($data['page'] - 1) * $limit;
+            }
+
+            $this->db->select("designations.*,users.name as added_by_name,modified.name as modified_by_name,
+            nature_of_jobs.name as job_nature, pay_scales.name as pay_scale");
+            $this->db->join("pay_scales","designations.scale_id = pay_scales.id","left");
+            $this->db->join("nature_of_jobs","designations.job_nature_id = nature_of_jobs.id","left");
+            $this->db->join("users","designations.added_by = users.id","left");
+            $this->db->join("users as modified","designations.modified_by = modified.id","left");
+            $this->db->from("designations");
+            $tempdb = clone $this->db; 
+            $total_records = $tempdb->count_all_results();
+            $this->db->limit($limit,$offset);
+            $this->db->order_by("designations.name","ASC");
+            $rec = $this->db->get();
+            $result['total_records'] = $total_records;
+            $result['records'] = $rec;
+            //echo $this->db->last_query();
+            return $result;
 	}
 
+	public function get_designations_for_excel($ids){
+		$this->db->where_in("designations.id",$ids);
+        $this->db->where(array("designations.deleted"=>0));
+        $this->db->select("designations.*,pay_scales.name as payscale");
+        $this->db->join('pay_scales','designations.scale_id = pay_scales.id','left');
+        $this->db->from("designations");
+        return $rec = $this->db->get();
+    }
+    
         
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start departments Function 
+    public function get_departments(){
+        $this->db->where(array("departments.deleted" => 0));
+        $this->db->select("departments.*,
+        parent_dept.name as par_dept_name,
+        employees.first_name,employees.last_name");
+        $this->db->join('departments as parent_dept','departments.parent_department = parent_dept.id','left');
+        $this->db->join('employees','departments.manager = employees.id','left');
+        $this->db->from("departments");
+        return $rec = $this->db->get();
+    }
+
+    public function get_departments_rec($id){
+        $this->db->where(array("departments.deleted" => 0,'id'=>$id));
+        $this->db->select("departments.*,
+        parent_dept.name as par_dept_name,
+        employees.first_name,employees.last_name");
+        $this->db->join('departments as parent_dept','departments.parent_department = parent_dept.id','left');
+        $this->db->join('employees','departments.manager = employees.id','left');
+        $this->db->from("departments");
+       return $rec = $this->db->get();
+
+    }
+
+	public function get_filtered_departments($data = array()){
+
+        $limit = 16;
+        $offset = 0;
+
+           $this->db->where(array('departments.deleted'=>0));
+
+            if(isset($data['added_by']) && $data['added_by'] != ''){ 
+                $this->db->where(array('departments.added_by'=>$data['added_by']));
+            }
+
+            if(isset($data['name']) && $data['name'] != ''){
+               
+                $this->db->where(array('departments.name'=>$data['name']));
+            }
+
+            if(isset($data['description']) && $data['description'] != ''){
+               
+                $this->db->where(array('departments.description'=>$data['description']));
+            }
+
+            if(isset($data['department_type']) && $data['department_type'] != ''){
+               
+                $this->db->where(array('departments.department_type'=>$data['department_type']));
+            }
+
+            if(isset($data['parent_department']) && $data['parent_department'] != ''){
+               
+                $this->db->where(array('departments.parent_department'=>$data['parent_department']));
+            }
+
+            if(isset($data['short_name']) && $data['short_name'] != ''){
+               
+                $this->db->where(array('departments.short_name'=>$data['short_name']));
+            }
+
+            if(isset($data['manager']) && $data['manager'] != ''){
+               
+                $this->db->where(array('departments.manager'=>$data['manager']));
+            }
+
+            if(isset($data['status']) && $data['status'] != ''){
+               
+                $this->db->where(array('departments.status'=>$data['status']));
+            }
+
+
+           
+            if(isset($data['search_string']) && $data['search_string'] != ''){
+                $this->db->group_start(); 
+                $this->db->or_like('users.name',$data['search_string'],'both');
+                $this->db->or_like('departments.name',$data['search_string'],'both');
+                $this->db->or_like('departments.description',$data['search_string'],'both');
+                $this->db->or_like('departments.parent_department',$data['search_string'],'both');
+                $this->db->or_like('departments.department_type',$data['search_string'],'both');
+                $this->db->or_like('departments.short_name',$data['search_string'],'both');
+                $this->db->or_like('departments.manager',$data['search_string'],'both');
+                $this->db->or_like('departments.id',$data['search_string'],'both');
+                $this->db->group_end();
+            }
+
+            if(isset($data['per_page']) && $data['per_page'] > 0){
+                $limit = $data['per_page'];
+            }
+            else{
+                $limit = 5000000000;
+            }
+
+            if(isset($data['page']) && $data['page'] > 0){
+                $offset = ($data['page'] - 1) * $limit;
+            }
+
+            $this->db->select("departments.*,users.name as added_by_name,modified.name as modified_by_name,
+            parent_dept.name as par_dept_name,
+            employees.first_name,employees.last_name");
+            $this->db->join('departments as parent_dept','departments.parent_department = parent_dept.id','left');
+            $this->db->join('employees','departments.manager = employees.id','left');
+            $this->db->join("users","departments.added_by = users.id","left");
+            $this->db->join("users as modified","departments.modified_by = modified.id","left");
+            $this->db->from("departments");
+            $tempdb = clone $this->db; 
+            $total_records = $tempdb->count_all_results();
+            $this->db->limit($limit,$offset);
+            $this->db->order_by("departments.name","ASC");
+            $rec = $this->db->get();
+            $result['total_records'] = $total_records;
+            $result['records'] = $rec;
+            //echo $this->db->last_query();
+            return $result;
+	}
+
+	public function get_departments_for_excel($ids){
+		$this->db->where_in("departments.id",$ids);
+        $this->db->where(array("departments.deleted"=>0));
+        $this->db->select("departments.*,
+        parent_dept.name as par_dept_name,
+        employees.first_name,employees.last_name");
+        $this->db->join('departments as parent_dept','departments.parent_department = parent_dept.id','left');
+        $this->db->join('employees','departments.manager = employees.id','left');
+        $this->db->from("departments");
+        return $rec = $this->db->get();
+    }
+    
+       
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start pay_scales Function 
+    public function get_pay_scales(){
+        $this->db->where(array("pay_scales.deleted" => 0));
+        $this->db->select("pay_scales.*,
+        nature_of_jobs.name as nature_of_jobs_name,
+        nature_of_jobs.id as nature_of_jobs_id");
+        $this->db->join('nature_of_jobs','pay_scales.job_nature_id = nature_of_jobs.id','left');
+        $this->db->from("pay_scales");
+        return $rec = $this->db->get();
+    }
+
+    public function get_pay_scales_rec($id){
+        $this->db->where(array("pay_scales.deleted" => 0,'pay_scales.id'=>$id));
+        $this->db->select("pay_scales.*,
+        nature_of_jobs.name as nature_of_jobs_name,
+        nature_of_jobs.id as nature_of_jobs_id");
+        $this->db->join('nature_of_jobs','pay_scales.job_nature_id = nature_of_jobs.id','left');
+        $this->db->from("pay_scales");
+       return $rec = $this->db->get();
+
+    }
+
+	public function get_filtered_pay_scales($data = array()){
+
+        $limit = 16;
+        $offset = 0;
+
+           $this->db->where(array('pay_scales.deleted'=>0));
+
+            if(isset($data['added_by']) && $data['added_by'] != ''){ 
+                $this->db->where(array('pay_scales.added_by'=>$data['added_by']));
+            }
+
+            if(isset($data['name']) && $data['name'] != ''){
+               
+                $this->db->where(array('pay_scales.name'=>$data['name']));
+            }
+
+            if(isset($data['description']) && $data['description'] != ''){
+               
+                $this->db->where(array('pay_scales.description'=>$data['description']));
+            }
+
+            if(isset($data['job_nature_id']) && $data['job_nature_id'] != ''){
+               
+                $this->db->where(array('pay_scales.job_nature_id'=>$data['job_nature_id']));
+            }
+
+            if(isset($data['salary_package']) && $data['salary_package'] != ''){
+               
+                $this->db->where(array('pay_scales.salary_package'=>$data['salary_package']));
+            }
+
+            if(isset($data['terms']) && $data['terms'] != ''){
+               
+                $this->db->where(array('pay_scales.terms'=>$data['terms']));
+            }
+
+            if(isset($data['job_resp']) && $data['job_resp'] != ''){
+               
+                $this->db->where(array('pay_scales.job_resp'=>$data['job_resp']));
+            }
+
+            if(isset($data['status']) && $data['status'] != ''){
+               
+                $this->db->where(array('pay_scales.status'=>$data['status']));
+            }
+
+
+           
+            if(isset($data['search_string']) && $data['search_string'] != ''){
+                $this->db->group_start(); 
+                $this->db->or_like('users.name',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.name',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.description',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.job_nature_id',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.salary_package',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.terms',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.job_resp',$data['search_string'],'both');
+                $this->db->or_like('pay_scales.id',$data['search_string'],'both');
+                $this->db->group_end();
+            }
+
+            if(isset($data['per_page']) && $data['per_page'] > 0){
+                $limit = $data['per_page'];
+            }
+            else{
+                $limit = 5000000000;
+            }
+
+            if(isset($data['page']) && $data['page'] > 0){
+                $offset = ($data['page'] - 1) * $limit;
+            }
+
+            $this->db->select("pay_scales.*,
+            nature_of_jobs.name as nature_of_jobs_name,users.name as added_by_name,
+            modified.name as modified_by_name");
+            $this->db->join('nature_of_jobs','pay_scales.job_nature_id = nature_of_jobs.id','left');
+            $this->db->join("users","pay_scales.added_by = users.id","left");
+            $this->db->join("users as modified","pay_scales.modified_by = modified.id","left");
+            $this->db->from("pay_scales");
+            $tempdb = clone $this->db; 
+            $total_records = $tempdb->count_all_results();
+            $this->db->limit($limit,$offset);
+            $this->db->order_by("pay_scales.name","ASC");
+            $rec = $this->db->get();
+            $result['total_records'] = $total_records;
+            $result['records'] = $rec;
+            //echo $this->db->last_query();
+            return $result;
+	}
+
+	public function get_pay_scales_for_excel($ids){
+		$this->db->where_in("pay_scales.id",$ids);
+        $this->db->where(array("pay_scales.deleted"=>0));
+        $this->db->select("pay_scales.*,
+        nature_of_jobs.name as nature_of_jobs_name");
+        $this->db->join('nature_of_jobs','pay_scales.job_nature_id = nature_of_jobs.id','left');
+        $this->db->from("pay_scales");
+        return $rec = $this->db->get();
+    }
+     
+       
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start nature_of_jobs Function 
+    public function get_nature_of_jobs(){
+        $this->db->where(array("nature_of_jobs.deleted" => 0));
+        $this->db->select("nature_of_jobs.*");
+        $this->db->from("nature_of_jobs");
+        return $rec = $this->db->get();
+    }
+
+    public function get_nature_of_jobs_rec($id){
+        $this->db->where(array("nature_of_jobs.deleted" => 0,'id'=>$id));
+        $this->db->select("nature_of_jobs.*");
+        $this->db->from("nature_of_jobs");
+       return $rec = $this->db->get();
+
+    }
+
+	public function get_filtered_nature_of_jobs($data = array()){
+
+        $limit = 16;
+        $offset = 0;
+
+           $this->db->where(array('nature_of_jobs.deleted'=>0));
+
+            if(isset($data['added_by']) && $data['added_by'] != ''){ 
+                $this->db->where(array('nature_of_jobs.added_by'=>$data['added_by']));
+            }
+
+            if(isset($data['name']) && $data['name'] != ''){
+               
+                $this->db->where(array('nature_of_jobs.name'=>$data['name']));
+            }
+
+            if(isset($data['status']) && $data['status'] != ''){
+               
+                $this->db->where(array('nature_of_jobs.status'=>$data['status']));
+            }
+
+
+           
+            if(isset($data['search_string']) && $data['search_string'] != ''){
+                $this->db->group_start(); 
+                $this->db->or_like('users.name',$data['search_string'],'both');
+                $this->db->or_like('nature_of_jobs.name',$data['search_string'],'both');
+                $this->db->or_like('nature_of_jobs.id',$data['search_string'],'both');
+                $this->db->group_end();
+            }
+
+            if(isset($data['per_page']) && $data['per_page'] > 0){
+                $limit = $data['per_page'];
+            }
+            else{
+                $limit = 5000000000;
+            }
+
+            if(isset($data['page']) && $data['page'] > 0){
+                $offset = ($data['page'] - 1) * $limit;
+            }
+
+            $this->db->select("nature_of_jobs.*,users.name as added_by_name,modified.name as modified_by_name");
+            $this->db->join("users","nature_of_jobs.added_by = users.id","left");
+            $this->db->join("users as modified","nature_of_jobs.modified_by = modified.id","left");
+            $this->db->from("nature_of_jobs");
+            $tempdb = clone $this->db; 
+            $total_records = $tempdb->count_all_results();
+            $this->db->limit($limit,$offset);
+            $this->db->order_by("nature_of_jobs.name","ASC");
+            $rec = $this->db->get();
+            $result['total_records'] = $total_records;
+            $result['records'] = $rec;
+            //echo $this->db->last_query();
+            return $result;
+	}
+
+	public function get_nature_of_jobs_for_excel($ids){
+		$this->db->where_in("nature_of_jobs.id",$ids);
+        $this->db->where(array("nature_of_jobs.deleted"=>0));
+        $this->db->select("nature_of_jobs.*");
+        $this->db->from("nature_of_jobs");
+        return $rec = $this->db->get();
+	}
+    
+       
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start organizations Function 
+    public function get_organizations(){
+        $this->db->where(array("organizations.deleted" => 0));
+        $this->db->select("organizations.*");
+        $this->db->from("organizations");
+        return $rec = $this->db->get();
+    }
+
+    public function get_organizations_rec($id){
+        $this->db->where(array("organizations.deleted" => 0,'id'=>$id));
+        $this->db->select("organizations.*");
+        $this->db->from("organizations");
+       return $rec = $this->db->get();
+
+    }
+
+	public function get_filtered_organizations($data = array()){
+
+        $limit = 16;
+        $offset = 0;
+
+           $this->db->where(array('organizations.deleted'=>0));
+
+            if(isset($data['added_by']) && $data['added_by'] != ''){ 
+                $this->db->where(array('organizations.added_by'=>$data['added_by']));
+            }
+
+            if(isset($data['name']) && $data['name'] != ''){
+               
+                $this->db->where(array('organizations.name'=>$data['name']));
+            }
+
+            if(isset($data['short_name']) && $data['short_name'] != ''){
+               
+                $this->db->where(array('organizations.short_name'=>$data['short_name']));
+            }
+
+            if(isset($data['status']) && $data['status'] != ''){
+               
+                $this->db->where(array('organizations.status'=>$data['status']));
+            }
+
+
+           
+            if(isset($data['search_string']) && $data['search_string'] != ''){
+                $this->db->group_start(); 
+                $this->db->or_like('users.name',$data['search_string'],'both');
+                $this->db->or_like('organizations.name',$data['search_string'],'both');
+                $this->db->or_like('organizations.short_name',$data['search_string'],'both');
+                $this->db->or_like('organizations.id',$data['search_string'],'both');
+                $this->db->group_end();
+            }
+
+            if(isset($data['per_page']) && $data['per_page'] > 0){
+                $limit = $data['per_page'];
+            }
+            else{
+                $limit = 5000000000;
+            }
+
+            if(isset($data['page']) && $data['page'] > 0){
+                $offset = ($data['page'] - 1) * $limit;
+            }
+
+            $this->db->select("organizations.*,users.name as added_by_name,modified.name as modified_by_name,
+            parent_dept.name as par_dept_name");
+            $this->db->join("users","organizations.added_by = users.id","left");
+            $this->db->join("users as modified","organizations.modified_by = modified.id","left");
+            $this->db->from("organizations");
+            $tempdb = clone $this->db; 
+            $total_records = $tempdb->count_all_results();
+            $this->db->limit($limit,$offset);
+            $this->db->order_by("organizations.name","ASC");
+            $rec = $this->db->get();
+            $result['total_records'] = $total_records;
+            $result['records'] = $rec;
+            //echo $this->db->last_query();
+            return $result;
+	}
+
+	public function get_organizations_for_excel($ids){
+		$this->db->where_in("organizations.id",$ids);
+        $this->db->where(array("organizations.deleted"=>0));
+        $this->db->select("organizations.*");
+        $this->db->from("organizations");
+        return $rec = $this->db->get();
+	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -515,6 +1088,13 @@ class App_Model extends CI_Model {
 
 
     }
+
+
+
+
+
+
+
 
 
 
